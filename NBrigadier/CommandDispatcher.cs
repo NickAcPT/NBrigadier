@@ -526,7 +526,7 @@ namespace NBrigadier
             }
 
             return new ParseResults<S>(contextSoFar, originalReader,
-                errors == null ? new Dictionary<CommandNode<S>, CommandSyntaxException>() : errors);
+                errors ?? new Dictionary<CommandNode<S>, CommandSyntaxException>());
         }
 
         /// <summary>

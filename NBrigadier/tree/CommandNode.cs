@@ -129,7 +129,7 @@ namespace NBrigadier.Tree
             var that = (CommandNode<S>) o;
 
             if (!children.Equals(that.children)) return false;
-            if (command != null ? !command.Equals(that.command) : that.command != null) return false;
+            if (!command?.Equals(that.command) ?? that.command != null) return false;
 
             return true;
         }

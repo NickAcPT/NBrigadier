@@ -104,7 +104,7 @@ namespace NBrigadier.Context
         public virtual CommandContext<S> Build(string input)
         {
             return new(source, input, arguments, command, rootNode, nodes, range,
-                child == null ? null : child.Build(input), modifier, forks);
+                child?.Build(input), modifier, forks);
         }
 
         public virtual SuggestionContext<S> FindSuggestionContext(int cursor)
