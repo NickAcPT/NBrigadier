@@ -5,12 +5,12 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
-    public class SuggestionContext<S>
+    public class SuggestionContext<TS>
     {
-        public readonly CommandNode<S> parent;
+        public readonly CommandNode<TS> parent;
         public readonly int startPos;
 
-        public SuggestionContext(CommandNode<S> parent, int startPos)
+        public SuggestionContext(CommandNode<TS> parent, int startPos)
         {
             this.parent = parent;
             this.startPos = startPos;

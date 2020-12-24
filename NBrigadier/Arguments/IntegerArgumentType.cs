@@ -7,22 +7,22 @@ using NBrigadier.Exceptions;
 
 namespace NBrigadier.Arguments
 {
-    public class IntegerArgumentType : ArgumentType<int>
+    public class IntegerArgumentType : IArgumentType<int>
     {
         private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "123", "-123"};
-        private readonly int maximum;
+        private readonly int _maximum;
 
-        private readonly int minimum;
+        private readonly int _minimum;
 
         private IntegerArgumentType(int minimum, int maximum)
         {
-            this.minimum = minimum;
-            this.maximum = maximum;
+            this._minimum = minimum;
+            this._maximum = maximum;
         }
 
-        public virtual int Minimum => minimum;
+        public virtual int Minimum => _minimum;
 
-        public virtual int Maximum => maximum;
+        public virtual int Maximum => _maximum;
 
         public virtual ICollection<string> Examples => EXAMPLES;
 
@@ -30,18 +30,18 @@ namespace NBrigadier.Arguments
         {
             var start = reader.Cursor;
             var result = reader.ReadInt();
-            if (result < minimum)
+            if (result < _minimum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.IntegerTooLow()
-                    .CreateWithContext(reader, result, minimum);
+                throw CommandSyntaxException.builtInExceptions.IntegerTooLow()
+                    .CreateWithContext(reader, result, _minimum);
             }
 
-            if (result > maximum)
+            if (result > _maximum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.IntegerTooHigh()
-                    .CreateWithContext(reader, result, maximum);
+                throw CommandSyntaxException.builtInExceptions.IntegerTooHigh()
+                    .CreateWithContext(reader, result, _maximum);
             }
 
             return result;
@@ -73,21 +73,21 @@ namespace NBrigadier.Arguments
             if (!(o is IntegerArgumentType)) return false;
 
             var that = (IntegerArgumentType) o;
-            return maximum == that.maximum && minimum == that.minimum;
+            return _maximum == that._maximum && _minimum == that._minimum;
         }
 
         public override int GetHashCode()
         {
-            return 31 * minimum + maximum;
+            return 31 * _minimum + _maximum;
         }
 
         public override string ToString()
         {
-            if (minimum == int.MinValue && maximum == int.MaxValue)
+            if (_minimum == int.MinValue && _maximum == int.MaxValue)
                 return "integer()";
-            if (maximum == int.MaxValue)
-                return "integer(" + minimum + ")";
-            return "integer(" + minimum + ", " + maximum + ")";
+            if (_maximum == int.MaxValue)
+                return "integer(" + _minimum + ")";
+            return "integer(" + _minimum + ", " + _maximum + ")";
         }
     }
 }

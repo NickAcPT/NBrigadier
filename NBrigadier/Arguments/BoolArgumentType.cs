@@ -8,7 +8,7 @@ using NBrigadier.Suggestion;
 
 namespace NBrigadier.Arguments
 {
-    public class BoolArgumentType : ArgumentType<bool>
+    public class BoolArgumentType : IArgumentType<bool>
     {
         private static readonly ICollection<string> EXAMPLES = new List<string> {"true", "false"};
 
@@ -23,7 +23,7 @@ namespace NBrigadier.Arguments
             return reader.ReadBoolean();
         }
 
-        public Func<Suggestions> ListSuggestions<S>(CommandContext<S> context, SuggestionsBuilder builder)
+        public Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
         {
             if ("true".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal)) builder.Suggest("true");
             if ("false".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal)) builder.Suggest("false");

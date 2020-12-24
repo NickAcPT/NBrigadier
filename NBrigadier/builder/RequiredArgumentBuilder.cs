@@ -7,38 +7,38 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Builder
 {
-    public class RequiredArgumentBuilder<S, T> : ArgumentBuilder<S, RequiredArgumentBuilder<S, T>>
+    public class RequiredArgumentBuilder<TS, T> : ArgumentBuilder<TS, RequiredArgumentBuilder<TS, T>>
     {
-        private SuggestionProvider<S> suggestionsProvider;
+        private SuggestionProvider<TS> _suggestionsProvider;
 
-        private RequiredArgumentBuilder(string name, ArgumentType<T> type)
+        private RequiredArgumentBuilder(string name, IArgumentType<T> type)
         {
             this.Name = name;
             this.Type = type;
         }
 
-        public virtual SuggestionProvider<S> SuggestionsProvider => suggestionsProvider;
+        public virtual SuggestionProvider<TS> SuggestionsProvider => _suggestionsProvider;
 
-        protected internal override RequiredArgumentBuilder<S, T> This => this;
+        protected internal override RequiredArgumentBuilder<TS, T> This => this;
 
-        public virtual ArgumentType<T> Type { get; }
+        public virtual IArgumentType<T> Type { get; }
 
         public virtual string Name { get; }
 
-        public static RequiredArgumentBuilder<S, T> Argument(string name, ArgumentType<T> type)
+        public static RequiredArgumentBuilder<TS, T> Argument(string name, IArgumentType<T> type)
         {
             return new(name, type);
         }
 
-        public virtual RequiredArgumentBuilder<S, T> Suggests(SuggestionProvider<S> provider)
+        public virtual RequiredArgumentBuilder<TS, T> Suggests(SuggestionProvider<TS> provider)
         {
-            suggestionsProvider = provider;
+            _suggestionsProvider = provider;
             return This;
         }
 
-        public override CommandNode<S> Build()
+        public override CommandNode<TS> Build()
         {
-            var result = new ArgumentCommandNode<S, T>(Name, Type, Command, Requirement, Redirect, RedirectModifier,
+            var result = new ArgumentCommandNode<TS, T>(Name, Type, Command, Requirement, Redirect, RedirectModifier,
                 Fork, SuggestionsProvider);
 
             foreach (var argument in Arguments) result.AddChild(argument);

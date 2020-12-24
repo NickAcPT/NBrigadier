@@ -9,29 +9,29 @@ using NBrigadier.Context;
 
 namespace NBrigadier.Arguments
 {
-    public class StringArgumentType : ArgumentType<string>
+    public class StringArgumentType : IArgumentType<string>
     {
-        private readonly StringType type;
+        private readonly StringType _type;
 
         private StringArgumentType(StringType type)
         {
-            this.type = type;
+            this._type = type;
         }
 
-        public virtual StringType Type => type;
+        public virtual StringType Type => _type;
 
-        public virtual ICollection<string> Examples => type.Examples;
+        public virtual ICollection<string> Examples => _type.Examples;
 
         public string Parse(StringReader reader)
         {
-            if (type == StringType.GreedyPhrase)
+            if (_type == StringType.GreedyPhrase)
             {
                 var text = reader.Remaining;
                 reader.Cursor = reader.TotalLength;
                 return text;
             }
 
-            if (type == StringType.SingleWord)
+            if (_type == StringType.SingleWord)
                 return reader.ReadUnquotedString();
             return reader.ReadString();
         }
@@ -102,52 +102,52 @@ namespace NBrigadier.Arguments
             public static readonly StringType GreedyPhrase = new("GreedyPhrase", InnerEnum.GreedyPhrase, "word",
                 "words with spaces", "\"and symbols\"");
 
-            private static readonly List<StringType> valueList = new();
-            private static int nextOrdinal;
+            private static readonly List<StringType> VALUE_LIST = new();
+            private static int _nextOrdinal;
 
             internal readonly ICollection<string> examples;
 
             public readonly InnerEnum innerEnumValue;
-            private readonly string nameValue;
-            private readonly int ordinalValue;
+            private readonly string _nameValue;
+            private readonly int _ordinalValue;
 
             static StringType()
             {
-                valueList.Add(SingleWord);
-                valueList.Add(QuotablePhrase);
-                valueList.Add(GreedyPhrase);
+                VALUE_LIST.Add(SingleWord);
+                VALUE_LIST.Add(QuotablePhrase);
+                VALUE_LIST.Add(GreedyPhrase);
             }
 
             internal StringType(string name, InnerEnum innerEnum, params string[] examples)
             {
                 this.examples = examples.ToList();
 
-                nameValue = name;
-                ordinalValue = nextOrdinal++;
+                _nameValue = name;
+                _ordinalValue = _nextOrdinal++;
                 innerEnumValue = innerEnum;
             }
 
             public ICollection<string> Examples => examples;
 
-            public static StringType[] values()
+            public static StringType[] Values()
             {
-                return valueList.ToArray();
+                return VALUE_LIST.ToArray();
             }
 
-            public int ordinal()
+            public int Ordinal()
             {
-                return ordinalValue;
+                return _ordinalValue;
             }
 
             public override string ToString()
             {
-                return nameValue;
+                return _nameValue;
             }
 
-            public static StringType valueOf(string name)
+            public static StringType ValueOf(string name)
             {
-                foreach (var enumInstance in valueList)
-                    if (enumInstance.nameValue == name)
+                foreach (var enumInstance in VALUE_LIST)
+                    if (enumInstance._nameValue == name)
                         return enumInstance;
                 throw new ArgumentException(name);
             }

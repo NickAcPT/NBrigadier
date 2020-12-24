@@ -9,9 +9,9 @@ using NBrigadier.Suggestion;
 
 namespace NBrigadier.Tree
 {
-    public class RootCommandNode<S> : CommandNode<S>
+    public class RootCommandNode<TS> : CommandNode<TS>
     {
-        public RootCommandNode() : base(null, c => true, null, s => new List<S> {s.Source}, false)
+        public RootCommandNode() : base(null, c => true, null, s => new List<TS> {s.Source}, false)
         {
         }
 
@@ -23,11 +23,11 @@ namespace NBrigadier.Tree
 
         public override ICollection<string> Examples => new List<string>();
 
-        public override void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
+        public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
         {
         }
 
-        public override Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
+        public override Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder)
         {
             return Suggestions.Empty();
         }
@@ -40,11 +40,11 @@ namespace NBrigadier.Tree
         public override bool Equals(object o)
         {
             if (this == o) return true;
-            if (!(o is RootCommandNode<S>)) return false;
+            if (!(o is RootCommandNode<TS>)) return false;
             return base.Equals(o);
         }
 
-        public override ArgumentBuilder<S, T> CreateBuilder<T>()
+        public override ArgumentBuilder<TS, T> CreateBuilder<T>()
         {
             throw new InvalidOperationException("Cannot convert root into a builder");
         }

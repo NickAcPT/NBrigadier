@@ -6,5 +6,5 @@ using NBrigadier.Context;
 
 namespace NBrigadier.Suggestion
 {
-    public delegate Func<Suggestions> SuggestionProvider<S>(CommandContext<S> context, SuggestionsBuilder builder);
+    public delegate Func<Suggestions> SuggestionProvider<TS>(CommandContext<TS> context, SuggestionsBuilder builder);
 }

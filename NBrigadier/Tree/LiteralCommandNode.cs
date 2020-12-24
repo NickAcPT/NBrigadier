@@ -10,27 +10,27 @@ using NBrigadier.Suggestion;
 
 namespace NBrigadier.Tree
 {
-    public class LiteralCommandNode<S> : CommandNode<S>
+    public class LiteralCommandNode<TS> : CommandNode<TS>
     {
-        private readonly string literal;
+        private readonly string _literal;
 
-        public LiteralCommandNode(string literal, Command<S> command, Predicate<S> requirement, CommandNode<S> redirect,
-            RedirectModifier<S> modifier, bool forks) : base(command, requirement, redirect, modifier, forks)
+        public LiteralCommandNode(string literal, Command<TS> command, Predicate<TS> requirement, CommandNode<TS> redirect,
+            RedirectModifier<TS> modifier, bool forks) : base(command, requirement, redirect, modifier, forks)
         {
-            this.literal = literal;
+            this._literal = literal;
         }
 
-        public virtual string Literal => literal;
+        public virtual string Literal => _literal;
 
-        public override string Name => literal;
+        public override string Name => _literal;
 
-        public override string UsageText => literal;
+        public override string UsageText => _literal;
 
-        protected internal override string SortedKey => literal;
+        protected internal override string SortedKey => _literal;
 
-        public override ICollection<string> Examples => new List<string> {literal};
+        public override ICollection<string> Examples => new List<string> {_literal};
 
-        public override void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
+        public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
         {
             var start = reader.Cursor;
             var end = Parse(reader);
@@ -40,16 +40,16 @@ namespace NBrigadier.Tree
                 return;
             }
 
-            throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.LiteralIncorrect().CreateWithContext(reader, literal);
+            throw CommandSyntaxException.builtInExceptions.LiteralIncorrect().CreateWithContext(reader, _literal);
         }
 
         private int Parse(StringReader reader)
         {
             var start = reader.Cursor;
-            if (reader.CanRead(literal.Length))
+            if (reader.CanRead(_literal.Length))
             {
-                var end = start + literal.Length;
-                if (reader.String.Substring(start, end - start).Equals(literal))
+                var end = start + _literal.Length;
+                if (reader.String.Substring(start, end - start).Equals(_literal))
                 {
                     reader.Cursor = end;
                     if (!reader.CanRead() || reader.Peek() == ' ')
@@ -61,16 +61,16 @@ namespace NBrigadier.Tree
             return -1;
         }
 
-        public override Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
+        public override Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder)
         {
-            if (literal.ToLower().StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
-                return builder.Suggest(literal).BuildFuture();
+            if (_literal.ToLower().StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
+                return builder.Suggest(_literal).BuildFuture();
             return Suggestions.Empty();
         }
 
-        public override ArgumentBuilder<S, T> CreateBuilder<T>()
+        public override ArgumentBuilder<TS, T> CreateBuilder<T>()
         {
-            return CreateLiteralBuilder() as ArgumentBuilder<S, T>;
+            return CreateLiteralBuilder() as ArgumentBuilder<TS, T>;
         }
 
         public override bool IsValidInput(string input)
@@ -81,24 +81,24 @@ namespace NBrigadier.Tree
         public override bool Equals(object o)
         {
             if (this == o) return true;
-            if (!(o is LiteralCommandNode<S>)) return false;
+            if (!(o is LiteralCommandNode<TS>)) return false;
 
-            var that = (LiteralCommandNode<S>) o;
+            var that = (LiteralCommandNode<TS>) o;
 
-            if (!literal.Equals(that.literal)) return false;
+            if (!_literal.Equals(that._literal)) return false;
             return base.Equals(o);
         }
 
         public override int GetHashCode()
         {
-            var result = literal.GetHashCode();
+            var result = _literal.GetHashCode();
             result = 31 * result + base.GetHashCode();
             return result;
         }
 
-        public LiteralArgumentBuilder<S> CreateLiteralBuilder()
+        public LiteralArgumentBuilder<TS> CreateLiteralBuilder()
         {
-            var builder = LiteralArgumentBuilder<S>.LiteralBuilder<S>(literal);
+            var builder = LiteralArgumentBuilder<TS>.LiteralBuilder<TS>(_literal);
             builder.Requires(Requirement);
             builder.Forward(Redirect, RedirectModifier, Fork);
             if (Command != null) builder.Executes(Command);
@@ -107,7 +107,7 @@ namespace NBrigadier.Tree
 
         public override string ToString()
         {
-            return "<literal " + literal + ">";
+            return "<literal " + _literal + ">";
         }
     }
 }

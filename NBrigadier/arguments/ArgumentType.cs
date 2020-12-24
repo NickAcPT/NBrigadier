@@ -8,11 +8,11 @@ using NBrigadier.Suggestion;
 
 namespace NBrigadier.Arguments
 {
-    public interface ArgumentType<T>
+    public interface IArgumentType<T>
     {
         T Parse(StringReader reader);
 
-        Func<Suggestions> ListSuggestions<S>(CommandContext<S> context, SuggestionsBuilder builder)
+        Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
         {
             return Suggestions.Empty();
         }

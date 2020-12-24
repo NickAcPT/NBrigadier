@@ -8,25 +8,25 @@ using NBrigadier.Tree;
 
 namespace NBrigadier
 {
-    public class ParseResults<S>
+    public class ParseResults<TS>
     {
-        public ParseResults(CommandContextBuilder<S> context, ImmutableStringReader reader,
-            IDictionary<CommandNode<S>, CommandSyntaxException> exceptions)
+        public ParseResults(CommandContextBuilder<TS> context, IMmutableStringReader reader,
+            IDictionary<CommandNode<TS>, CommandSyntaxException> exceptions)
         {
             this.Context = context;
             this.Reader = reader;
             this.Exceptions = exceptions;
         }
 
-        public ParseResults(CommandContextBuilder<S> context) : this(context, new StringReader(""),
-            new Dictionary<CommandNode<S>, CommandSyntaxException>())
+        public ParseResults(CommandContextBuilder<TS> context) : this(context, new StringReader(""),
+            new Dictionary<CommandNode<TS>, CommandSyntaxException>())
         {
         }
 
-        public virtual CommandContextBuilder<S> Context { get; }
+        public virtual CommandContextBuilder<TS> Context { get; }
 
-        public virtual ImmutableStringReader Reader { get; }
+        public virtual IMmutableStringReader Reader { get; }
 
-        public virtual IDictionary<CommandNode<S>, CommandSyntaxException> Exceptions { get; }
+        public virtual IDictionary<CommandNode<TS>, CommandSyntaxException> Exceptions { get; }
     }
 }

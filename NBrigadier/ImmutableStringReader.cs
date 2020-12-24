@@ -3,7 +3,7 @@
 
 namespace NBrigadier
 {
-    public interface ImmutableStringReader
+    public interface IMmutableStringReader
     {
         string String { get; }
 

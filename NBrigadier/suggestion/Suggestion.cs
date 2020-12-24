@@ -9,39 +9,39 @@ namespace NBrigadier.Suggestion
 {
     public class Suggestion : IComparable<Suggestion>
     {
-        private readonly StringRange range;
-        private readonly string text;
-        private readonly Message tooltip;
+        private readonly StringRange _range;
+        private readonly string _text;
+        private readonly IMessage _tooltip;
 
         public Suggestion(StringRange range, string text) : this(range, text, null)
         {
         }
 
-        public Suggestion(StringRange range, string text, Message tooltip)
+        public Suggestion(StringRange range, string text, IMessage tooltip)
         {
-            this.range = range;
-            this.text = text;
-            this.tooltip = tooltip;
+            this._range = range;
+            this._text = text;
+            this._tooltip = tooltip;
         }
 
-        public virtual StringRange Range => range;
+        public virtual StringRange Range => _range;
 
-        public virtual string Text => text;
+        public virtual string Text => _text;
 
-        public virtual Message Tooltip => tooltip;
+        public virtual IMessage Tooltip => _tooltip;
 
         public int CompareTo(Suggestion o)
         {
-            return string.Compare(text, o.text, StringComparison.Ordinal);
+            return string.Compare(_text, o._text, StringComparison.Ordinal);
         }
 
         public virtual string Apply(string input)
         {
-            if (range.Start == 0 && range.End == input.Length) return text;
+            if (_range.Start == 0 && _range.End == input.Length) return _text;
             var result = new StringBuilder();
-            if (range.Start > 0) result.Append(input.Substring(0, range.Start));
-            result.Append(text);
-            if (range.End < input.Length) result.Append(input.Substring(range.End));
+            if (_range.Start > 0) result.Append(input.Substring(0, _range.Start));
+            result.Append(_text);
+            if (_range.End < input.Length) result.Append(input.Substring(_range.End));
             return result.ToString();
         }
 
@@ -50,27 +50,27 @@ namespace NBrigadier.Suggestion
             if (this == o) return true;
             if (!(o is Suggestion)) return false;
             var that = (Suggestion) o;
-            return Equals(range, that.range) && Equals(text, that.text) && Equals(tooltip, that.tooltip);
+            return Equals(_range, that._range) && Equals(_text, that._text) && Equals(_tooltip, that._tooltip);
         }
 
         public override string ToString()
         {
-            return "Suggestion{" + "range=" + range + ", text='" + text + '\'' + ", tooltip='" + tooltip + '\'' + '}';
+            return "Suggestion{" + "range=" + _range + ", text='" + _text + '\'' + ", tooltip='" + _tooltip + '\'' + '}';
         }
 
         public virtual int CompareToIgnoreCase(Suggestion b)
         {
-            return string.Compare(text, b.text, StringComparison.OrdinalIgnoreCase);
+            return string.Compare(_text, b._text, StringComparison.OrdinalIgnoreCase);
         }
 
         public virtual Suggestion Expand(string command, StringRange range)
         {
-            if (range.Equals(this.range)) return this;
+            if (range.Equals(this._range)) return this;
             var result = new StringBuilder();
-            if (range.Start < this.range.Start) result.Append(command.SubstringSpecial(range.Start, this.range.Start));
-            result.Append(text);
-            if (range.End > this.range.End) result.Append(command.SubstringSpecial(this.range.End, range.End));
-            return new Suggestion(range, result.ToString(), tooltip);
+            if (range.Start < this._range.Start) result.Append(command.SubstringSpecial(range.Start, this._range.Start));
+            result.Append(_text);
+            if (range.End > this._range.End) result.Append(command.SubstringSpecial(this._range.End, range.End));
+            return new Suggestion(range, result.ToString(), _tooltip);
         }
     }
 }

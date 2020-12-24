@@ -8,65 +8,65 @@ namespace NBrigadier.Exceptions
 {
     public class CommandSyntaxException : Exception
     {
-        public const int CONTEXT_AMOUNT = 10;
-        public static bool ENABLE_COMMAND_STACK_TRACES = true;
-        public static BuiltInExceptionProvider BUILT_IN_EXCEPTIONS = new BuiltInExceptions();
-        private readonly int cursor;
-        private readonly string input;
-        private readonly Message message;
+        public const int ContextAmount = 10;
+        public static bool enableCommandStackTraces = true;
+        public static IBuiltInExceptionProvider builtInExceptions = new BuiltInExceptions();
+        private readonly int _cursor;
+        private readonly string _input;
+        private readonly IMessage _message;
 
-        public CommandSyntaxException(CommandExceptionType type, Message message) :
+        public CommandSyntaxException(ICommandExceptionType type, IMessage message) :
             base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
         {
             this.Type = type;
-            this.message = message;
-            input = null;
-            cursor = -1;
+            this._message = message;
+            _input = null;
+            _cursor = -1;
         }
 
-        public CommandSyntaxException(CommandExceptionType type, Message message, string input, int cursor) :
+        public CommandSyntaxException(ICommandExceptionType type, IMessage message, string input, int cursor) :
             base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
         {
             this.Type = type;
-            this.message = message;
-            this.input = input;
-            this.cursor = cursor;
+            this._message = message;
+            this._input = input;
+            this._cursor = cursor;
         }
 
         public override string Message
         {
             get
             {
-                var message = this.message.String;
+                var message = this._message.String;
                 var context = Context;
-                if (!ReferenceEquals(context, null)) message += " at position " + cursor + ": " + context;
+                if (!ReferenceEquals(context, null)) message += " at position " + _cursor + ": " + context;
                 return message;
             }
         }
 
-        public virtual Message RawMessage => message;
+        public virtual IMessage RawMessage => _message;
 
         public virtual string Context
         {
             get
             {
-                if (ReferenceEquals(input, null)) return null;
-                var cursor = Math.Min(input.Length, this.cursor);
+                if (ReferenceEquals(_input, null)) return null;
+                var cursor = Math.Min(_input.Length, this._cursor);
                 var builder = new StringBuilder();
 
-                if (cursor > CONTEXT_AMOUNT) builder.Append("...");
+                if (cursor > ContextAmount) builder.Append("...");
 
-                builder.Append(input.SubstringSpecial(Math.Max(0, cursor - CONTEXT_AMOUNT), cursor));
+                builder.Append(_input.SubstringSpecial(Math.Max(0, cursor - ContextAmount), cursor));
                 builder.Append("<--[HERE]");
 
                 return builder.ToString();
             }
         }
 
-        public virtual CommandExceptionType Type { get; }
+        public virtual ICommandExceptionType Type { get; }
 
-        public virtual string Input => input;
+        public virtual string Input => _input;
 
-        public virtual int Cursor => cursor;
+        public virtual int Cursor => _cursor;
     }
 }

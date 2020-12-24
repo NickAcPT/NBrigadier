@@ -7,38 +7,38 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
-    public class CommandContextBuilder<S>
+    public class CommandContextBuilder<TS>
     {
-        private readonly IDictionary<string, ParsedArgument<S, object>> arguments =
-            new Dictionary<string, ParsedArgument<S, object>>();
+        private readonly IDictionary<string, ParsedArgument<TS, object>> _arguments =
+            new Dictionary<string, ParsedArgument<TS, object>>();
 
-        private readonly CommandDispatcher<S> dispatcher;
-        private readonly IList<ParsedCommandNode<S>> nodes = new List<ParsedCommandNode<S>>();
-        private readonly CommandNode<S> rootNode;
-        private CommandContextBuilder<S> child;
-        private Command<S> command;
-        private bool forks;
-        private RedirectModifier<S> modifier;
-        private StringRange range;
-        private S source;
+        private readonly CommandDispatcher<TS> _dispatcher;
+        private readonly IList<ParsedCommandNode<TS>> _nodes = new List<ParsedCommandNode<TS>>();
+        private readonly CommandNode<TS> _rootNode;
+        private CommandContextBuilder<TS> _child;
+        private Command<TS> _command;
+        private bool _forks;
+        private RedirectModifier<TS> _modifier;
+        private StringRange _range;
+        private TS _source;
 
-        public CommandContextBuilder(CommandDispatcher<S> dispatcher, S source, CommandNode<S> rootNode, int start)
+        public CommandContextBuilder(CommandDispatcher<TS> dispatcher, TS source, CommandNode<TS> rootNode, int start)
         {
-            this.rootNode = rootNode;
-            this.dispatcher = dispatcher;
-            this.source = source;
-            range = StringRange.At(start);
+            this._rootNode = rootNode;
+            this._dispatcher = dispatcher;
+            this._source = source;
+            _range = StringRange.At(start);
         }
 
-        public virtual S Source => source;
+        public virtual TS Source => _source;
 
-        public virtual CommandNode<S> RootNode => rootNode;
+        public virtual CommandNode<TS> RootNode => _rootNode;
 
-        public virtual IDictionary<string, ParsedArgument<S, object>> Arguments => arguments;
+        public virtual IDictionary<string, ParsedArgument<TS, object>> Arguments => _arguments;
 
-        public virtual CommandContextBuilder<S> Child => child;
+        public virtual CommandContextBuilder<TS> Child => _child;
 
-        public virtual CommandContextBuilder<S> LastChild
+        public virtual CommandContextBuilder<TS> LastChild
         {
             get
             {
@@ -48,93 +48,93 @@ namespace NBrigadier.Context
             }
         }
 
-        public virtual Command<S> Command => command;
+        public virtual Command<TS> Command => _command;
 
-        public virtual IList<ParsedCommandNode<S>> Nodes => nodes;
+        public virtual IList<ParsedCommandNode<TS>> Nodes => _nodes;
 
-        public virtual CommandDispatcher<S> Dispatcher => dispatcher;
+        public virtual CommandDispatcher<TS> Dispatcher => _dispatcher;
 
-        public virtual StringRange Range => range;
+        public virtual StringRange Range => _range;
 
-        public virtual CommandContextBuilder<S> WithSource(S source)
+        public virtual CommandContextBuilder<TS> WithSource(TS source)
         {
-            this.source = source;
+            this._source = source;
             return this;
         }
 
-        public virtual CommandContextBuilder<S> WithArgument(string name, ParsedArgument<S, object> argument)
+        public virtual CommandContextBuilder<TS> WithArgument(string name, ParsedArgument<TS, object> argument)
         {
-            arguments[name] = argument;
+            _arguments[name] = argument;
             return this;
         }
 
-        public virtual CommandContextBuilder<S> WithCommand(Command<S> command)
+        public virtual CommandContextBuilder<TS> WithCommand(Command<TS> command)
         {
-            this.command = command;
+            this._command = command;
             return this;
         }
 
-        public virtual CommandContextBuilder<S> WithNode(CommandNode<S> node, StringRange range)
+        public virtual CommandContextBuilder<TS> WithNode(CommandNode<TS> node, StringRange range)
         {
-            nodes.Add(new ParsedCommandNode<S>(node, range));
-            this.range = StringRange.Encompassing(this.range, range);
-            modifier = node.RedirectModifier;
-            forks = node.Fork;
+            _nodes.Add(new ParsedCommandNode<TS>(node, range));
+            this._range = StringRange.Encompassing(this._range, range);
+            _modifier = node.RedirectModifier;
+            _forks = node.Fork;
             return this;
         }
 
-        public virtual CommandContextBuilder<S> Copy()
+        public virtual CommandContextBuilder<TS> Copy()
         {
-            var copy = new CommandContextBuilder<S>(dispatcher, source, rootNode, range.Start);
-            copy.command = command;
-            foreach (var (key, value) in arguments) arguments[key] = value;
-            ((List<ParsedCommandNode<S>>) copy.nodes).AddRange(nodes);
-            copy.child = child;
-            copy.range = range;
-            copy.forks = forks;
+            var copy = new CommandContextBuilder<TS>(_dispatcher, _source, _rootNode, _range.Start);
+            copy._command = _command;
+            foreach (var (key, value) in _arguments) _arguments[key] = value;
+            ((List<ParsedCommandNode<TS>>) copy._nodes).AddRange(_nodes);
+            copy._child = _child;
+            copy._range = _range;
+            copy._forks = _forks;
             return copy;
         }
 
-        public virtual CommandContextBuilder<S> WithChild(CommandContextBuilder<S> child)
+        public virtual CommandContextBuilder<TS> WithChild(CommandContextBuilder<TS> child)
         {
-            this.child = child;
+            this._child = child;
             return this;
         }
 
-        public virtual CommandContext<S> Build(string input)
+        public virtual CommandContext<TS> Build(string input)
         {
-            return new(source, input, arguments, command, rootNode, nodes, range,
-                child?.Build(input), modifier, forks);
+            return new(_source, input, _arguments, _command, _rootNode, _nodes, _range,
+                _child?.Build(input), _modifier, _forks);
         }
 
-        public virtual SuggestionContext<S> FindSuggestionContext(int cursor)
+        public virtual SuggestionContext<TS> FindSuggestionContext(int cursor)
         {
-            if (range.Start <= cursor)
+            if (_range.Start <= cursor)
             {
-                if (range.End < cursor)
+                if (_range.End < cursor)
                 {
-                    if (child != null) return child.FindSuggestionContext(cursor);
+                    if (_child != null) return _child.FindSuggestionContext(cursor);
 
-                    if (nodes.Count > 0)
+                    if (_nodes.Count > 0)
                     {
-                        var last = nodes[nodes.Count - 1];
-                        return new SuggestionContext<S>(last.Node, last.Range.End + 1);
+                        var last = _nodes[_nodes.Count - 1];
+                        return new SuggestionContext<TS>(last.Node, last.Range.End + 1);
                     }
 
-                    return new SuggestionContext<S>(rootNode, range.Start);
+                    return new SuggestionContext<TS>(_rootNode, _range.Start);
                 }
 
-                var prev = rootNode;
-                foreach (var node in nodes)
+                var prev = _rootNode;
+                foreach (var node in _nodes)
                 {
                     var nodeRange = node.Range;
                     if (nodeRange.Start <= cursor && cursor <= nodeRange.End)
-                        return new SuggestionContext<S>(prev, nodeRange.Start);
+                        return new SuggestionContext<TS>(prev, nodeRange.Start);
                     prev = node.Node;
                 }
 
                 if (prev == null) throw new InvalidOperationException("Can't find node before cursor");
-                return new SuggestionContext<S>(prev, range.Start);
+                return new SuggestionContext<TS>(prev, _range.Start);
             }
 
             throw new InvalidOperationException("Can't find node before cursor");

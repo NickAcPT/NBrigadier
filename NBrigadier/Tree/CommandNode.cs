@@ -10,38 +10,38 @@ using NBrigadier.Suggestion;
 
 namespace NBrigadier.Tree
 {
-    public abstract class CommandNode<S> : IComparable<CommandNode<S>>
+    public abstract class CommandNode<TS> : IComparable<CommandNode<TS>>
     {
-        private readonly Predicate<S> requirement;
+        private readonly Predicate<TS> _requirement;
 
-        private readonly IDictionary<string, IArgumentCommandNode<S>> arguments =
-            new Dictionary<string, IArgumentCommandNode<S>>();
+        private readonly IDictionary<string, IArgumentCommandNode<TS>> _arguments =
+            new Dictionary<string, IArgumentCommandNode<TS>>();
 
-        private IDictionary<string, CommandNode<S>> children = new Dictionary<string, CommandNode<S>>();
-        private Command<S> command;
+        private IDictionary<string, CommandNode<TS>> _children = new Dictionary<string, CommandNode<TS>>();
+        private Command<TS> _command;
 
-        private readonly IDictionary<string, LiteralCommandNode<S>> literals =
-            new Dictionary<string, LiteralCommandNode<S>>();
+        private readonly IDictionary<string, LiteralCommandNode<TS>> _literals =
+            new Dictionary<string, LiteralCommandNode<TS>>();
 
-        protected internal CommandNode(Command<S> command, Predicate<S> requirement, CommandNode<S> redirect,
-            RedirectModifier<S> modifier, bool forks)
+        protected internal CommandNode(Command<TS> command, Predicate<TS> requirement, CommandNode<TS> redirect,
+            RedirectModifier<TS> modifier, bool forks)
         {
-            this.command = command;
-            this.requirement = requirement;
+            this._command = command;
+            this._requirement = requirement;
             Redirect = redirect;
             RedirectModifier = modifier;
             Fork = forks;
         }
 
-        public virtual Command<S> Command => command;
+        public virtual Command<TS> Command => _command;
 
-        public virtual ICollection<CommandNode<S>> Children => children.Values;
+        public virtual ICollection<CommandNode<TS>> Children => _children.Values;
 
-        public virtual CommandNode<S> Redirect { get; }
+        public virtual CommandNode<TS> Redirect { get; }
 
-        public virtual RedirectModifier<S> RedirectModifier { get; }
+        public virtual RedirectModifier<TS> RedirectModifier { get; }
 
-        public virtual Predicate<S> Requirement => requirement;
+        public virtual Predicate<TS> Requirement => _requirement;
 
         public abstract string Name { get; }
 
@@ -53,54 +53,54 @@ namespace NBrigadier.Tree
 
         public abstract ICollection<string> Examples { get; }
 
-        public int CompareTo(CommandNode<S> o)
+        public int CompareTo(CommandNode<TS> o)
         {
-            if (this is LiteralCommandNode<S> == o is LiteralCommandNode<S>)
+            if (this is LiteralCommandNode<TS> == o is LiteralCommandNode<TS>)
                 return string.Compare(SortedKey, o.SortedKey, StringComparison.Ordinal);
 
-            return o is LiteralCommandNode<S> ? 1 : -1;
+            return o is LiteralCommandNode<TS> ? 1 : -1;
         }
 
-        public virtual CommandNode<S> GetChild(string name)
+        public virtual CommandNode<TS> GetChild(string name)
         {
-            return children[name];
+            return _children[name];
         }
 
-        public virtual bool CanUse(S source)
+        public virtual bool CanUse(TS source)
         {
-            return requirement(source);
+            return _requirement(source);
         }
 
-        public virtual void AddChild(CommandNode<S> node)
+        public virtual void AddChild(CommandNode<TS> node)
         {
-            if (node is RootCommandNode<S>)
+            if (node is RootCommandNode<TS>)
                 throw new NotSupportedException("Cannot add a RootCommandNode as a child to any other CommandNode");
 
-            var child = children.GetValueOrNull(node.Name);
+            var child = _children.GetValueOrNull(node.Name);
             if (child != null)
             {
                 // We've found something to merge onto
-                if (node.Command != null) child.command = node.Command;
+                if (node.Command != null) child._command = node.Command;
                 foreach (var grandchild in node.Children) child.AddChild(grandchild);
             }
             else
             {
-                children[node.Name] = node;
-                if (node is LiteralCommandNode<S>)
-                    literals[node.Name] = (LiteralCommandNode<S>) node;
-                else if (node is IArgumentCommandNode<S>) arguments[node.Name] = (IArgumentCommandNode<S>) node;
+                _children[node.Name] = node;
+                if (node is LiteralCommandNode<TS>)
+                    _literals[node.Name] = (LiteralCommandNode<TS>) node;
+                else if (node is IArgumentCommandNode<TS>) _arguments[node.Name] = (IArgumentCommandNode<TS>) node;
             }
 
-            children = children.SetOfKeyValuePairs().OrderBy(c => c.Value).ToDictionary(c => c.Key, c => c.Value);
+            _children = _children.SetOfKeyValuePairs().OrderBy(c => c.Value).ToDictionary(c => c.Key, c => c.Value);
         }
 
-        public virtual void FindAmbiguities(AmbiguityConsumer<S> consumer)
+        public virtual void FindAmbiguities(AmbiguityConsumer<TS> consumer)
         {
             ISet<string> matches = new HashSet<string>();
 
-            foreach (var child in children.Values)
+            foreach (var child in _children.Values)
             {
-                foreach (var sibling in children.Values)
+                foreach (var sibling in _children.Values)
                 {
                     if (child == sibling) continue;
 
@@ -124,42 +124,42 @@ namespace NBrigadier.Tree
         public override bool Equals(object o)
         {
             if (this == o) return true;
-            if (!(o is CommandNode<S>)) return false;
+            if (!(o is CommandNode<TS>)) return false;
 
-            var that = (CommandNode<S>) o;
+            var that = (CommandNode<TS>) o;
 
-            if (!children.Equals(that.children)) return false;
-            if (!command?.Equals(that.command) ?? that.command != null) return false;
+            if (!_children.Equals(that._children)) return false;
+            if (!_command?.Equals(that._command) ?? that._command != null) return false;
 
             return true;
         }
 
         public override int GetHashCode()
         {
-            return 31 * children.GetHashCode() + (command != null ? command.GetHashCode() : 0);
+            return 31 * _children.GetHashCode() + (_command != null ? _command.GetHashCode() : 0);
         }
 
-        public abstract void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder);
+        public abstract void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder);
 
-        public abstract Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder);
+        public abstract Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder);
 
-        public abstract ArgumentBuilder<S, T> CreateBuilder<T>() where T : ArgumentBuilder<S, T>;
+        public abstract ArgumentBuilder<TS, T> CreateBuilder<T>() where T : ArgumentBuilder<TS, T>;
 
-        public virtual ICollection<CommandNode<S>> GetRelevantNodes(StringReader input)
+        public virtual ICollection<CommandNode<TS>> GetRelevantNodes(StringReader input)
         {
-            if (literals.Count > 0)
+            if (_literals.Count > 0)
             {
                 var cursor = input.Cursor;
                 while (input.CanRead() && input.Peek() != ' ') input.Skip();
                 var text = input.String.Substring(cursor, input.Cursor - cursor);
                 input.Cursor = cursor;
-                var literal = literals[text];
+                var literal = _literals[text];
                 if (literal != null)
-                    return new List<CommandNode<S>> {literal};
-                return arguments.Values.Cast<CommandNode<S>>().ToList();
+                    return new List<CommandNode<TS>> {literal};
+                return _arguments.Values.Cast<CommandNode<TS>>().ToList();
             }
 
-            return arguments.Values.Cast<CommandNode<S>>().ToList();
+            return _arguments.Values.Cast<CommandNode<TS>>().ToList();
         }
     }
 }

@@ -5,25 +5,25 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
-    public class ParsedCommandNode<S>
+    public class ParsedCommandNode<TS>
     {
-        private readonly CommandNode<S> node;
+        private readonly CommandNode<TS> _node;
 
-        private readonly StringRange range;
+        private readonly StringRange _range;
 
-        public ParsedCommandNode(CommandNode<S> node, StringRange range)
+        public ParsedCommandNode(CommandNode<TS> node, StringRange range)
         {
-            this.node = node;
-            this.range = range;
+            this._node = node;
+            this._range = range;
         }
 
-        public virtual CommandNode<S> Node => node;
+        public virtual CommandNode<TS> Node => _node;
 
-        public virtual StringRange Range => range;
+        public virtual StringRange Range => _range;
 
         public override string ToString()
         {
-            return node + "@" + range;
+            return _node + "@" + _range;
         }
 
         public override bool Equals(object o)
@@ -31,7 +31,7 @@ namespace NBrigadier.Context
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
             var that = (ParsedCommandNode<object>) o;
-            return Equals(node, that.node) && Equals(range, that.range);
+            return Equals(_node, that._node) && Equals(_range, that._range);
         }
     }
 }

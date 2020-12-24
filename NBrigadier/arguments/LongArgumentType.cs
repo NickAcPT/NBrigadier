@@ -7,22 +7,22 @@ using NBrigadier.Exceptions;
 
 namespace NBrigadier.Arguments
 {
-    public class LongArgumentType : ArgumentType<long>
+    public class LongArgumentType : IArgumentType<long>
     {
         private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "123", "-123"};
-        private readonly long maximum;
+        private readonly long _maximum;
 
-        private readonly long minimum;
+        private readonly long _minimum;
 
         private LongArgumentType(long minimum, long maximum)
         {
-            this.minimum = minimum;
-            this.maximum = maximum;
+            this._minimum = minimum;
+            this._maximum = maximum;
         }
 
-        public virtual long Minimum => minimum;
+        public virtual long Minimum => _minimum;
 
-        public virtual long Maximum => maximum;
+        public virtual long Maximum => _maximum;
 
         public virtual ICollection<string> Examples => EXAMPLES;
 
@@ -30,18 +30,18 @@ namespace NBrigadier.Arguments
         {
             var start = reader.Cursor;
             var result = reader.ReadLong();
-            if (result < minimum)
+            if (result < _minimum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.LongTooLow()
-                    .CreateWithContext(reader, result, minimum);
+                throw CommandSyntaxException.builtInExceptions.LongTooLow()
+                    .CreateWithContext(reader, result, _minimum);
             }
 
-            if (result > maximum)
+            if (result > _maximum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.LongTooHigh()
-                    .CreateWithContext(reader, result, maximum);
+                throw CommandSyntaxException.builtInExceptions.LongTooHigh()
+                    .CreateWithContext(reader, result, _maximum);
             }
 
             return result;
@@ -73,17 +73,17 @@ namespace NBrigadier.Arguments
             if (!(o is LongArgumentType)) return false;
 
             var that = (LongArgumentType) o;
-            return maximum == that.maximum && minimum == that.minimum;
+            return _maximum == that._maximum && _minimum == that._minimum;
         }
 
 
         public override string ToString()
         {
-            if (minimum == long.MinValue && maximum == long.MaxValue)
+            if (_minimum == long.MinValue && _maximum == long.MaxValue)
                 return "longArg()";
-            if (maximum == long.MaxValue)
-                return "longArg(" + minimum + ")";
-            return "longArg(" + minimum + ", " + maximum + ")";
+            if (_maximum == long.MaxValue)
+                return "longArg(" + _minimum + ")";
+            return "longArg(" + _minimum + ", " + _maximum + ")";
         }
     }
 }

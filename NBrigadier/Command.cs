@@ -5,10 +5,10 @@ using NBrigadier.Context;
 
 namespace NBrigadier
 {
-    public delegate int Command<S>(CommandContext<S> context);
+    public delegate int Command<TS>(CommandContext<TS> context);
 
-    public static class Command_Fields
+    public static class CommandFields
     {
-        public const int SINGLE_SUCCESS = 1;
+        public const int SingleSuccess = 1;
     }
 }

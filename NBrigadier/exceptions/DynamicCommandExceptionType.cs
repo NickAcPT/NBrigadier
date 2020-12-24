@@ -5,23 +5,23 @@ using System;
 
 namespace NBrigadier.Exceptions
 {
-    public class DynamicCommandExceptionType : CommandExceptionType
+    public class DynamicCommandExceptionType : ICommandExceptionType
     {
-        private readonly Func<object, Message> function;
+        private readonly Func<object, IMessage> _function;
 
-        public DynamicCommandExceptionType(Func<object, Message> function)
+        public DynamicCommandExceptionType(Func<object, IMessage> function)
         {
-            this.function = function;
+            this._function = function;
         }
 
         public virtual CommandSyntaxException Create(object arg)
         {
-            return new(this, function(arg));
+            return new(this, _function(arg));
         }
 
-        public virtual CommandSyntaxException CreateWithContext(ImmutableStringReader reader, object arg)
+        public virtual CommandSyntaxException CreateWithContext(IMmutableStringReader reader, object arg)
         {
-            return new(this, function(arg), reader.String, reader.Cursor);
+            return new(this, _function(arg), reader.String, reader.Cursor);
         }
     }
 }

@@ -12,32 +12,32 @@ namespace NBrigadier.Suggestion
     {
         private static readonly Suggestions EMPTY = new(StringRange.At(0), new List<Suggestion>());
 
-        private readonly StringRange range;
-        private readonly IList<Suggestion> suggestions;
+        private readonly StringRange _range;
+        private readonly IList<Suggestion> _suggestions;
 
         public Suggestions(StringRange range, IList<Suggestion> suggestions)
         {
-            this.range = range;
-            this.suggestions = suggestions;
+            this._range = range;
+            this._suggestions = suggestions;
         }
 
-        public virtual StringRange Range => range;
+        public virtual StringRange Range => _range;
 
-        public virtual IList<Suggestion> List => suggestions;
+        public virtual IList<Suggestion> List => _suggestions;
 
-        public virtual bool IsEmpty => suggestions.Count == 0;
+        public virtual bool IsEmpty => _suggestions.Count == 0;
 
         public override bool Equals(object o)
         {
             if (this == o) return true;
             if (!(o is Suggestions)) return false;
             var that = (Suggestions) o;
-            return Equals(range, that.range) && Equals(suggestions, that.suggestions);
+            return Equals(_range, that._range) && Equals(_suggestions, that._suggestions);
         }
 
         public override string ToString()
         {
-            return "Suggestions{" + "range=" + range + ", suggestions=" + suggestions + '}';
+            return "Suggestions{" + "range=" + _range + ", suggestions=" + _suggestions + '}';
         }
 
         public static Func<Suggestions> Empty()

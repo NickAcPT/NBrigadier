@@ -3,7 +3,7 @@
 
 namespace NBrigadier.Exceptions
 {
-    public interface BuiltInExceptionProvider
+    public interface IBuiltInExceptionProvider
     {
         Dynamic2CommandExceptionType DoubleTooLow();
 

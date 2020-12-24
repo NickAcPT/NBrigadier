@@ -3,7 +3,7 @@
 
 namespace NBrigadier.Exceptions
 {
-    public class BuiltInExceptions : BuiltInExceptionProvider
+    public class BuiltInExceptions : IBuiltInExceptionProvider
     {
         private static readonly Dynamic2CommandExceptionType DOUBLE_TOO_SMALL = new((found, min) =>
             new LiteralMessage("Double must not be less than " + min + ", found " + found));

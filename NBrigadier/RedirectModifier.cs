@@ -6,5 +6,5 @@ using NBrigadier.Context;
 
 namespace NBrigadier
 {
-    public delegate ICollection<S> RedirectModifier<S>(CommandContext<S> context);
+    public delegate ICollection<TS> RedirectModifier<TS>(CommandContext<TS> context);
 }

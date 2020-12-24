@@ -7,22 +7,22 @@ namespace NBrigadier.Context
 {
     public class StringRange
     {
-        private readonly int end;
-        private readonly int start;
+        private readonly int _end;
+        private readonly int _start;
 
         public StringRange(int start, int end)
         {
-            this.start = start;
-            this.end = end;
+            this._start = start;
+            this._end = end;
         }
 
-        public virtual int Start => start;
+        public virtual int Start => _start;
 
-        public virtual int End => end;
+        public virtual int End => _end;
 
-        public virtual bool Empty => start == end;
+        public virtual bool Empty => _start == _end;
 
-        public virtual int Length => end - start;
+        public virtual int Length => _end - _start;
 
         public static StringRange At(int pos)
         {
@@ -39,14 +39,14 @@ namespace NBrigadier.Context
             return new(Math.Min(a.Start, b.Start), Math.Max(a.End, b.End));
         }
 
-        public virtual string Get(ImmutableStringReader reader)
+        public virtual string Get(IMmutableStringReader reader)
         {
-            return reader.String.Substring(start, end - start);
+            return reader.String.Substring(_start, _end - _start);
         }
 
         public virtual string Get(string @string)
         {
-            return @string.Substring(start, end - start);
+            return @string.Substring(_start, _end - _start);
         }
 
         public override bool Equals(object o)
@@ -54,12 +54,12 @@ namespace NBrigadier.Context
             if (this == o) return true;
             if (!(o is StringRange)) return false;
             var that = (StringRange) o;
-            return start == that.start && end == that.end;
+            return _start == that._start && _end == that._end;
         }
 
         public override string ToString()
         {
-            return "StringRange{" + "start=" + start + ", end=" + end + '}';
+            return "StringRange{" + "start=" + _start + ", end=" + _end + '}';
         }
     }
 }

@@ -5,9 +5,9 @@ using NBrigadier.Suggestion;
 
 namespace NBrigadier.Tree
 {
-    public interface IArgumentCommandNode<S>
+    public interface IArgumentCommandNode<TS>
     {
-        SuggestionProvider<S> CustomSuggestions { get; }
+        SuggestionProvider<TS> CustomSuggestions { get; }
         ICollection<string> Examples { get; }
         string Name { get; }
         string UsageText { get; }
@@ -15,8 +15,8 @@ namespace NBrigadier.Tree
         bool Equals(object o);
         int GetHashCode();
         bool IsValidInput(string input);
-        Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder);
-        void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder);
+        Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder);
+        void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder);
         string ToString();
     }
 }

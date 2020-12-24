@@ -9,27 +9,27 @@ namespace NBrigadier.Suggestion
 {
     public class SuggestionsBuilder
     {
-        private readonly string input;
-        private readonly string remaining;
-        private readonly IList<Suggestion> result = new List<Suggestion>();
-        private readonly int start;
+        private readonly string _input;
+        private readonly string _remaining;
+        private readonly IList<Suggestion> _result = new List<Suggestion>();
+        private readonly int _start;
 
         public SuggestionsBuilder(string input, int start)
         {
-            this.input = input;
-            this.start = start;
-            remaining = input.Substring(start);
+            this._input = input;
+            this._start = start;
+            _remaining = input.Substring(start);
         }
 
-        public virtual string Input => input;
+        public virtual string Input => _input;
 
-        public virtual int Start => start;
+        public virtual int Start => _start;
 
-        public virtual string Remaining => remaining;
+        public virtual string Remaining => _remaining;
 
         public virtual Suggestions Build()
         {
-            return Suggestions.Create(input, result);
+            return Suggestions.Create(_input, _result);
         }
 
         public virtual Func<Suggestions> BuildFuture()
@@ -39,44 +39,44 @@ namespace NBrigadier.Suggestion
 
         public virtual SuggestionsBuilder Suggest(string text)
         {
-            if (text.Equals(remaining)) return this;
-            result.Add(new Suggestion(StringRange.Between(start, input.Length), text));
+            if (text.Equals(_remaining)) return this;
+            _result.Add(new Suggestion(StringRange.Between(_start, _input.Length), text));
             return this;
         }
 
-        public virtual SuggestionsBuilder Suggest(string text, Message tooltip)
+        public virtual SuggestionsBuilder Suggest(string text, IMessage tooltip)
         {
-            if (text.Equals(remaining)) return this;
-            result.Add(new Suggestion(StringRange.Between(start, input.Length), text, tooltip));
+            if (text.Equals(_remaining)) return this;
+            _result.Add(new Suggestion(StringRange.Between(_start, _input.Length), text, tooltip));
             return this;
         }
 
         public virtual SuggestionsBuilder Suggest(int value)
         {
-            result.Add(new IntegerSuggestion(StringRange.Between(start, input.Length), value));
+            _result.Add(new IntegerSuggestion(StringRange.Between(_start, _input.Length), value));
             return this;
         }
 
-        public virtual SuggestionsBuilder Suggest(int value, Message tooltip)
+        public virtual SuggestionsBuilder Suggest(int value, IMessage tooltip)
         {
-            result.Add(new IntegerSuggestion(StringRange.Between(start, input.Length), value, tooltip));
+            _result.Add(new IntegerSuggestion(StringRange.Between(_start, _input.Length), value, tooltip));
             return this;
         }
 
         public virtual SuggestionsBuilder Add(SuggestionsBuilder other)
         {
-            ((List<Suggestion>) result).AddRange(other.result);
+            ((List<Suggestion>) _result).AddRange(other._result);
             return this;
         }
 
         public virtual SuggestionsBuilder CreateOffset(int start)
         {
-            return new(input, start);
+            return new(_input, start);
         }
 
         public virtual SuggestionsBuilder Restart()
         {
-            return new(input, start);
+            return new(_input, _start);
         }
     }
 }

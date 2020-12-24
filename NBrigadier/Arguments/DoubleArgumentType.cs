@@ -7,24 +7,24 @@ using NBrigadier.Exceptions;
 
 namespace NBrigadier.Arguments
 {
-    public class DoubleArgumentType : ArgumentType<double>
+    public class DoubleArgumentType : IArgumentType<double>
     {
         private static readonly ICollection<string> EXAMPLES = new List<string>
             {"0", "1.2", ".5", "-1", "-.5", "-1234.56"};
 
-        private readonly double maximum;
+        private readonly double _maximum;
 
-        private readonly double minimum;
+        private readonly double _minimum;
 
         private DoubleArgumentType(double minimum, double maximum)
         {
-            this.minimum = minimum;
-            this.maximum = maximum;
+            this._minimum = minimum;
+            this._maximum = maximum;
         }
 
-        public virtual double Minimum => minimum;
+        public virtual double Minimum => _minimum;
 
-        public virtual double Maximum => maximum;
+        public virtual double Maximum => _maximum;
 
         public virtual ICollection<string> Examples => EXAMPLES;
 
@@ -32,18 +32,18 @@ namespace NBrigadier.Arguments
         {
             var start = reader.Cursor;
             var result = reader.ReadDouble();
-            if (result < minimum)
+            if (result < _minimum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.DoubleTooLow()
-                    .CreateWithContext(reader, result, minimum);
+                throw CommandSyntaxException.builtInExceptions.DoubleTooLow()
+                    .CreateWithContext(reader, result, _minimum);
             }
 
-            if (result > maximum)
+            if (result > _maximum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.DoubleTooHigh()
-                    .CreateWithContext(reader, result, maximum);
+                throw CommandSyntaxException.builtInExceptions.DoubleTooHigh()
+                    .CreateWithContext(reader, result, _maximum);
             }
 
             return result;
@@ -75,21 +75,21 @@ namespace NBrigadier.Arguments
             if (!(o is DoubleArgumentType)) return false;
 
             var that = (DoubleArgumentType) o;
-            return maximum == that.maximum && minimum == that.minimum;
+            return _maximum == that._maximum && _minimum == that._minimum;
         }
 
         public override int GetHashCode()
         {
-            return (int) (31 * minimum + maximum);
+            return (int) (31 * _minimum + _maximum);
         }
 
         public override string ToString()
         {
-            if (minimum == -double.MaxValue && maximum == double.MaxValue)
+            if (_minimum == -double.MaxValue && _maximum == double.MaxValue)
                 return "double()";
-            if (maximum == double.MaxValue)
-                return "double(" + minimum + ")";
-            return "double(" + minimum + ", " + maximum + ")";
+            if (_maximum == double.MaxValue)
+                return "double(" + _minimum + ")";
+            return "double(" + _minimum + ", " + _maximum + ")";
         }
     }
 }

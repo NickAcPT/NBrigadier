@@ -5,30 +5,30 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Builder
 {
-    public class LiteralArgumentBuilder<S> : ArgumentBuilder<S, LiteralArgumentBuilder<S>>
+    public class LiteralArgumentBuilder<TS> : ArgumentBuilder<TS, LiteralArgumentBuilder<TS>>
     {
         protected internal LiteralArgumentBuilder(string literal)
         {
             this.Literal = literal;
         }
 
-        protected internal override LiteralArgumentBuilder<S> This => this;
+        protected internal override LiteralArgumentBuilder<TS> This => this;
 
         public virtual string Literal { get; }
 
-        public static LiteralArgumentBuilder<S> LiteralBuilder<S>(string name)
+        public static LiteralArgumentBuilder<TS> LiteralBuilder<TS>(string name)
         {
             return new(name);
         }
 
-        public override CommandNode<S> Build()
+        public override CommandNode<TS> Build()
         {
             return BuildLiteral();
         }
 
-        public LiteralCommandNode<S> BuildLiteral()
+        public LiteralCommandNode<TS> BuildLiteral()
         {
-            var result = new LiteralCommandNode<S>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
+            var result = new LiteralCommandNode<TS>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
 
             foreach (var argument in Arguments) result.AddChild(argument);
 

@@ -3,29 +3,29 @@
 
 namespace NBrigadier.Exceptions
 {
-    public class Dynamic3CommandExceptionType : CommandExceptionType
+    public class Dynamic3CommandExceptionType : ICommandExceptionType
     {
-        private readonly Function function;
+        private readonly IFunction _function;
 
-        public Dynamic3CommandExceptionType(Function function)
+        public Dynamic3CommandExceptionType(IFunction function)
         {
-            this.function = function;
+            this._function = function;
         }
 
         public virtual CommandSyntaxException Create(object a, object b, object c)
         {
-            return new(this, function.Apply(a, b, c));
+            return new(this, _function.Apply(a, b, c));
         }
 
-        public virtual CommandSyntaxException CreateWithContext(ImmutableStringReader reader, object a, object b,
+        public virtual CommandSyntaxException CreateWithContext(IMmutableStringReader reader, object a, object b,
             object c)
         {
-            return new(this, function.Apply(a, b, c), reader.String, reader.Cursor);
+            return new(this, _function.Apply(a, b, c), reader.String, reader.Cursor);
         }
 
-        public interface Function
+        public interface IFunction
         {
-            Message Apply(object a, object b, object c);
+            IMessage Apply(object a, object b, object c);
         }
     }
 }

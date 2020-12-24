@@ -3,25 +3,25 @@
 
 namespace NBrigadier.Exceptions
 {
-    public class Dynamic2CommandExceptionType : CommandExceptionType
+    public class Dynamic2CommandExceptionType : ICommandExceptionType
     {
-        public delegate Message Function(object a, object b);
+        public delegate IMessage Function(object a, object b);
 
-        private readonly Function function;
+        private readonly Function _function;
 
         public Dynamic2CommandExceptionType(Function function)
         {
-            this.function = function;
+            this._function = function;
         }
 
         public virtual CommandSyntaxException Create(object a, object b)
         {
-            return new(this, function(a, b));
+            return new(this, _function(a, b));
         }
 
-        public virtual CommandSyntaxException CreateWithContext(ImmutableStringReader reader, object a, object b)
+        public virtual CommandSyntaxException CreateWithContext(IMmutableStringReader reader, object a, object b)
         {
-            return new(this, function(a, b), reader.String, reader.Cursor);
+            return new(this, _function(a, b), reader.String, reader.Cursor);
         }
     }
 }

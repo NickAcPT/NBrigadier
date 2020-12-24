@@ -7,80 +7,80 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Builder
 {
-    public abstract class ArgumentBuilder<S, T> where T : ArgumentBuilder<S, T>
+    public abstract class ArgumentBuilder<TS, T> where T : ArgumentBuilder<TS, T>
     {
-        private readonly RootCommandNode<S> arguments = new();
-        private Command<S> command;
-        private bool forks;
-        private RedirectModifier<S> modifier;
-        private Predicate<S> requirement = s => true;
-        private CommandNode<S> target;
+        private readonly RootCommandNode<TS> _arguments = new();
+        private Command<TS> _command;
+        private bool _forks;
+        private RedirectModifier<TS> _modifier;
+        private Predicate<TS> _requirement = s => true;
+        private CommandNode<TS> _target;
 
         protected internal abstract T This { get; }
 
-        public virtual ICollection<CommandNode<S>> Arguments => arguments.Children;
+        public virtual ICollection<CommandNode<TS>> Arguments => _arguments.Children;
 
-        public virtual Command<S> Command => command;
+        public virtual Command<TS> Command => _command;
 
-        public virtual Predicate<S> Requirement => requirement;
+        public virtual Predicate<TS> Requirement => _requirement;
 
-        public virtual CommandNode<S> Redirect => target;
+        public virtual CommandNode<TS> Redirect => _target;
 
-        public virtual RedirectModifier<S> RedirectModifier => modifier;
+        public virtual RedirectModifier<TS> RedirectModifier => _modifier;
 
-        public virtual bool Fork => forks;
+        public virtual bool Fork => _forks;
 
-        public virtual T Then<T1>(ArgumentBuilder<S, T1> argument) where T1 : ArgumentBuilder<S, T1>
+        public virtual T Then<T1>(ArgumentBuilder<TS, T1> argument) where T1 : ArgumentBuilder<TS, T1>
         {
-            if (target != null) throw new InvalidOperationException("Cannot add children to a redirected node");
-            arguments.AddChild(argument.Build());
+            if (_target != null) throw new InvalidOperationException("Cannot add children to a redirected node");
+            _arguments.AddChild(argument.Build());
             return This;
         }
 
-        public virtual T Then(CommandNode<S> argument)
+        public virtual T Then(CommandNode<TS> argument)
         {
-            if (target != null) throw new InvalidOperationException("Cannot add children to a redirected node");
-            arguments.AddChild(argument);
+            if (_target != null) throw new InvalidOperationException("Cannot add children to a redirected node");
+            _arguments.AddChild(argument);
             return This;
         }
 
-        public virtual T Executes(Command<S> command)
+        public virtual T Executes(Command<TS> command)
         {
-            this.command = command;
+            this._command = command;
             return This;
         }
 
-        public virtual T Requires(Predicate<S> requirement)
+        public virtual T Requires(Predicate<TS> requirement)
         {
-            this.requirement = requirement;
+            this._requirement = requirement;
             return This;
         }
 
-        public virtual T RedirectNode(CommandNode<S> target)
+        public virtual T RedirectNode(CommandNode<TS> target)
         {
             return Forward(target, null, false);
         }
 
-        public virtual T RedirectNode(CommandNode<S> target, SingleRedirectModifier<S> modifier)
+        public virtual T RedirectNode(CommandNode<TS> target, SingleRedirectModifier<TS> modifier)
         {
-            return Forward(target, modifier == null ? null : o => new List<S> {modifier(o)}, false);
+            return Forward(target, modifier == null ? null : o => new List<TS> {modifier(o)}, false);
         }
 
-        public virtual T ForkNode(CommandNode<S> target, RedirectModifier<S> modifier)
+        public virtual T ForkNode(CommandNode<TS> target, RedirectModifier<TS> modifier)
         {
             return Forward(target, modifier, true);
         }
 
-        public virtual T Forward(CommandNode<S> target, RedirectModifier<S> modifier, bool fork)
+        public virtual T Forward(CommandNode<TS> target, RedirectModifier<TS> modifier, bool fork)
         {
-            if (arguments.Children.Count > 0)
+            if (_arguments.Children.Count > 0)
                 throw new InvalidOperationException("Cannot forward a node with children");
-            this.target = target;
-            this.modifier = modifier;
-            forks = fork;
+            this._target = target;
+            this._modifier = modifier;
+            _forks = fork;
             return This;
         }
 
-        public abstract CommandNode<S> Build();
+        public abstract CommandNode<TS> Build();
     }
 }

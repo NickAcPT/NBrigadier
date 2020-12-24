@@ -8,44 +8,44 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
-    public class CommandContext<S>
+    public class CommandContext<TS>
     {
         private static readonly IDictionary<Type, Type> PRIMITIVE_TO_WRAPPER = new Dictionary<Type, Type>();
-        private readonly IDictionary<string, ParsedArgument<S, object>> arguments;
-        private readonly CommandContext<S> child;
-        private readonly Command<S> command;
-        private readonly bool forks;
-        private readonly string input;
-        private readonly RedirectModifier<S> modifier;
-        private readonly IList<ParsedCommandNode<S>> nodes;
-        private readonly StringRange range;
-        private readonly CommandNode<S> rootNode;
+        private readonly IDictionary<string, ParsedArgument<TS, object>> _arguments;
+        private readonly CommandContext<TS> _child;
+        private readonly Command<TS> _command;
+        private readonly bool _forks;
+        private readonly string _input;
+        private readonly RedirectModifier<TS> _modifier;
+        private readonly IList<ParsedCommandNode<TS>> _nodes;
+        private readonly StringRange _range;
+        private readonly CommandNode<TS> _rootNode;
 
-        private readonly S source;
+        private readonly TS _source;
 
         static CommandContext()
         {
         }
 
-        public CommandContext(S source, string input, IDictionary<string, ParsedArgument<S, object>> arguments,
-            Command<S> command, CommandNode<S> rootNode, IList<ParsedCommandNode<S>> nodes, StringRange range,
-            CommandContext<S> child, RedirectModifier<S> modifier, bool forks)
+        public CommandContext(TS source, string input, IDictionary<string, ParsedArgument<TS, object>> arguments,
+            Command<TS> command, CommandNode<TS> rootNode, IList<ParsedCommandNode<TS>> nodes, StringRange range,
+            CommandContext<TS> child, RedirectModifier<TS> modifier, bool forks)
         {
-            this.source = source;
-            this.input = input;
-            this.arguments = arguments;
-            this.command = command;
-            this.rootNode = rootNode;
-            this.nodes = nodes;
-            this.range = range;
-            this.child = child;
-            this.modifier = modifier;
-            this.forks = forks;
+            this._source = source;
+            this._input = input;
+            this._arguments = arguments;
+            this._command = command;
+            this._rootNode = rootNode;
+            this._nodes = nodes;
+            this._range = range;
+            this._child = child;
+            this._modifier = modifier;
+            this._forks = forks;
         }
 
-        public virtual CommandContext<S> Child => child;
+        public virtual CommandContext<TS> Child => _child;
 
-        public virtual CommandContext<S> LastChild
+        public virtual CommandContext<TS> LastChild
         {
             get
             {
@@ -55,43 +55,43 @@ namespace NBrigadier.Context
             }
         }
 
-        public virtual Command<S> Command => command;
+        public virtual Command<TS> Command => _command;
 
-        public virtual S Source => source;
+        public virtual TS Source => _source;
 
-        public virtual RedirectModifier<S> RedirectModifier => modifier;
+        public virtual RedirectModifier<TS> RedirectModifier => _modifier;
 
-        public virtual StringRange Range => range;
+        public virtual StringRange Range => _range;
 
-        public virtual string Input => input;
+        public virtual string Input => _input;
 
-        public virtual CommandNode<S> RootNode => rootNode;
+        public virtual CommandNode<TS> RootNode => _rootNode;
 
-        public virtual IList<ParsedCommandNode<S>> Nodes => nodes;
+        public virtual IList<ParsedCommandNode<TS>> Nodes => _nodes;
 
-        public virtual bool Forked => forks;
+        public virtual bool Forked => _forks;
 
-        public virtual CommandContext<S> CopyFor(S source)
+        public virtual CommandContext<TS> CopyFor(TS source)
         {
-            if (Equals(this.source, source)) return this;
-            return new CommandContext<S>(source, input, arguments, command, rootNode, nodes, range, child, modifier,
-                forks);
+            if (Equals(this._source, source)) return this;
+            return new CommandContext<TS>(source, _input, _arguments, _command, _rootNode, _nodes, _range, _child, _modifier,
+                _forks);
         }
 
-        public virtual V GetArgument<V>(string name)
+        public virtual TV GetArgument<TV>(string name)
         {
-            return GetArgument<V>(name, typeof(V));
+            return GetArgument<TV>(name, typeof(TV));
         }
 
-        public virtual V GetArgument<V>(string name, Type clazz)
+        public virtual TV GetArgument<TV>(string name, Type clazz)
         {
-            var argument = arguments[name];
+            var argument = _arguments[name];
 
             if (argument == null) throw new ArgumentException("No such argument '" + name + "' exists on this command");
 
             var result = argument.Result;
             if (clazz.IsInstanceOfType(argument.Result))
-                return (V) result;
+                return (TV) result;
             throw new ArgumentException("Argument '" + name + "' is defined as " + result.GetType().Name + ", not " +
                                         clazz);
         }
@@ -99,34 +99,34 @@ namespace NBrigadier.Context
         public override bool Equals(object o)
         {
             if (this == o) return true;
-            if (!(o is CommandContext<S>)) return false;
+            if (!(o is CommandContext<TS>)) return false;
 
-            var that = (CommandContext<S>) o;
+            var that = (CommandContext<TS>) o;
 
-            if (!arguments.Equals(that.arguments)) return false;
-            if (!rootNode.Equals(that.rootNode)) return false;
-            if (nodes.Count != that.nodes.Count || !nodes.SequenceEqual(that.nodes)) return false;
-            if (!command?.Equals(that.command) ?? that.command != null) return false;
-            if (!source.Equals(that.source)) return false;
-            if (!child?.Equals(that.child) ?? that.child != null) return false;
+            if (!_arguments.Equals(that._arguments)) return false;
+            if (!_rootNode.Equals(that._rootNode)) return false;
+            if (_nodes.Count != that._nodes.Count || !_nodes.SequenceEqual(that._nodes)) return false;
+            if (!_command?.Equals(that._command) ?? that._command != null) return false;
+            if (!_source.Equals(that._source)) return false;
+            if (!_child?.Equals(that._child) ?? that._child != null) return false;
 
             return true;
         }
 
         public override int GetHashCode()
         {
-            var result = source.GetHashCode();
-            result = 31 * result + arguments.GetHashCode();
-            result = 31 * result + (command != null ? command.GetHashCode() : 0);
-            result = 31 * result + rootNode.GetHashCode();
-            result = 31 * result + nodes.GetHashCode();
-            result = 31 * result + (child != null ? child.GetHashCode() : 0);
+            var result = _source.GetHashCode();
+            result = 31 * result + _arguments.GetHashCode();
+            result = 31 * result + (_command != null ? _command.GetHashCode() : 0);
+            result = 31 * result + _rootNode.GetHashCode();
+            result = 31 * result + _nodes.GetHashCode();
+            result = 31 * result + (_child != null ? _child.GetHashCode() : 0);
             return result;
         }
 
         public virtual bool HasNodes()
         {
-            return nodes.Count > 0;
+            return _nodes.Count > 0;
         }
     }
 }
