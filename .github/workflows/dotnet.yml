@@ -18,10 +18,10 @@ jobs:
       with:
         dotnet-version: '5.0.100-rc.2.20479.15'
 
-    - name: Build Annotations
+    - name: Build NBrigadier
       run: dotnet build NBrigadier -c Release
       
-    - name: Pack Annotations
+    - name: Pack NBrigadier
       run: dotnet pack NBrigadier -o . -c Release
 
     - name: NuGet Push Packages
