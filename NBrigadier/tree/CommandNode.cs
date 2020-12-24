@@ -86,9 +86,9 @@ namespace NBrigadier.Tree
             else
             {
                 _children[node.Name] = node;
-                if (node is LiteralCommandNode<TS>)
-                    _literals[node.Name] = (LiteralCommandNode<TS>) node;
-                else if (node is IArgumentCommandNode<TS>) _arguments[node.Name] = (IArgumentCommandNode<TS>) node;
+                if (node is LiteralCommandNode<TS> commandNode)
+                    _literals[node.Name] = commandNode;
+                else if (node is IArgumentCommandNode<TS> argumentCommandNode) _arguments[node.Name] = argumentCommandNode;
             }
 
             _children = _children.SetOfKeyValuePairs().OrderBy(c => c.Value).ToDictionary(c => c.Key, c => c.Value);

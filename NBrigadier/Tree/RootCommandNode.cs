@@ -44,11 +44,6 @@ namespace NBrigadier.Tree
             return base.Equals(o);
         }
 
-        public override ArgumentBuilder<TS, T> CreateBuilder<T>()
-        {
-            throw new InvalidOperationException("Cannot convert root into a builder");
-        }
-
         public override string ToString()
         {
             return "<root>";

@@ -10,6 +10,26 @@ namespace NBrigadier.Suggestion
 {
     public class Suggestions
     {
+        protected bool Equals(Suggestions other)
+        {
+            return Equals(_range, other._range) && Equals(_suggestions, other._suggestions);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_range, _suggestions);
+        }
+
+        public static bool operator ==(Suggestions left, Suggestions right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Suggestions left, Suggestions right)
+        {
+            return !Equals(left, right);
+        }
+
         private static readonly Suggestions EMPTY = new(StringRange.At(0), new List<Suggestion>());
 
         private readonly StringRange _range;

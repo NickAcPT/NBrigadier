@@ -1,10 +1,33 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
+using System.Collections.Generic;
+
 namespace NBrigadier.Context
 {
     public class ParsedArgument<TS, T>
     {
+        protected bool Equals(ParsedArgument<TS, T> other)
+        {
+            return Equals(_range, other._range) && EqualityComparer<T>.Default.Equals(_result, other._result);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_range, _result);
+        }
+
+        public static bool operator ==(ParsedArgument<TS, T> left, ParsedArgument<TS, T> right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(ParsedArgument<TS, T> left, ParsedArgument<TS, T> right)
+        {
+            return !Equals(left, right);
+        }
+
         private readonly StringRange _range;
         private readonly T _result;
 

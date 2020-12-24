@@ -9,6 +9,26 @@ namespace NBrigadier.Suggestion
 {
     public class Suggestion : IComparable<Suggestion>
     {
+        protected bool Equals(Suggestion other)
+        {
+            return Equals(_range, other._range) && _text == other._text && Equals(_tooltip, other._tooltip);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_range, _text, _tooltip);
+        }
+
+        public static bool operator ==(Suggestion left, Suggestion right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Suggestion left, Suggestion right)
+        {
+            return !Equals(left, right);
+        }
+
         private readonly StringRange _range;
         private readonly string _text;
         private readonly IMessage _tooltip;

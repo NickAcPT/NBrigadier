@@ -2,3 +2,6 @@
 
 # CS0693: Type parameter has the same name as the type parameter from outer type
 dotnet_diagnostic.CS0693.severity = error
+
+# CS0253: Possible unintended reference comparison; right hand side needs cast
+dotnet_diagnostic.CS0253.severity = none

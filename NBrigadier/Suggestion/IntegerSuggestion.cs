@@ -24,10 +24,10 @@ namespace NBrigadier.Suggestion
 
         public override bool Equals(object o)
         {
-            if (this == o) return true;
-            if (!(o is IntegerSuggestion)) return false;
-            var that = (IntegerSuggestion) o;
-            return _value == that._value && base.Equals(o);
+            if (ReferenceEquals(null, o)) return false;
+            if (ReferenceEquals(this, o)) return true;
+            if (o.GetType() != this.GetType()) return false;
+            return Equals((IntegerSuggestion) o);
         }
 
         public override string ToString()
@@ -36,10 +36,30 @@ namespace NBrigadier.Suggestion
                    ", tooltip='" + Tooltip + '\'' + '}';
         }
 
-        public int CompareTo(Suggestion o)
+        public new int CompareTo(Suggestion o)
         {
-            if (o is IntegerSuggestion) return _value.CompareTo(((IntegerSuggestion) o)._value);
+            if (o is IntegerSuggestion suggestion) return _value.CompareTo(suggestion._value);
             return base.CompareTo(o);
+        }
+
+        protected bool Equals(IntegerSuggestion other)
+        {
+            return base.Equals(other) && _value == other._value;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(base.GetHashCode(), _value);
+        }
+
+        public static bool operator ==(IntegerSuggestion left, IntegerSuggestion right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(IntegerSuggestion left, IntegerSuggestion right)
+        {
+            return !Equals(left, right);
         }
 
         public override int CompareToIgnoreCase(Suggestion b)

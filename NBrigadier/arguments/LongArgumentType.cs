@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
 
@@ -9,6 +10,26 @@ namespace NBrigadier.Arguments
 {
     public class LongArgumentType : IArgumentType<long>
     {
+        protected bool Equals(LongArgumentType other)
+        {
+            return _maximum == other._maximum && _minimum == other._minimum;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_maximum, _minimum);
+        }
+
+        public static bool operator ==(LongArgumentType left, LongArgumentType right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(LongArgumentType left, LongArgumentType right)
+        {
+            return !Equals(left, right);
+        }
+
         private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "123", "-123"};
         private readonly long _maximum;
 

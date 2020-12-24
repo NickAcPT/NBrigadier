@@ -1,12 +1,33 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
+using System;
 using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
     public class ParsedCommandNode<TS>
     {
+        protected bool Equals(ParsedCommandNode<TS> other)
+        {
+            return Equals(_node, other._node) && Equals(_range, other._range);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_node, _range);
+        }
+
+        public static bool operator ==(ParsedCommandNode<TS> left, ParsedCommandNode<TS> right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(ParsedCommandNode<TS> left, ParsedCommandNode<TS> right)
+        {
+            return !Equals(left, right);
+        }
+
         private readonly CommandNode<TS> _node;
 
         private readonly StringRange _range;

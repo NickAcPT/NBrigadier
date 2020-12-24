@@ -7,6 +7,26 @@ namespace NBrigadier.Context
 {
     public class StringRange
     {
+        protected bool Equals(StringRange other)
+        {
+            return _end == other._end && _start == other._start;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(_end, _start);
+        }
+
+        public static bool operator ==(StringRange left, StringRange right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(StringRange left, StringRange right)
+        {
+            return !Equals(left, right);
+        }
+
         private readonly int _end;
         private readonly int _start;
 

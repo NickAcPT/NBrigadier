@@ -307,10 +307,10 @@ namespace NBrigadier
                                         foreach (var source in results) next.Add(child.CopyFor(source));
                                     }
                                 }
-                                catch (CommandSyntaxException ex)
+                                catch (CommandSyntaxException)
                                 {
                                     _consumer(context, false, 0);
-                                    if (!forked) throw ex;
+                                    if (!forked) throw;
                                 }
                             }
                         }
@@ -325,10 +325,10 @@ namespace NBrigadier
                             _consumer(context, true, value);
                             successfulForks++;
                         }
-                        catch (CommandSyntaxException ex)
+                        catch (CommandSyntaxException)
                         {
                             _consumer(context, false, 0);
-                            if (!forked) throw ex;
+                            if (!forked) throw;
                         }
                     }
                 }
