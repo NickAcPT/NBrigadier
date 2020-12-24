@@ -9,8 +9,8 @@ namespace NBrigadier.Exceptions
     public class CommandSyntaxException : Exception
     {
         public const int ContextAmount = 10;
-        public static bool enableCommandStackTraces = true;
-        public static IBuiltInExceptionProvider builtInExceptions = new BuiltInExceptions();
+        public static bool EnableCommandStackTraces = true;
+        public static IBuiltInExceptionProvider BuiltInExceptions = new BuiltInExceptions();
         private readonly int _cursor;
         private readonly string _input;
         private readonly IMessage _message;

@@ -143,8 +143,6 @@ namespace NBrigadier.Tree
 
         public abstract Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder);
 
-        public abstract ArgumentBuilder<TS, T> CreateBuilder<T>() where T : ArgumentBuilder<TS, T>;
-
         public virtual ICollection<CommandNode<TS>> GetRelevantNodes(StringReader input)
         {
             if (_literals.Count > 0)

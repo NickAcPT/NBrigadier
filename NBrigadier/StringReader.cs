@@ -94,7 +94,7 @@ namespace NBrigadier
             while (CanRead() && IsAllowedNumber(Peek())) Skip();
             var number = _string.Substring(start, _cursor - start);
             if (number.Length == 0)
-                throw CommandSyntaxException.builtInExceptions.ReaderExpectedInt().CreateWithContext(this);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderExpectedInt().CreateWithContext(this);
             try
             {
                 return int.Parse(number);
@@ -102,7 +102,7 @@ namespace NBrigadier
             catch
             {
                 _cursor = start;
-                throw CommandSyntaxException.builtInExceptions.ReaderInvalidInt().CreateWithContext(this, number);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderInvalidInt().CreateWithContext(this, number);
             }
         }
 
@@ -112,7 +112,7 @@ namespace NBrigadier
             while (CanRead() && IsAllowedNumber(Peek())) Skip();
             var number = _string.Substring(start, _cursor - start);
             if (number.Length == 0)
-                throw CommandSyntaxException.builtInExceptions.ReaderExpectedLong().CreateWithContext(this);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderExpectedLong().CreateWithContext(this);
             try
             {
                 return long.Parse(number);
@@ -120,7 +120,7 @@ namespace NBrigadier
             catch
             {
                 _cursor = start;
-                throw CommandSyntaxException.builtInExceptions.ReaderInvalidLong().CreateWithContext(this, number);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderInvalidLong().CreateWithContext(this, number);
             }
         }
 
@@ -130,7 +130,7 @@ namespace NBrigadier
             while (CanRead() && IsAllowedNumber(Peek())) Skip();
             var number = _string.Substring(start, _cursor - start);
             if (number.Length == 0)
-                throw CommandSyntaxException.builtInExceptions.ReaderExpectedDouble().CreateWithContext(this);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderExpectedDouble().CreateWithContext(this);
             try
             {
                 return double.Parse(number);
@@ -138,7 +138,7 @@ namespace NBrigadier
             catch
             {
                 _cursor = start;
-                throw CommandSyntaxException.builtInExceptions.ReaderInvalidDouble().CreateWithContext(this, number);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderInvalidDouble().CreateWithContext(this, number);
             }
         }
 
@@ -148,7 +148,7 @@ namespace NBrigadier
             while (CanRead() && IsAllowedNumber(Peek())) Skip();
             var number = _string.Substring(start, _cursor - start);
             if (number.Length == 0)
-                throw CommandSyntaxException.builtInExceptions.ReaderExpectedFloat().CreateWithContext(this);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderExpectedFloat().CreateWithContext(this);
             try
             {
                 return float.Parse(number);
@@ -156,7 +156,7 @@ namespace NBrigadier
             catch
             {
                 _cursor = start;
-                throw CommandSyntaxException.builtInExceptions.ReaderInvalidFloat().CreateWithContext(this, number);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderInvalidFloat().CreateWithContext(this, number);
             }
         }
 
@@ -178,7 +178,7 @@ namespace NBrigadier
             if (!CanRead()) return "";
             var next = Peek();
             if (!IsQuotedStringStart(next))
-                throw CommandSyntaxException.builtInExceptions.ReaderExpectedStartOfQuote().CreateWithContext(this);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderExpectedStartOfQuote().CreateWithContext(this);
             Skip();
             return ReadStringUntil(next);
         }
@@ -200,7 +200,7 @@ namespace NBrigadier
                     else
                     {
                         Cursor = Cursor - 1;
-                        throw CommandSyntaxException.builtInExceptions.ReaderInvalidEscape()
+                        throw CommandSyntaxException.BuiltInExceptions.ReaderInvalidEscape()
                             .CreateWithContext(this, c.ToString());
                     }
                 }
@@ -218,7 +218,7 @@ namespace NBrigadier
                 }
             }
 
-            throw CommandSyntaxException.builtInExceptions.ReaderExpectedEndOfQuote().CreateWithContext(this);
+            throw CommandSyntaxException.BuiltInExceptions.ReaderExpectedEndOfQuote().CreateWithContext(this);
         }
 
         public virtual string ReadString()
@@ -239,7 +239,7 @@ namespace NBrigadier
             var start = _cursor;
             var value = ReadString();
             if (value.Length == 0)
-                throw CommandSyntaxException.builtInExceptions.ReaderExpectedBool().CreateWithContext(this);
+                throw CommandSyntaxException.BuiltInExceptions.ReaderExpectedBool().CreateWithContext(this);
 
             if (value.Equals("true")) return true;
 
@@ -249,13 +249,13 @@ namespace NBrigadier
             }
 
             _cursor = start;
-            throw CommandSyntaxException.builtInExceptions.ReaderInvalidBool().CreateWithContext(this, value);
+            throw CommandSyntaxException.BuiltInExceptions.ReaderInvalidBool().CreateWithContext(this, value);
         }
 
         public virtual void Expect(char c)
         {
             if (!CanRead() || Peek() != c)
-                throw CommandSyntaxException.builtInExceptions.ReaderExpectedSymbol()
+                throw CommandSyntaxException.BuiltInExceptions.ReaderExpectedSymbol()
                     .CreateWithContext(this, c.ToString());
             Skip();
         }

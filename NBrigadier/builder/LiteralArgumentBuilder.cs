@@ -16,7 +16,7 @@ namespace NBrigadier.Builder
 
         public virtual string Literal { get; }
 
-        public static LiteralArgumentBuilder<TS> LiteralBuilder<TS>(string name)
+        public static LiteralArgumentBuilder<TS> LiteralBuilder(string name)
         {
             return new(name);
         }

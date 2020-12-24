@@ -40,7 +40,7 @@ namespace NBrigadier.Tree
                 return;
             }
 
-            throw CommandSyntaxException.builtInExceptions.LiteralIncorrect().CreateWithContext(reader, _literal);
+            throw CommandSyntaxException.BuiltInExceptions.LiteralIncorrect().CreateWithContext(reader, _literal);
         }
 
         private int Parse(StringReader reader)
@@ -68,11 +68,6 @@ namespace NBrigadier.Tree
             return Suggestions.Empty();
         }
 
-        public override ArgumentBuilder<TS, T> CreateBuilder<T>()
-        {
-            return CreateLiteralBuilder() as ArgumentBuilder<TS, T>;
-        }
-
         public override bool IsValidInput(string input)
         {
             return Parse(new StringReader(input)) > -1;
@@ -96,9 +91,9 @@ namespace NBrigadier.Tree
             return result;
         }
 
-        public LiteralArgumentBuilder<TS> CreateLiteralBuilder()
+        public LiteralArgumentBuilder<TS> CreateBuilder()
         {
-            var builder = LiteralArgumentBuilder<TS>.LiteralBuilder<TS>(_literal);
+            var builder = LiteralArgumentBuilder<TS>.LiteralBuilder(_literal);
             builder.Requires(Requirement);
             builder.Forward(Redirect, RedirectModifier, Fork);
             if (Command != null) builder.Executes(Command);

@@ -107,7 +107,7 @@ namespace NBrigadier.Arguments
 
             internal readonly ICollection<string> examples;
 
-            public readonly InnerEnum innerEnumValue;
+            public readonly InnerEnum InnerEnumValue;
             private readonly string _nameValue;
             private readonly int _ordinalValue;
 
@@ -124,7 +124,7 @@ namespace NBrigadier.Arguments
 
                 _nameValue = name;
                 _ordinalValue = _nextOrdinal++;
-                innerEnumValue = innerEnum;
+                InnerEnumValue = innerEnum;
             }
 
             public ICollection<string> Examples => examples;

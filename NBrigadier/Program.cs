@@ -6,7 +6,7 @@ using NBrigadier.Builder;
 Console.WriteLine("Hello world");
 var dispatcher = new CommandDispatcher<string>();
 dispatcher.Register(
-    LiteralArgumentBuilder<string>.LiteralBuilder<string>("test")
+    LiteralArgumentBuilder<string>.LiteralBuilder("test")
         .Then(
             RequiredArgumentBuilder<string, int>.Argument("myInt", IntegerArgumentType.Integer())
                 .Executes(

@@ -96,14 +96,9 @@ namespace NBrigadier.Tree
             return "<argument " + _name + ":" + _type + ">";
         }
 
-        public override ArgumentBuilder<TS, T> CreateBuilder<T>()
+        public RequiredArgumentBuilder<TS, T> CreateBuilder()
         {
-            return CreateRequiredArgumentBuilder<T>() as ArgumentBuilder<TS, T>;
-        }
-
-        public RequiredArgumentBuilder<TS, T> CreateRequiredArgumentBuilder<T>() where T : ArgumentBuilder<TS, T>
-        {
-            var builder = RequiredArgumentBuilder<TS, T>.Argument(_name, _type as IArgumentType<T>);
+            var builder = RequiredArgumentBuilder<TS, T>.Argument(_name, _type);
             builder.Requires(Requirement);
             builder.Forward(Redirect, RedirectModifier, Fork);
             builder.Suggests(_customSuggestions);

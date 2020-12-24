@@ -262,9 +262,9 @@ namespace NBrigadier
                 if (parse.Exceptions.Count == 1)
                     throw parse.Exceptions.Values.First();
                 if (parse.Context.Range.Empty)
-                    throw CommandSyntaxException.builtInExceptions.DispatcherUnknownCommand()
+                    throw CommandSyntaxException.BuiltInExceptions.DispatcherUnknownCommand()
                         .CreateWithContext(parse.Reader);
-                throw CommandSyntaxException.builtInExceptions.DispatcherUnknownArgument()
+                throw CommandSyntaxException.BuiltInExceptions.DispatcherUnknownArgument()
                     .CreateWithContext(parse.Reader);
             }
 
@@ -340,7 +340,7 @@ namespace NBrigadier
             if (!foundCommand)
             {
                 _consumer(original, false, 0);
-                throw CommandSyntaxException.builtInExceptions.DispatcherUnknownCommand()
+                throw CommandSyntaxException.BuiltInExceptions.DispatcherUnknownCommand()
                     .CreateWithContext(parse.Reader);
             }
 
@@ -467,13 +467,13 @@ namespace NBrigadier
                     }
                     catch (Exception ex)
                     {
-                        throw CommandSyntaxException.builtInExceptions.DispatcherParseException()
+                        throw CommandSyntaxException.BuiltInExceptions.DispatcherParseException()
                             .CreateWithContext(reader, ex.Message);
                     }
 
                     if (reader.CanRead())
                         if (reader.Peek() != ArgumentSeparatorChar)
-                            throw CommandSyntaxException.builtInExceptions.DispatcherExpectedArgumentSeparator()
+                            throw CommandSyntaxException.BuiltInExceptions.DispatcherExpectedArgumentSeparator()
                                 .CreateWithContext(reader);
                 }
                 catch (CommandSyntaxException ex)
@@ -708,8 +708,8 @@ namespace NBrigadier
             var context = parse.Context;
 
             var nodeBeforeCursor = context.FindSuggestionContext(cursor);
-            var parent = nodeBeforeCursor.parent;
-            var start = Math.Min(nodeBeforeCursor.startPos, cursor);
+            var parent = nodeBeforeCursor.Parent;
+            var start = Math.Min(nodeBeforeCursor.StartPos, cursor);
 
             var fullInput = parse.Reader.String;
             var truncatedInput = fullInput.Substring(0, cursor);

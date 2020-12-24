@@ -35,14 +35,14 @@ namespace NBrigadier.Arguments
             if (result < _minimum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.builtInExceptions.DoubleTooLow()
+                throw CommandSyntaxException.BuiltInExceptions.DoubleTooLow()
                     .CreateWithContext(reader, result, _minimum);
             }
 
             if (result > _maximum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.builtInExceptions.DoubleTooHigh()
+                throw CommandSyntaxException.BuiltInExceptions.DoubleTooHigh()
                     .CreateWithContext(reader, result, _maximum);
             }
 
