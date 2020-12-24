@@ -17,8 +17,6 @@ namespace com.mojang.brigadier.arguments
 		private readonly long minimum;
 		private readonly long maximum;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: private LongArgumentType(final long minimum, final long maximum)
 		private LongArgumentType(long minimum, long maximum)
 		{
 			this.minimum = minimum;
@@ -30,22 +28,16 @@ namespace com.mojang.brigadier.arguments
 			return LongArg(long.MinValue);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static LongArgumentType longArg(final long min)
 		public static LongArgumentType LongArg(long min)
 		{
 			return LongArg(min, long.MaxValue);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static LongArgumentType longArg(final long min, final long max)
 		public static LongArgumentType LongArg(long min, long max)
 		{
 			return new LongArgumentType(min, max);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static long getLong(final com.mojang.brigadier.context.CommandContext<?> context, final String name)
 		public static long GetLong<T1>(CommandContext<T1> context, string name)
 		{
 			return context.GetArgument<long>(name, typeof(long));
@@ -67,16 +59,9 @@ namespace com.mojang.brigadier.arguments
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: @Override public System.Nullable<long> parse(final com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
 		public long Parse(StringReader reader)
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = reader.getCursor();
 			int start = reader.Cursor;
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final long result = reader.readLong();
 			long result = reader.ReadLong();
 			if (result < minimum)
 			{
@@ -91,8 +76,6 @@ namespace com.mojang.brigadier.arguments
 			return result;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public boolean equals(final Object o)
 		public override bool Equals(object o)
 		{
 			if (this == o)
@@ -104,8 +87,6 @@ namespace com.mojang.brigadier.arguments
 				return false;
 			}
 
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final LongArgumentType that = (LongArgumentType) o;
 			LongArgumentType that = (LongArgumentType) o;
 			return maximum == that.maximum && minimum == that.minimum;
 		}

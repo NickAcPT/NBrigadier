@@ -16,8 +16,6 @@ namespace com.mojang.brigadier.arguments
 	{
 		private readonly StringType type;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: private StringArgumentType(final StringType type)
 		private StringArgumentType(StringType type)
 		{
 			this.type = type;
@@ -38,8 +36,6 @@ namespace com.mojang.brigadier.arguments
 			return new StringArgumentType(StringType.GreedyPhrase);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static String getString(final com.mojang.brigadier.context.CommandContext<?> context, final String name)
 		public static string GetString<T1>(CommandContext<T1> context, string name)
 		{
 			return context.GetArgument<string>(name, typeof(string));
@@ -53,15 +49,10 @@ namespace com.mojang.brigadier.arguments
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: @Override public String parse(final com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
 		public string Parse(StringReader reader)
 		{
 			if (type == StringType.GreedyPhrase)
 			{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final String text = reader.getRemaining();
 				string text = reader.Remaining;
 				reader.Cursor = reader.TotalLength;
 				return text;
@@ -89,8 +80,6 @@ namespace com.mojang.brigadier.arguments
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static String escapeIfRequired(final String input)
 		public static string EscapeIfRequired(string input)
 		{
 			foreach (char c in input.ToCharArray())
@@ -103,18 +92,12 @@ namespace com.mojang.brigadier.arguments
 			return input;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: private static String escape(final String input)
 		private static string Escape(string input)
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final StringBuilder result = new StringBuilder("\"");
 			StringBuilder result = new StringBuilder("\"");
 
 			for (int i = 0; i < input.Length; i++)
 			{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final char c = input.charAt(i);
 				char c = input[i];
 				if (c == '\\' || c == '"')
 				{
@@ -157,8 +140,6 @@ namespace com.mojang.brigadier.arguments
 
 			internal readonly ICollection<string> examples;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: StringType(final String... examples)
 			internal StringType(string name, InnerEnum innerEnum, params string[] examples)
 			{
 				this.examples = (examples).ToList();

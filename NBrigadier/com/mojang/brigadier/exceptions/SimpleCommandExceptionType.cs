@@ -10,8 +10,6 @@ namespace com.mojang.brigadier.exceptions
 	{
 		private readonly Message message;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SimpleCommandExceptionType(final com.mojang.brigadier.Message message)
 		public SimpleCommandExceptionType(Message message)
 		{
 			this.message = message;
@@ -22,8 +20,6 @@ namespace com.mojang.brigadier.exceptions
 			return new CommandSyntaxException(this, message);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandSyntaxException createWithContext(final com.mojang.brigadier.ImmutableStringReader reader)
 		public virtual CommandSyntaxException CreateWithContext(ImmutableStringReader reader)
 		{
 			return new CommandSyntaxException(this, message, reader.String, reader.Cursor);

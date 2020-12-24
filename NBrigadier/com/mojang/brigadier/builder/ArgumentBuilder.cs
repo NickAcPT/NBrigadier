@@ -23,8 +23,6 @@ namespace com.mojang.brigadier.builder
 
 		protected internal abstract T This {get;}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public T then(final ArgumentBuilder<S, ?> argument)
 		public virtual T Then<T1>(ArgumentBuilder<S, T1> argument) where T1 : ArgumentBuilder<S, T1>
         {
 			if (target != null)
@@ -35,8 +33,6 @@ namespace com.mojang.brigadier.builder
 			return This;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public T then(final com.mojang.brigadier.tree.CommandNode<S> argument)
 		public virtual T Then(CommandNode<S> argument)
 		{
 			if (target != null)
@@ -55,8 +51,6 @@ namespace com.mojang.brigadier.builder
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public T executes(final com.mojang.brigadier.Command<S> command)
 		public virtual T Executes(Command<S> command)
 		{
 			this.command = command;
@@ -71,8 +65,6 @@ namespace com.mojang.brigadier.builder
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public T requires(final java.util.function.Predicate<S> requirement)
 		public virtual T Requires(System.Predicate<S> requirement)
 		{
 			this.requirement = requirement;
@@ -87,29 +79,21 @@ namespace com.mojang.brigadier.builder
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public T redirect(final com.mojang.brigadier.tree.CommandNode<S> target)
 		public virtual T RedirectNode(CommandNode<S> target)
 		{
 			return Forward(target, null, false);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public T redirect(final com.mojang.brigadier.tree.CommandNode<S> target, final com.mojang.brigadier.SingleRedirectModifier<S> modifier)
 		public virtual T RedirectNode(CommandNode<S> target, SingleRedirectModifier<S> modifier)
 		{
 			return Forward(target, modifier == null ? null : o => new List<S> {modifier(o)}, false);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public T fork(final com.mojang.brigadier.tree.CommandNode<S> target, final com.mojang.brigadier.RedirectModifier<S> modifier)
 		public virtual T ForkNode(CommandNode<S> target, RedirectModifier<S> modifier)
 		{
 			return Forward(target, modifier, true);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public T forward(final com.mojang.brigadier.tree.CommandNode<S> target, final com.mojang.brigadier.RedirectModifier<S> modifier, final boolean fork)
 		public virtual T Forward(CommandNode<S> target, RedirectModifier<S> modifier, bool fork)
 		{
 			if (arguments.Children.Count > 0)

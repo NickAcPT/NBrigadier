@@ -13,8 +13,6 @@ namespace com.mojang.brigadier.context
 
 	public class CommandContextBuilder<S>
 	{
-//WARNING: Java wildcard generics have no direct equivalent in C#:
-//ORIGINAL LINE: private final java.util.Map<String, ParsedArgument<S, ?>> arguments = new java.util.LinkedHashMap<>();
         private readonly IDictionary<string, ParsedArgument<S, object>> arguments =
             new Dictionary<string, ParsedArgument<S, object>>();
         private readonly CommandNode<S> rootNode;
@@ -27,8 +25,6 @@ namespace com.mojang.brigadier.context
 		private RedirectModifier<S> modifier = null;
 		private bool forks;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContextBuilder(final com.mojang.brigadier.CommandDispatcher<S> dispatcher, final S source, final com.mojang.brigadier.tree.CommandNode<S> rootNode, final int start)
 		public CommandContextBuilder(CommandDispatcher<S> dispatcher, S source, CommandNode<S> rootNode, int start)
 		{
 			this.rootNode = rootNode;
@@ -37,8 +33,6 @@ namespace com.mojang.brigadier.context
 			this.range = StringRange.At(start);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContextBuilder<S> withSource(final S source)
 		public virtual CommandContextBuilder<S> WithSource(S source)
 		{
 			this.source = source;
@@ -61,16 +55,12 @@ namespace com.mojang.brigadier.context
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContextBuilder<S> withArgument(final String name, final ParsedArgument<S, ?> argument)
 		public virtual CommandContextBuilder<S> WithArgument(string name, ParsedArgument<S, object> argument)
 		{
 			this.arguments[name] = argument;
 			return this;
 		}
 
-//WARNING: Java wildcard generics have no direct equivalent in C#:
-//ORIGINAL LINE: public java.util.Map<String, ParsedArgument<S, ?>> getArguments()
 		public virtual IDictionary<string, ParsedArgument<S, object>> Arguments
 		{
 			get
@@ -79,16 +69,12 @@ namespace com.mojang.brigadier.context
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContextBuilder<S> withCommand(final com.mojang.brigadier.Command<S> command)
 		public virtual CommandContextBuilder<S> WithCommand(Command<S> command)
 		{
 			this.command = command;
 			return this;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContextBuilder<S> withNode(final com.mojang.brigadier.tree.CommandNode<S> node, final StringRange range)
 		public virtual CommandContextBuilder<S> WithNode(CommandNode<S> node, StringRange range)
 		{
 			nodes.Add(new ParsedCommandNode<S>(node, range));
@@ -100,11 +86,8 @@ namespace com.mojang.brigadier.context
 
 		public virtual CommandContextBuilder<S> Copy()
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final CommandContextBuilder<S> copy = new CommandContextBuilder<>(dispatcher, source, rootNode, range.getStart());
 			CommandContextBuilder<S> copy = new CommandContextBuilder<S>(dispatcher, source, rootNode, range.Start);
 			copy.command = command;
-//TODO TASK: There is no .NET Dictionary equivalent to the Java 'putAll' method:
             foreach (var (key, value) in arguments)
             {
                 arguments[key] = value;
@@ -116,8 +99,6 @@ namespace com.mojang.brigadier.context
 			return copy;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContextBuilder<S> withChild(final CommandContextBuilder<S> child)
 		public virtual CommandContextBuilder<S> WithChild(CommandContextBuilder<S> child)
 		{
 			this.child = child;
@@ -161,8 +142,6 @@ namespace com.mojang.brigadier.context
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContext<S> build(final String input)
 		public virtual CommandContext<S> Build(string input)
 		{
 			return new CommandContext<S>(source, input, arguments, command, rootNode, nodes, range, child == null ? null : child.Build(input), modifier, forks);
@@ -184,8 +163,6 @@ namespace com.mojang.brigadier.context
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SuggestionContext<S> findSuggestionContext(final int cursor)
 		public virtual SuggestionContext<S> FindSuggestionContext(int cursor)
 		{
 			if (range.Start <= cursor)
@@ -198,8 +175,6 @@ namespace com.mojang.brigadier.context
 					}
 					else if (nodes.Count > 0)
 					{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final ParsedCommandNode<S> last = nodes.get(nodes.size() - 1);
 						ParsedCommandNode<S> last = nodes[nodes.Count - 1];
 						return new SuggestionContext<S>(last.Node, last.Range.End + 1);
 					}
@@ -213,8 +188,6 @@ namespace com.mojang.brigadier.context
 					CommandNode<S> prev = rootNode;
 					foreach (ParsedCommandNode<S> node in nodes)
 					{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final StringRange nodeRange = node.getRange();
 						StringRange nodeRange = node.Range;
 						if (nodeRange.Start <= cursor && cursor <= nodeRange.End)
 						{

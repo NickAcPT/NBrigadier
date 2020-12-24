@@ -16,8 +16,6 @@ namespace com.mojang.brigadier.suggestion
 		private readonly string remaining;
 		private readonly IList<Suggestion> result = new List<Suggestion>();
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SuggestionsBuilder(final String input, final int start)
 		public SuggestionsBuilder(string input, int start)
 		{
 			this.input = input;
@@ -59,8 +57,6 @@ namespace com.mojang.brigadier.suggestion
 			return () => Build();
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SuggestionsBuilder suggest(final String text)
 		public virtual SuggestionsBuilder Suggest(string text)
 		{
 			if (text.Equals(remaining))
@@ -71,8 +67,6 @@ namespace com.mojang.brigadier.suggestion
 			return this;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SuggestionsBuilder suggest(final String text, final com.mojang.brigadier.Message tooltip)
 		public virtual SuggestionsBuilder Suggest(string text, Message tooltip)
 		{
 			if (text.Equals(remaining))
@@ -83,32 +77,24 @@ namespace com.mojang.brigadier.suggestion
 			return this;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SuggestionsBuilder suggest(final int value)
 		public virtual SuggestionsBuilder Suggest(int value)
 		{
 			result.Add(new IntegerSuggestion(StringRange.Between(start, input.Length), value));
 			return this;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SuggestionsBuilder suggest(final int value, final com.mojang.brigadier.Message tooltip)
 		public virtual SuggestionsBuilder Suggest(int value, Message tooltip)
 		{
 			result.Add(new IntegerSuggestion(StringRange.Between(start, input.Length), value, tooltip));
 			return this;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SuggestionsBuilder add(final SuggestionsBuilder other)
 		public virtual SuggestionsBuilder Add(SuggestionsBuilder other)
 		{
 			((List<Suggestion>)result).AddRange(other.result);
 			return this;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public SuggestionsBuilder createOffset(final int start)
 		public virtual SuggestionsBuilder CreateOffset(int start)
 		{
 			return new SuggestionsBuilder(input, start);

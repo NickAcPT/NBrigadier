@@ -17,8 +17,6 @@ namespace com.mojang.brigadier.arguments
 		private readonly float minimum;
 		private readonly float maximum;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: private FloatArgumentType(final float minimum, final float maximum)
 		private FloatArgumentType(float minimum, float maximum)
 		{
 			this.minimum = minimum;
@@ -30,22 +28,16 @@ namespace com.mojang.brigadier.arguments
 			return FloatArg(-float.MaxValue);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static FloatArgumentType floatArg(final float min)
 		public static FloatArgumentType FloatArg(float min)
 		{
 			return FloatArg(min, float.MaxValue);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static FloatArgumentType floatArg(final float min, final float max)
 		public static FloatArgumentType FloatArg(float min, float max)
 		{
 			return new FloatArgumentType(min, max);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static float getFloat(final com.mojang.brigadier.context.CommandContext<?> context, final String name)
 		public static float GetFloat<T1>(CommandContext<T1> context, string name)
 		{
 			return context.GetArgument<float>(name, typeof(float));
@@ -67,16 +59,9 @@ namespace com.mojang.brigadier.arguments
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: @Override public System.Nullable<float> parse(final com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
 		public float Parse(StringReader reader)
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = reader.getCursor();
 			int start = reader.Cursor;
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final float result = reader.readFloat();
 			float result = reader.ReadFloat();
 			if (result < minimum)
 			{
@@ -91,8 +76,6 @@ namespace com.mojang.brigadier.arguments
 			return result;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public boolean equals(final Object o)
 		public override bool Equals(object o)
 		{
 			if (this == o)
@@ -104,8 +87,6 @@ namespace com.mojang.brigadier.arguments
 				return false;
 			}
 
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final FloatArgumentType that = (FloatArgumentType) o;
 			FloatArgumentType that = (FloatArgumentType) o;
 			return maximum == that.maximum && minimum == that.minimum;
 		}

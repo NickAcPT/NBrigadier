@@ -16,16 +16,12 @@ namespace com.mojang.brigadier
 		private readonly string @string;
 		private int cursor;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public StringReader(final StringReader other)
 		public StringReader(StringReader other)
 		{
 			this.@string = other.@string;
 			this.cursor = other.cursor;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public StringReader(final String string)
 		public StringReader(string @string)
 		{
 			this.@string = @string;
@@ -39,8 +35,6 @@ namespace com.mojang.brigadier
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public void setCursor(final int cursor)
 		public virtual int Cursor
 		{
 			set
@@ -86,8 +80,6 @@ namespace com.mojang.brigadier
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public boolean canRead(final int length)
 		public bool CanRead(int length)
 		{
 			return cursor + length <= @string.Length;
@@ -103,8 +95,6 @@ namespace com.mojang.brigadier
 			return @string[cursor];
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public char peek(final int offset)
 		public char Peek(int offset)
 		{
 			return @string[cursor + offset];
@@ -120,8 +110,6 @@ namespace com.mojang.brigadier
 			cursor++;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static boolean isAllowedNumber(final char c)
 		public static bool IsAllowedNumber(char c)
 		{
 			return c >= '0' && c <= '9' || c == '.' || c == '-';
@@ -140,19 +128,13 @@ namespace com.mojang.brigadier
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public int readInt() throws com.mojang.brigadier.exceptions.CommandSyntaxException
 		public virtual int ReadInt()
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = cursor;
 			int start = cursor;
 			while (CanRead() && IsAllowedNumber(Peek()))
 			{
 				Skip();
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final String number = string.substring(start, cursor - start);
 			string number = @string.Substring(start, cursor - start);
 			if (number.Length == 0)
 			{
@@ -162,8 +144,6 @@ namespace com.mojang.brigadier
 			{
 				return int.Parse(number);
 			}
-//WARNING: 'final' catch parameters are not available in C#:
-//ORIGINAL LINE: catch (final NumberFormatException ex)
 			catch 
 			{
 				cursor = start;
@@ -171,19 +151,13 @@ namespace com.mojang.brigadier
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public long readLong() throws com.mojang.brigadier.exceptions.CommandSyntaxException
 		public virtual long ReadLong()
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = cursor;
 			int start = cursor;
 			while (CanRead() && IsAllowedNumber(Peek()))
 			{
 				Skip();
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final String number = string.substring(start, cursor - start);
 			string number = @string.Substring(start, cursor - start);
 			if (number.Length == 0)
 			{
@@ -193,8 +167,6 @@ namespace com.mojang.brigadier
 			{
 				return long.Parse(number);
 			}
-//WARNING: 'final' catch parameters are not available in C#:
-//ORIGINAL LINE: catch (final NumberFormatException ex)
 			catch
 			{
 				cursor = start;
@@ -202,19 +174,13 @@ namespace com.mojang.brigadier
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public double readDouble() throws com.mojang.brigadier.exceptions.CommandSyntaxException
 		public virtual double ReadDouble()
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = cursor;
 			int start = cursor;
 			while (CanRead() && IsAllowedNumber(Peek()))
 			{
 				Skip();
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final String number = string.substring(start, cursor - start);
 			string number = @string.Substring(start, cursor - start);
 			if (number.Length == 0)
 			{
@@ -224,8 +190,6 @@ namespace com.mojang.brigadier
 			{
 				return double.Parse(number);
 			}
-//WARNING: 'final' catch parameters are not available in C#:
-//ORIGINAL LINE: catch (final NumberFormatException ex)
 			catch
 			{
 				cursor = start;
@@ -233,19 +197,13 @@ namespace com.mojang.brigadier
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public float readFloat() throws com.mojang.brigadier.exceptions.CommandSyntaxException
 		public virtual float ReadFloat()
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = cursor;
 			int start = cursor;
 			while (CanRead() && IsAllowedNumber(Peek()))
 			{
 				Skip();
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final String number = string.substring(start, cursor - start);
 			string number = @string.Substring(start, cursor - start);
 			if (number.Length == 0)
 			{
@@ -255,8 +213,6 @@ namespace com.mojang.brigadier
 			{
 				return float.Parse(number);
 			}
-//WARNING: 'final' catch parameters are not available in C#:
-//ORIGINAL LINE: catch (final NumberFormatException ex)
 			catch
 			{
 				cursor = start;
@@ -264,8 +220,6 @@ namespace com.mojang.brigadier
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static boolean isAllowedInUnquotedString(final char c)
 		public static bool IsAllowedInUnquotedString(char c)
 		{
 			return c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '_' || c == '-' || c == '.' || c == '+';
@@ -273,8 +227,6 @@ namespace com.mojang.brigadier
 
 		public virtual string ReadUnquotedString()
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = cursor;
 			int start = cursor;
 			while (CanRead() && IsAllowedInUnquotedString(Peek()))
 			{
@@ -283,16 +235,12 @@ namespace com.mojang.brigadier
 			return @string.Substring(start, cursor - start);
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public String readQuotedString() throws com.mojang.brigadier.exceptions.CommandSyntaxException
 		public virtual string ReadQuotedString()
 		{
 			if (!CanRead())
 			{
 				return "";
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final char next = peek();
 			char next = Peek();
 			if (!IsQuotedStringStart(next))
 			{
@@ -302,18 +250,12 @@ namespace com.mojang.brigadier
 			return ReadStringUntil(next);
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public String readStringUntil(char terminator) throws com.mojang.brigadier.exceptions.CommandSyntaxException
 		public virtual string ReadStringUntil(char terminator)
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final StringBuilder result = new StringBuilder();
 			StringBuilder result = new StringBuilder();
 			bool escaped = false;
 			while (CanRead())
 			{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final char c = read();
 				char c = Read();
 				if (escaped)
 				{
@@ -345,16 +287,12 @@ namespace com.mojang.brigadier
 			throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.ReaderExpectedEndOfQuote().CreateWithContext(this);
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public String readString() throws com.mojang.brigadier.exceptions.CommandSyntaxException
 		public virtual string ReadString()
 		{
 			if (!CanRead())
 			{
 				return "";
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final char next = peek();
 			char next = Peek();
 			if (IsQuotedStringStart(next))
 			{
@@ -364,15 +302,9 @@ namespace com.mojang.brigadier
 			return ReadUnquotedString();
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public boolean readBoolean() throws com.mojang.brigadier.exceptions.CommandSyntaxException
 		public virtual bool ReadBoolean()
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = cursor;
 			int start = cursor;
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final String value = readString();
 			string value = ReadString();
 			if (value.Length == 0)
 			{
@@ -394,9 +326,6 @@ namespace com.mojang.brigadier
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: public void expect(final char c) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
 		public virtual void Expect(char c)
 		{
 			if (!CanRead() || Peek() != c)

@@ -17,8 +17,6 @@ namespace com.mojang.brigadier.arguments
 		private readonly double minimum;
 		private readonly double maximum;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: private DoubleArgumentType(final double minimum, final double maximum)
 		private DoubleArgumentType(double minimum, double maximum)
 		{
 			this.minimum = minimum;
@@ -30,22 +28,16 @@ namespace com.mojang.brigadier.arguments
 			return DoubleArg(-double.MaxValue);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static DoubleArgumentType doubleArg(final double min)
 		public static DoubleArgumentType DoubleArg(double min)
 		{
 			return DoubleArg(min, double.MaxValue);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static DoubleArgumentType doubleArg(final double min, final double max)
 		public static DoubleArgumentType DoubleArg(double min, double max)
 		{
 			return new DoubleArgumentType(min, max);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static double getDouble(final com.mojang.brigadier.context.CommandContext<?> context, final String name)
 		public static double GetDouble<T1>(CommandContext<T1> context, string name)
 		{
 			return context.GetArgument<double>(name, typeof(double));
@@ -67,16 +59,9 @@ namespace com.mojang.brigadier.arguments
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: @Override public System.Nullable<double> parse(final com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
 		public double Parse(StringReader reader)
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final int start = reader.getCursor();
 			int start = reader.Cursor;
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final double result = reader.readDouble();
 			double result = reader.ReadDouble();
 			if (result < minimum)
 			{
@@ -91,8 +76,6 @@ namespace com.mojang.brigadier.arguments
 			return result;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public boolean equals(final Object o)
 		public override bool Equals(object o)
 		{
 			if (this == o)
@@ -104,8 +87,6 @@ namespace com.mojang.brigadier.arguments
 				return false;
 			}
 
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final DoubleArgumentType that = (DoubleArgumentType) o;
 			DoubleArgumentType that = (DoubleArgumentType) o;
 			return maximum == that.maximum && minimum == that.minimum;
 		}

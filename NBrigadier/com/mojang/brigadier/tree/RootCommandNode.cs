@@ -36,29 +36,20 @@ namespace com.mojang.brigadier.tree
 			}
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: @Override public void parse(final com.mojang.brigadier.StringReader reader, final com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
 		public override void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
 		{
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public java.util.concurrent.System.Action<com.mojang.brigadier.suggestion.Suggestions> listSuggestions(final com.mojang.brigadier.context.CommandContext<S> context, final com.mojang.brigadier.suggestion.SuggestionsBuilder builder)
 		public override System.Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
 		{
 			return Suggestions.Empty();
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public boolean isValidInput(final String input)
 		public override bool IsValidInput(string input)
 		{
 			return false;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public boolean equals(final Object o)
 		public override bool Equals(object o)
 		{
 			if (this == o)
@@ -72,8 +63,6 @@ namespace com.mojang.brigadier.tree
 			return base.Equals(o);
 		}
 
-//WARNING: Java wildcard generics have no direct equivalent in C#:
-//ORIGINAL LINE: @Override public com.mojang.brigadier.builder.ArgumentBuilder<S, object> createBuilder()
 		public override ArgumentBuilder<S, T> CreateBuilder<T>()
 		{
 			throw new System.InvalidOperationException("Cannot convert root into a builder");

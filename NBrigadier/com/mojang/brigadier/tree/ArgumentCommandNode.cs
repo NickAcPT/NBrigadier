@@ -28,9 +28,7 @@ namespace com.mojang.brigadier.tree
         private readonly ArgumentType<T> type;
         private readonly SuggestionProvider<S> customSuggestions;
 
-        //WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-        //ORIGINAL LINE: public ArgumentCommandNode(final String name, final com.mojang.brigadier.arguments.ArgumentType<T> type, final com.mojang.brigadier.Command<S> command, final java.util.function.Predicate<S> requirement, final CommandNode<S> redirect, final com.mojang.brigadier.RedirectModifier<S> modifier, final boolean forks, final com.mojang.brigadier.suggestion.SuggestionProvider<S> customSuggestions)
-        public ArgumentCommandNode(string name, ArgumentType<T> type, Command<S> command, System.Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, bool forks, SuggestionProvider<S> customSuggestions) : base(command, requirement, redirect, modifier, forks)
+                        public ArgumentCommandNode(string name, ArgumentType<T> type, Command<S> command, System.Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, bool forks, SuggestionProvider<S> customSuggestions) : base(command, requirement, redirect, modifier, forks)
         {
             this.name = name;
             this.type = type;
@@ -61,29 +59,17 @@ namespace com.mojang.brigadier.tree
             }
         }
 
-        //WARNING: Method 'throws' clauses are not available in C#:
-        //ORIGINAL LINE: @Override public void parse(final com.mojang.brigadier.StringReader reader, final com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-        //WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-        public override void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
+                                public override void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
         {
-            //WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final int start = reader.getCursor();
-            int start = reader.Cursor;
-            //WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final T result = type.parse(reader);
-            T result = type.Parse(reader);
-            //WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final com.mojang.brigadier.context.ParsedArgument<S, T> parsed = new com.mojang.brigadier.context.ParsedArgument<>(start, reader.getCursor(), result);
-            ParsedArgument<S, object> parsed = new ParsedArgument<S, object>(start, reader.Cursor, result);
+                                    int start = reader.Cursor;
+                                    T result = type.Parse(reader);
+                                    ParsedArgument<S, object> parsed = new ParsedArgument<S, object>(start, reader.Cursor, result);
 
             contextBuilder.WithArgument(name, parsed);
             contextBuilder.WithNode(this, parsed.Range);
         }
 
-        //WARNING: Method 'throws' clauses are not available in C#:
-        //ORIGINAL LINE: @Override public java.util.concurrent.System.Action<com.mojang.brigadier.suggestion.Suggestions> listSuggestions(final com.mojang.brigadier.context.CommandContext<S> context, final com.mojang.brigadier.suggestion.SuggestionsBuilder builder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-        //WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-        public override System.Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
+                                public override System.Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
         {
             if (customSuggestions == null)
             {
@@ -102,9 +88,7 @@ namespace com.mojang.brigadier.tree
 
         public RequiredArgumentBuilder<S, T> CreateRequiredArgumentBuilder<T>() where T : ArgumentBuilder<S, T>
         {
-            //WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final com.mojang.brigadier.builder.RequiredArgumentBuilder<S, T> builder = com.mojang.brigadier.builder.RequiredArgumentBuilder.argument(name, type);
-            RequiredArgumentBuilder<S, T> builder = RequiredArgumentBuilder<S, object>.Argument<S, T>(name, type as ArgumentType<T>);
+            RequiredArgumentBuilder<S, T> builder = RequiredArgumentBuilder<S, T>.Argument(name, type as ArgumentType<T>);
             builder.Requires(Requirement);
             builder.Forward(Redirect, RedirectModifier, Fork);
             builder.Suggests(customSuggestions);
@@ -115,29 +99,21 @@ namespace com.mojang.brigadier.tree
             return builder;
         }
 
-        //WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-        //ORIGINAL LINE: @Override public boolean isValidInput(final String input)
-        public override bool IsValidInput(string input)
+                        public override bool IsValidInput(string input)
         {
             try
             {
-                //WARNING: The original Java variable was marked 'final':
-                //ORIGINAL LINE: final com.mojang.brigadier.StringReader reader = new com.mojang.brigadier.StringReader(input);
-                StringReader reader = new StringReader(input);
+                                                StringReader reader = new StringReader(input);
                 type.Parse(reader);
                 return !reader.CanRead() || reader.Peek() == ' ';
             }
-            //WARNING: 'final' catch parameters are not available in C#:
-            //ORIGINAL LINE: catch (final com.mojang.brigadier.exceptions.CommandSyntaxException ignored)
-            catch (com.mojang.brigadier.exceptions.CommandSyntaxException)
+                                    catch (com.mojang.brigadier.exceptions.CommandSyntaxException)
             {
                 return false;
             }
         }
 
-        //WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-        //ORIGINAL LINE: @Override public boolean equals(final Object o)
-        public override bool Equals(object o)
+                        public override bool Equals(object o)
         {
             if (this == o)
             {
@@ -148,9 +124,7 @@ namespace com.mojang.brigadier.tree
                 return false;
             }
 
-            //WARNING: The original Java variable was marked 'final':
-            //ORIGINAL LINE: final ArgumentCommandNode that = (ArgumentCommandNode) o;
-            ArgumentCommandNode<S, T> that = (ArgumentCommandNode<S, T>)o;
+                                    ArgumentCommandNode<S, T> that = (ArgumentCommandNode<S, T>)o;
 
             if (!name.Equals(that.name))
             {

@@ -7,8 +7,6 @@ namespace com.mojang.brigadier
 	{
 		private readonly string @string;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public LiteralMessage(final String string)
 		public LiteralMessage(string @string)
 		{
 			this.@string = @string;

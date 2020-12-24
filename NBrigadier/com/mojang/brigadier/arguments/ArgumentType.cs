@@ -15,17 +15,13 @@ namespace com.mojang.brigadier.arguments
 
 	public interface ArgumentType<T>
 	{
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: T parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException;
 		T Parse(StringReader reader);
 
-//TODO TASK: There is no equivalent in C# to Java default interface methods unless the C# 2019 extended interface option is selected:
 		System.Func<com.mojang.brigadier.suggestion.Suggestions> ListSuggestions<S>(com.mojang.brigadier.context.CommandContext<S> context, com.mojang.brigadier.suggestion.SuggestionsBuilder builder)
 		{
 			return Suggestions.Empty();
 		}
 
-//TODO TASK: There is no equivalent in C# to Java default interface methods unless the C# 2019 extended interface option is selected:
 		IList<String> GetExamples()
 		{
 			return new List<string>();

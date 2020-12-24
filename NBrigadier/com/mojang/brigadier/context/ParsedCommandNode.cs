@@ -49,8 +49,6 @@ namespace com.mojang.brigadier.context
 			{
 				return false;
 			}
-//WARNING: Java wildcard generics have no direct equivalent in C#:
-//ORIGINAL LINE: ParsedCommandNode<?> that = (ParsedCommandNode<?>) o;
 			ParsedCommandNode<object> that = (ParsedCommandNode<object>) o;
 			return object.Equals(node, that.node) && object.Equals(range, that.range);
 		}

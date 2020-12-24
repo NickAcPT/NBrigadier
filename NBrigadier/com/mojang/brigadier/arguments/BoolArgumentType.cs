@@ -26,23 +26,16 @@ namespace com.mojang.brigadier.arguments
 			return new BoolArgumentType();
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static boolean getBool(final com.mojang.brigadier.context.CommandContext<?> context, final String name)
 		public static bool GetBool<T1>(CommandContext<T1> context, string name)
 		{
 			return context.GetArgument<bool>(name, typeof(Boolean));
 		}
 
-//WARNING: Method 'throws' clauses are not available in C#:
-//ORIGINAL LINE: @Override public System.Nullable<bool> parse(final com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
 		public bool Parse(StringReader reader)
 		{
 			return reader.ReadBoolean();
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public <S> java.util.concurrent.System.Action<com.mojang.brigadier.suggestion.Suggestions> listSuggestions(final com.mojang.brigadier.context.CommandContext<S> context, final com.mojang.brigadier.suggestion.SuggestionsBuilder builder)
 		public System.Func<Suggestions> ListSuggestions<S>(CommandContext<S> context, SuggestionsBuilder builder)
 		{
 			if ("true".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))

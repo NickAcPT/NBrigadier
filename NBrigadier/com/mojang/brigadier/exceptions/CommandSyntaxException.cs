@@ -19,8 +19,6 @@ namespace com.mojang.brigadier.exceptions
 		private readonly string input;
 		private readonly int cursor;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandSyntaxException(final CommandExceptionType type, final com.mojang.brigadier.Message message)
 		public CommandSyntaxException(CommandExceptionType type, Message message) : base(message.String)//, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
 		{
 			this.type = type;
@@ -29,8 +27,6 @@ namespace com.mojang.brigadier.exceptions
 			this.cursor = -1;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandSyntaxException(final CommandExceptionType type, final com.mojang.brigadier.Message message, final String input, final int cursor)
 		public CommandSyntaxException(CommandExceptionType type, Message message, string input, int cursor) : base(message.String)//, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
 		{
 			this.type = type;
@@ -44,9 +40,7 @@ namespace com.mojang.brigadier.exceptions
 			get
 			{
 				string message = this.message.String;
-	//WARNING: The original Java variable was marked 'final':
-	//ORIGINAL LINE: final String context = getContext();
-				string context = Context;
+						string context = Context;
 				if (!string.ReferenceEquals(context, null))
 				{
 					message += " at position " + cursor + ": " + context;
@@ -71,13 +65,9 @@ namespace com.mojang.brigadier.exceptions
 				{
 					return null;
 				}
-	//WARNING: The original Java variable was marked 'final':
-	//ORIGINAL LINE: final StringBuilder builder = new StringBuilder();
-				int cursor = Math.Min(input.Length, this.cursor);
+						int cursor = Math.Min(input.Length, this.cursor);
 				StringBuilder builder = new StringBuilder();
-	//WARNING: The original Java variable was marked 'final':
-	//ORIGINAL LINE: final int cursor = Math.min(input.length(), this.cursor);
-    
+		    
 				if (cursor > CONTEXT_AMOUNT)
 				{
 					builder.Append("...");

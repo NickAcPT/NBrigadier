@@ -10,15 +10,11 @@ namespace com.mojang.brigadier.builder
 	{
 		private readonly string literal;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: protected LiteralArgumentBuilder(final String literal)
 		protected internal LiteralArgumentBuilder(string literal)
 		{
 			this.literal = literal;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static <S> LiteralArgumentBuilder<S> literal(final String name)
 		public static LiteralArgumentBuilder<S> LiteralBuilder<S>(string name)
 		{
 			return new LiteralArgumentBuilder<S>(name);
@@ -47,8 +43,6 @@ namespace com.mojang.brigadier.builder
 
         public LiteralCommandNode<S> BuildLiteral()
         {
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final com.mojang.brigadier.tree.LiteralCommandNode<S> result = new com.mojang.brigadier.tree.LiteralCommandNode<>(getLiteral(), getCommand(), getRequirement(), getRedirect(), getRedirectModifier(), isFork());
 			LiteralCommandNode<S> result = new LiteralCommandNode<S>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
 
 			foreach (CommandNode<S> argument in Arguments)

@@ -24,8 +24,6 @@ namespace com.mojang.brigadier.context
 		private readonly S source;
 		private readonly string input;
 		private readonly Command<S> command;
-//WARNING: Java wildcard generics have no direct equivalent in C#:
-//ORIGINAL LINE: private final java.util.Map<String, ParsedArgument<S, ?>> arguments;
 		private readonly IDictionary<string, ParsedArgument<S, object>> arguments;
 		private readonly CommandNode<S> rootNode;
 		private readonly IList<ParsedCommandNode<S>> nodes;
@@ -34,9 +32,6 @@ namespace com.mojang.brigadier.context
 		private readonly RedirectModifier<S> modifier;
 		private readonly bool forks;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContext(final S source, final String input, final java.util.Map<String, ParsedArgument<S, ?>> arguments, final com.mojang.brigadier.Command<S> command, final com.mojang.brigadier.tree.CommandNode<S> rootNode, final java.util.List<ParsedCommandNode<S>> nodes, final StringRange range, final CommandContext<S> child, final com.mojang.brigadier.RedirectModifier<S> modifier, boolean forks)
-//TODO TASK: Wildcard generics in constructor parameters are not converted. Move the generic type parameter and constraint to the class header:
 		public CommandContext(S source, string input, IDictionary<string, ParsedArgument<S, object>> arguments, Command<S> command, CommandNode<S> rootNode, IList<ParsedCommandNode<S>> nodes, StringRange range, CommandContext<S> child, RedirectModifier<S> modifier, bool forks)
 		{
 			this.source = source;
@@ -51,8 +46,6 @@ namespace com.mojang.brigadier.context
 			this.forks = forks;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public CommandContext<S> copyFor(final S source)
 		public virtual CommandContext<S> CopyFor(S source)
 		{
 			if (Equals(this.source, source))
@@ -99,9 +92,6 @@ namespace com.mojang.brigadier.context
 			}
 		}
 
-//TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
-//ORIGINAL LINE: @SuppressWarnings("unchecked") public <V> V getArgument(final String name, final Class<V> clazz)
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
 public virtual V GetArgument<V>(string name)
 {
     return GetArgument<V>(name, typeof(V));
@@ -109,9 +99,6 @@ public virtual V GetArgument<V>(string name)
 
 public virtual V GetArgument<V>(string name, Type clazz)
 		{
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final ParsedArgument<S, ?> argument = arguments.get(name);
-//WARNING: Java wildcard generics have no direct equivalent in C#:
 			ParsedArgument<S, object> argument = arguments[name];
 
 			if (argument == null)
@@ -119,8 +106,6 @@ public virtual V GetArgument<V>(string name, Type clazz)
 				throw new System.ArgumentException("No such argument '" + name + "' exists on this command");
 			}
 
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final Object result = argument.getResult();
 			object result = argument.Result;
 			if (clazz.IsInstanceOfType(argument.Result))
 			{
@@ -132,8 +117,6 @@ public virtual V GetArgument<V>(string name, Type clazz)
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public boolean equals(final Object o)
 		public override bool Equals(object o)
 		{
 			if (this == o)
@@ -145,8 +128,6 @@ public virtual V GetArgument<V>(string name, Type clazz)
 				return false;
 			}
 
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final CommandContext that = (CommandContext) o;
 			CommandContext<S> that = (CommandContext<S>) o;
 
 			if (!arguments.Equals(that.arguments))
@@ -157,8 +138,6 @@ public virtual V GetArgument<V>(string name, Type clazz)
 			{
 				return false;
 			}
-//WARNING: LINQ 'SequenceEqual' is not always identical to Java AbstractList 'equals':
-//ORIGINAL LINE: if (nodes.size() != that.nodes.size() || !nodes.equals(that.nodes))
 			if (nodes.Count != that.nodes.Count || !nodes.SequenceEqual(that.nodes))
 			{
 				return false;

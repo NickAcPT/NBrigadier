@@ -17,8 +17,6 @@ namespace com.mojang.brigadier.suggestion
 		private readonly StringRange range;
 		private readonly IList<Suggestion> suggestions;
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public Suggestions(final com.mojang.brigadier.context.StringRange range, final java.util.List<Suggestion> suggestions)
 		public Suggestions(StringRange range, IList<Suggestion> suggestions)
 		{
 			this.range = range;
@@ -49,8 +47,6 @@ namespace com.mojang.brigadier.suggestion
 			}
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: @Override public boolean equals(final Object o)
 		public override bool Equals(object o)
 		{
 			if (this == o)
@@ -61,8 +57,6 @@ namespace com.mojang.brigadier.suggestion
 			{
 				return false;
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final Suggestions that = (Suggestions) o;
 			Suggestions that = (Suggestions) o;
 			return object.Equals(range, that.range) && object.Equals(suggestions, that.suggestions);
 		}
@@ -77,8 +71,6 @@ namespace com.mojang.brigadier.suggestion
 			return () => EMPTY;
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static Suggestions merge(final String command, final java.util.Collection<Suggestions> input)
 		public static Suggestions Merge(string command, ICollection<Suggestions> input)
 		{
 			if (input.Count == 0)
@@ -90,8 +82,6 @@ namespace com.mojang.brigadier.suggestion
 				return input.First();
 			}
 
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final java.util.Set<Suggestion> texts = new java.util.HashSet<>();
             HashSet<Suggestion> texts = new HashSet<Suggestion>();
 			foreach (Suggestions suggestions in input)
             {
@@ -100,8 +90,6 @@ namespace com.mojang.brigadier.suggestion
 			return Create(command, texts);
 		}
 
-//WARNING: 'final' parameters are ignored unless the option to convert to C# 7.2 'in' parameters is selected:
-//ORIGINAL LINE: public static Suggestions create(final String command, final java.util.Collection<Suggestion> suggestions)
 		public static Suggestions Create(string command, ICollection<Suggestion> suggestions)
 		{
 			if (suggestions.Count == 0)
@@ -115,18 +103,12 @@ namespace com.mojang.brigadier.suggestion
 				start = Math.Min(suggestion.Range.Start, start);
 				end = Math.Max(suggestion.Range.End, end);
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final com.mojang.brigadier.context.StringRange range = new com.mojang.brigadier.context.StringRange(start, end);
 			StringRange range = new StringRange(start, end);
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final java.util.Set<Suggestion> texts = new java.util.HashSet<>();
 			ISet<Suggestion> texts = new HashSet<Suggestion>();
 			foreach (Suggestion suggestion in suggestions)
 			{
 				texts.Add(suggestion.Expand(command, range));
 			}
-//WARNING: The original Java variable was marked 'final':
-//ORIGINAL LINE: final java.util.List<Suggestion> sorted = new java.util.ArrayList<>(texts);
 			IList<Suggestion> sorted = texts.OrderBy(a => a, Comparer<Suggestion>.Create((a, b) => a.CompareToIgnoreCase(b))).ToList();
 			return new Suggestions(range, sorted);
 		}
