@@ -3,47 +3,27 @@
 
 namespace NBrigadier.Context
 {
+    public class ParsedArgument<S, T>
+    {
+        private readonly StringRange range;
+        private readonly T result;
 
-	public class ParsedArgument<S, T>
-	{
-		private readonly StringRange range;
-		private readonly T result;
+        public ParsedArgument(int start, int end, T result)
+        {
+            range = StringRange.Between(start, end);
+            this.result = result;
+        }
 
-		public ParsedArgument(int start, int end, T result)
-		{
-			this.range = StringRange.Between(start, end);
-			this.result = result;
-		}
+        public virtual StringRange Range => range;
 
-		public virtual StringRange Range
-		{
-			get
-			{
-				return range;
-			}
-		}
+        public virtual T Result => result;
 
-		public virtual T Result
-		{
-			get
-			{
-				return result;
-			}
-		}
-
-		public override bool Equals(object o)
-		{
-			if (this == o)
-			{
-				return true;
-			}
-			if (!(o is ParsedArgument<S, T>))
-			{
-				return false;
-			}
-			var that = o as ParsedArgument<S, T>;
-			return object.Equals(range, that.range) && object.Equals(result, that.result);
-		}
+        public override bool Equals(object o)
+        {
+            if (this == o) return true;
+            if (!(o is ParsedArgument<S, T>)) return false;
+            var that = o as ParsedArgument<S, T>;
+            return Equals(range, that.range) && Equals(result, that.result);
+        }
     }
-
 }

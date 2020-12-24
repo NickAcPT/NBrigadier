@@ -10,162 +10,104 @@ using NBrigadier.Suggestion;
 
 namespace NBrigadier.Tree
 {
-    using StringReader = StringReader;
-    using StringRange = StringRange;
-	using CommandSyntaxException = CommandSyntaxException;
-	using Suggestions = Suggestions;
-	using SuggestionsBuilder = SuggestionsBuilder;
+    public class LiteralCommandNode<S> : CommandNode<S>
+    {
+        private readonly string literal;
 
+        public LiteralCommandNode(string literal, Command<S> command, Predicate<S> requirement, CommandNode<S> redirect,
+            RedirectModifier<S> modifier, bool forks) : base(command, requirement, redirect, modifier, forks)
+        {
+            this.literal = literal;
+        }
 
-	public class LiteralCommandNode<S> : CommandNode<S>
-	{
-		private readonly string literal;
+        public virtual string Literal => literal;
 
-		public LiteralCommandNode(string literal, Command<S> command, System.Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, bool forks) : base(command, requirement, redirect, modifier, forks)
-		{
-			this.literal = literal;
-		}
+        public override string Name => literal;
 
-		public virtual string Literal
-		{
-			get
-			{
-				return literal;
-			}
-		}
+        public override string UsageText => literal;
 
-		public override string Name
-		{
-			get
-			{
-				return literal;
-			}
-		}
+        protected internal override string SortedKey => literal;
 
-		public override void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
-		{
-			int start = reader.Cursor;
-			int end = Parse(reader);
-			if (end > -1)
-			{
-				contextBuilder.WithNode(this, StringRange.Between(start, end));
-				return;
-			}
+        public override ICollection<string> Examples => new List<string> {literal};
 
-			throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.LiteralIncorrect().CreateWithContext(reader, literal);
-		}
+        public override void Parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
+        {
+            var start = reader.Cursor;
+            var end = Parse(reader);
+            if (end > -1)
+            {
+                contextBuilder.WithNode(this, StringRange.Between(start, end));
+                return;
+            }
 
-		private int Parse(StringReader reader)
-		{
-			int start = reader.Cursor;
-			if (reader.CanRead(literal.Length))
-			{
-				int end = start + literal.Length;
-				if (reader.String.Substring(start, end - start).Equals(literal))
-				{
-					reader.Cursor = end;
-					if (!reader.CanRead() || reader.Peek() == ' ')
-					{
-						return end;
-					}
-					else
-					{
-						reader.Cursor = start;
-					}
-				}
-			}
-			return -1;
-		}
+            throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.LiteralIncorrect().CreateWithContext(reader, literal);
+        }
 
-		public override System.Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
-		{
-			if (literal.ToLower().StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
-			{
-				return builder.Suggest(literal).BuildFuture();
-			}
-			else
-			{
-				return Suggestions.Empty();
-			}
-		}
+        private int Parse(StringReader reader)
+        {
+            var start = reader.Cursor;
+            if (reader.CanRead(literal.Length))
+            {
+                var end = start + literal.Length;
+                if (reader.String.Substring(start, end - start).Equals(literal))
+                {
+                    reader.Cursor = end;
+                    if (!reader.CanRead() || reader.Peek() == ' ')
+                        return end;
+                    reader.Cursor = start;
+                }
+            }
+
+            return -1;
+        }
+
+        public override Func<Suggestions> ListSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
+        {
+            if (literal.ToLower().StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
+                return builder.Suggest(literal).BuildFuture();
+            return Suggestions.Empty();
+        }
 
         public override ArgumentBuilder<S, T> CreateBuilder<T>()
         {
             return CreateLiteralBuilder() as ArgumentBuilder<S, T>;
         }
 
-        		public override bool IsValidInput(string input)
-		{
-			return Parse(new StringReader(input)) > -1;
-		}
+        public override bool IsValidInput(string input)
+        {
+            return Parse(new StringReader(input)) > -1;
+        }
 
-		public override bool Equals(object o)
-		{
-			if (this == o)
-			{
-				return true;
-			}
-			if (!(o is LiteralCommandNode<S>))
-			{
-				return false;
-			}
+        public override bool Equals(object o)
+        {
+            if (this == o) return true;
+            if (!(o is LiteralCommandNode<S>)) return false;
 
-			LiteralCommandNode<S> that = (LiteralCommandNode<S>) o;
+            var that = (LiteralCommandNode<S>) o;
 
-			if (!literal.Equals(that.literal))
-			{
-				return false;
-			}
-			return base.Equals(o);
-		}
+            if (!literal.Equals(that.literal)) return false;
+            return base.Equals(o);
+        }
 
-		public override string UsageText
-		{
-			get
-			{
-				return literal;
-			}
-		}
+        public override int GetHashCode()
+        {
+            var result = literal.GetHashCode();
+            result = 31 * result + base.GetHashCode();
+            return result;
+        }
 
-		public override int GetHashCode()
-		{
-			int result = literal.GetHashCode();
-			result = 31 * result + base.GetHashCode();
-			return result;
-		}
+        public LiteralArgumentBuilder<S> CreateLiteralBuilder()
+        {
+            var builder = LiteralArgumentBuilder<S>.LiteralBuilder<S>(literal);
+            builder.Requires(Requirement);
+            builder.Forward(Redirect, RedirectModifier, Fork);
+            if (Command != null) builder.Executes(Command);
+            return builder;
+        }
 
-		public LiteralArgumentBuilder<S> CreateLiteralBuilder()
-		{
-			LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder<S>.LiteralBuilder<S>(this.literal);
-			builder.Requires(Requirement);
-			builder.Forward(Redirect, RedirectModifier, Fork);
-			if (Command != null)
-			{
-				builder.Executes(Command);
-			}
-			return builder;
-		}
-
-		protected internal override string SortedKey
-		{
-			get
-			{
-				return literal;
-			}
-		}
-
-		public override ICollection<string> Examples
-		{
-			get
-			{
-				return new List<string> {literal};
-			}
-		}
-
-		public override string ToString()
-		{
-			return "<literal " + literal + ">";
-		}
-	}
-
+        public override string ToString()
+        {
+            return "<literal " + literal + ">";
+        }
+    }
 }

@@ -8,111 +8,73 @@ using NBrigadier.Context;
 
 namespace NBrigadier.Suggestion
 {
-	using StringRange = StringRange;
+    public class Suggestions
+    {
+        private static readonly Suggestions EMPTY = new(StringRange.At(0), new List<Suggestion>());
 
+        private readonly StringRange range;
+        private readonly IList<Suggestion> suggestions;
 
-	public class Suggestions
-	{
-		private static readonly Suggestions EMPTY = new Suggestions(StringRange.At(0), new List<Suggestion>());
+        public Suggestions(StringRange range, IList<Suggestion> suggestions)
+        {
+            this.range = range;
+            this.suggestions = suggestions;
+        }
 
-		private readonly StringRange range;
-		private readonly IList<Suggestion> suggestions;
+        public virtual StringRange Range => range;
 
-		public Suggestions(StringRange range, IList<Suggestion> suggestions)
-		{
-			this.range = range;
-			this.suggestions = suggestions;
-		}
+        public virtual IList<Suggestion> List => suggestions;
 
-		public virtual StringRange Range
-		{
-			get
-			{
-				return range;
-			}
-		}
+        public virtual bool IsEmpty => suggestions.Count == 0;
 
-		public virtual IList<Suggestion> List
-		{
-			get
-			{
-				return suggestions;
-			}
-		}
+        public override bool Equals(object o)
+        {
+            if (this == o) return true;
+            if (!(o is Suggestions)) return false;
+            var that = (Suggestions) o;
+            return Equals(range, that.range) && Equals(suggestions, that.suggestions);
+        }
 
-		public virtual bool IsEmpty
-		{
-			get
-			{
-				return suggestions.Count == 0;
-			}
-		}
+        public override string ToString()
+        {
+            return "Suggestions{" + "range=" + range + ", suggestions=" + suggestions + '}';
+        }
 
-		public override bool Equals(object o)
-		{
-			if (this == o)
-			{
-				return true;
-			}
-			if (!(o is Suggestions))
-			{
-				return false;
-			}
-			Suggestions that = (Suggestions) o;
-			return object.Equals(range, that.range) && object.Equals(suggestions, that.suggestions);
-		}
+        public static Func<Suggestions> Empty()
+        {
+            return () => EMPTY;
+        }
 
-		public override string ToString()
-		{
-			return "Suggestions{" + "range=" + range + ", suggestions=" + suggestions + '}';
-		}
+        public static Suggestions Merge(string command, ICollection<Suggestions> input)
+        {
+            if (input.Count == 0)
+                return EMPTY;
+            if (input.Count == 1) return input.First();
 
-		public static Func<Suggestions> Empty()
-		{
-			return () => EMPTY;
-		}
+            var texts = new HashSet<Suggestion>();
+            foreach (var suggestions in input)
+            foreach (var suggestion in suggestions.List)
+                texts.Add(suggestion);
+            return Create(command, texts);
+        }
 
-		public static Suggestions Merge(string command, ICollection<Suggestions> input)
-		{
-			if (input.Count == 0)
-			{
-				return EMPTY;
-			}
-			else if (input.Count == 1)
-			{
-				return input.First();
-			}
-
-            HashSet<Suggestion> texts = new HashSet<Suggestion>();
-			foreach (Suggestions suggestions in input)
+        public static Suggestions Create(string command, ICollection<Suggestion> suggestions)
+        {
+            if (suggestions.Count == 0) return EMPTY;
+            var start = int.MaxValue;
+            var end = int.MinValue;
+            foreach (var suggestion in suggestions)
             {
-                foreach (var suggestion in suggestions.List) texts.Add(suggestion);
+                start = Math.Min(suggestion.Range.Start, start);
+                end = Math.Max(suggestion.Range.End, end);
             }
-			return Create(command, texts);
-		}
 
-		public static Suggestions Create(string command, ICollection<Suggestion> suggestions)
-		{
-			if (suggestions.Count == 0)
-			{
-				return EMPTY;
-			}
-			int start = int.MaxValue;
-			int end = int.MinValue;
-			foreach (Suggestion suggestion in suggestions)
-			{
-				start = Math.Min(suggestion.Range.Start, start);
-				end = Math.Max(suggestion.Range.End, end);
-			}
-			StringRange range = new StringRange(start, end);
-			ISet<Suggestion> texts = new HashSet<Suggestion>();
-			foreach (Suggestion suggestion in suggestions)
-			{
-				texts.Add(suggestion.Expand(command, range));
-			}
-			IList<Suggestion> sorted = texts.OrderBy(a => a, Comparer<Suggestion>.Create((a, b) => a.CompareToIgnoreCase(b))).ToList();
-			return new Suggestions(range, sorted);
-		}
-	}
-
+            var range = new StringRange(start, end);
+            ISet<Suggestion> texts = new HashSet<Suggestion>();
+            foreach (var suggestion in suggestions) texts.Add(suggestion.Expand(command, range));
+            IList<Suggestion> sorted = texts
+                .OrderBy(a => a, Comparer<Suggestion>.Create((a, b) => a.CompareToIgnoreCase(b))).ToList();
+            return new Suggestions(range, sorted);
+        }
+    }
 }

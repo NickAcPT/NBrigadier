@@ -6,34 +6,20 @@ using NBrigadier.Tree;
 namespace NBrigadier.Builder
 {
     public class LiteralArgumentBuilder<S> : ArgumentBuilder<S, LiteralArgumentBuilder<S>>
-	{
-		private readonly string literal;
+    {
+        protected internal LiteralArgumentBuilder(string literal)
+        {
+            this.Literal = literal;
+        }
 
-		protected internal LiteralArgumentBuilder(string literal)
-		{
-			this.literal = literal;
-		}
+        protected internal override LiteralArgumentBuilder<S> This => this;
 
-		public static LiteralArgumentBuilder<S> LiteralBuilder<S>(string name)
-		{
-			return new LiteralArgumentBuilder<S>(name);
-		}
+        public virtual string Literal { get; }
 
-		protected internal override LiteralArgumentBuilder<S> This
-		{
-			get
-			{
-				return this;
-			}
-		}
-
-		public virtual string Literal
-		{
-			get
-			{
-				return literal;
-			}
-		}
+        public static LiteralArgumentBuilder<S> LiteralBuilder<S>(string name)
+        {
+            return new(name);
+        }
 
         public override CommandNode<S> Build()
         {
@@ -42,15 +28,11 @@ namespace NBrigadier.Builder
 
         public LiteralCommandNode<S> BuildLiteral()
         {
-			LiteralCommandNode<S> result = new LiteralCommandNode<S>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
+            var result = new LiteralCommandNode<S>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
 
-			foreach (CommandNode<S> argument in Arguments)
-			{
-				result.AddChild(argument);
-			}
+            foreach (var argument in Arguments) result.AddChild(argument);
 
-			return result;
-		}
-	}
-
+            return result;
+        }
+    }
 }

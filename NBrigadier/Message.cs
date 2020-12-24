@@ -3,9 +3,8 @@
 
 namespace NBrigadier
 {
-	public interface Message
-	{
-		string String {get;}
-	}
-
+    public interface Message
+    {
+        string String { get; }
+    }
 }

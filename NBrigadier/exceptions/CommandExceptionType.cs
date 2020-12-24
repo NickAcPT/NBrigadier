@@ -3,8 +3,7 @@
 
 namespace NBrigadier.Exceptions
 {
-	public interface CommandExceptionType
-	{
-	}
-
+    public interface CommandExceptionType
+    {
+    }
 }

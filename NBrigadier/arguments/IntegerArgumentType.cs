@@ -7,119 +7,87 @@ using NBrigadier.Exceptions;
 
 namespace NBrigadier.Arguments
 {
-	using StringReader = StringReader;
-    using CommandSyntaxException = CommandSyntaxException;
+    public class IntegerArgumentType : ArgumentType<int>
+    {
+        private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "123", "-123"};
+        private readonly int maximum;
 
+        private readonly int minimum;
 
-	public class IntegerArgumentType : ArgumentType<int>
-	{
-		private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "123", "-123"};
+        private IntegerArgumentType(int minimum, int maximum)
+        {
+            this.minimum = minimum;
+            this.maximum = maximum;
+        }
 
-		private readonly int minimum;
-		private readonly int maximum;
+        public virtual int Minimum => minimum;
 
-		private IntegerArgumentType(int minimum, int maximum)
-		{
-			this.minimum = minimum;
-			this.maximum = maximum;
-		}
+        public virtual int Maximum => maximum;
 
-		public static IntegerArgumentType Integer()
-		{
-			return Integer(int.MinValue);
-		}
+        public virtual ICollection<string> Examples => EXAMPLES;
 
-		public static IntegerArgumentType Integer(int min)
-		{
-			return Integer(min, int.MaxValue);
-		}
+        public int Parse(StringReader reader)
+        {
+            var start = reader.Cursor;
+            var result = reader.ReadInt();
+            if (result < minimum)
+            {
+                reader.Cursor = start;
+                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.IntegerTooLow()
+                    .CreateWithContext(reader, result, minimum);
+            }
 
-		public static IntegerArgumentType Integer(int min, int max)
-		{
-			return new IntegerArgumentType(min, max);
-		}
+            if (result > maximum)
+            {
+                reader.Cursor = start;
+                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.IntegerTooHigh()
+                    .CreateWithContext(reader, result, maximum);
+            }
 
-		public static int GetInteger<T1>(CommandContext<T1> context, string name)
-		{
-			return context.GetArgument<int>(name, typeof(int));
-		}
+            return result;
+        }
 
-		public virtual int Minimum
-		{
-			get
-			{
-				return minimum;
-			}
-		}
+        public static IntegerArgumentType Integer()
+        {
+            return Integer(int.MinValue);
+        }
 
-		public virtual int Maximum
-		{
-			get
-			{
-				return maximum;
-			}
-		}
+        public static IntegerArgumentType Integer(int min)
+        {
+            return Integer(min, int.MaxValue);
+        }
 
-		public int Parse(StringReader reader)
-		{
-			int start = reader.Cursor;
-			int result = reader.ReadInt();
-			if (result < minimum)
-			{
-				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.IntegerTooLow().CreateWithContext(reader, result, minimum);
-			}
-			if (result > maximum)
-			{
-				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.IntegerTooHigh().CreateWithContext(reader, result, maximum);
-			}
-			return result;
-		}
+        public static IntegerArgumentType Integer(int min, int max)
+        {
+            return new(min, max);
+        }
 
-		public override bool Equals(object o)
-		{
-			if (this == o)
-			{
-				return true;
-			}
-			if (!(o is IntegerArgumentType))
-			{
-				return false;
-			}
+        public static int GetInteger<T1>(CommandContext<T1> context, string name)
+        {
+            return context.GetArgument<int>(name, typeof(int));
+        }
 
-			IntegerArgumentType that = (IntegerArgumentType) o;
-			return maximum == that.maximum && minimum == that.minimum;
-		}
+        public override bool Equals(object o)
+        {
+            if (this == o) return true;
+            if (!(o is IntegerArgumentType)) return false;
 
-		public override int GetHashCode()
-		{
-			return 31 * minimum + maximum;
-		}
+            var that = (IntegerArgumentType) o;
+            return maximum == that.maximum && minimum == that.minimum;
+        }
 
-		public override string ToString()
-		{
-			if (minimum == int.MinValue && maximum == int.MaxValue)
-			{
-				return "integer()";
-			}
-			else if (maximum == int.MaxValue)
-			{
-				return "integer(" + minimum + ")";
-			}
-			else
-			{
-				return "integer(" + minimum + ", " + maximum + ")";
-			}
-		}
+        public override int GetHashCode()
+        {
+            return 31 * minimum + maximum;
+        }
 
-		public virtual ICollection<string> Examples
-		{
-			get
-			{
-				return EXAMPLES;
-			}
-		}
-	}
-
+        public override string ToString()
+        {
+            if (minimum == int.MinValue && maximum == int.MaxValue)
+                return "integer()";
+            if (maximum == int.MaxValue)
+                return "integer(" + minimum + ")";
+            return "integer(" + minimum + ", " + maximum + ")";
+        }
+    }
 }

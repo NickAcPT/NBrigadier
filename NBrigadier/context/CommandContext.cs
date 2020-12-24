@@ -9,214 +9,124 @@ using NBrigadier.Tree;
 namespace NBrigadier.Context
 {
     public class CommandContext<S>
-	{
+    {
+        private static readonly IDictionary<Type, Type> PRIMITIVE_TO_WRAPPER = new Dictionary<Type, Type>();
+        private readonly IDictionary<string, ParsedArgument<S, object>> arguments;
+        private readonly CommandContext<S> child;
+        private readonly Command<S> command;
+        private readonly bool forks;
+        private readonly string input;
+        private readonly RedirectModifier<S> modifier;
+        private readonly IList<ParsedCommandNode<S>> nodes;
+        private readonly StringRange range;
+        private readonly CommandNode<S> rootNode;
 
-		private static readonly IDictionary<Type, Type> PRIMITIVE_TO_WRAPPER = new Dictionary<Type, Type>();
+        private readonly S source;
 
-		static CommandContext()
-		{
-		}
+        static CommandContext()
+        {
+        }
 
-		private readonly S source;
-		private readonly string input;
-		private readonly Command<S> command;
-		private readonly IDictionary<string, ParsedArgument<S, object>> arguments;
-		private readonly CommandNode<S> rootNode;
-		private readonly IList<ParsedCommandNode<S>> nodes;
-		private readonly StringRange range;
-		private readonly CommandContext<S> child;
-		private readonly RedirectModifier<S> modifier;
-		private readonly bool forks;
+        public CommandContext(S source, string input, IDictionary<string, ParsedArgument<S, object>> arguments,
+            Command<S> command, CommandNode<S> rootNode, IList<ParsedCommandNode<S>> nodes, StringRange range,
+            CommandContext<S> child, RedirectModifier<S> modifier, bool forks)
+        {
+            this.source = source;
+            this.input = input;
+            this.arguments = arguments;
+            this.command = command;
+            this.rootNode = rootNode;
+            this.nodes = nodes;
+            this.range = range;
+            this.child = child;
+            this.modifier = modifier;
+            this.forks = forks;
+        }
 
-		public CommandContext(S source, string input, IDictionary<string, ParsedArgument<S, object>> arguments, Command<S> command, CommandNode<S> rootNode, IList<ParsedCommandNode<S>> nodes, StringRange range, CommandContext<S> child, RedirectModifier<S> modifier, bool forks)
-		{
-			this.source = source;
-			this.input = input;
-			this.arguments = arguments;
-			this.command = command;
-			this.rootNode = rootNode;
-			this.nodes = nodes;
-			this.range = range;
-			this.child = child;
-			this.modifier = modifier;
-			this.forks = forks;
-		}
+        public virtual CommandContext<S> Child => child;
 
-		public virtual CommandContext<S> CopyFor(S source)
-		{
-			if (Equals(this.source, source))
-			{
-				return this;
-			}
-			return new CommandContext<S>(source, input, arguments, command, rootNode, nodes, range, child, modifier, forks);
-		}
+        public virtual CommandContext<S> LastChild
+        {
+            get
+            {
+                var result = this;
+                while (result.Child != null) result = result.Child;
+                return result;
+            }
+        }
 
-		public virtual CommandContext<S> Child
-		{
-			get
-			{
-				return child;
-			}
-		}
+        public virtual Command<S> Command => command;
 
-		public virtual CommandContext<S> LastChild
-		{
-			get
-			{
-				CommandContext<S> result = this;
-				while (result.Child != null)
-				{
-					result = result.Child;
-				}
-				return result;
-			}
-		}
+        public virtual S Source => source;
 
-		public virtual Command<S> Command
-		{
-			get
-			{
-				return command;
-			}
-		}
+        public virtual RedirectModifier<S> RedirectModifier => modifier;
 
-		public virtual S Source
-		{
-			get
-			{
-				return source;
-			}
-		}
+        public virtual StringRange Range => range;
 
-public virtual V GetArgument<V>(string name)
-{
-    return GetArgument<V>(name, typeof(V));
-}
+        public virtual string Input => input;
 
-public virtual V GetArgument<V>(string name, Type clazz)
-		{
-			ParsedArgument<S, object> argument = arguments[name];
+        public virtual CommandNode<S> RootNode => rootNode;
 
-			if (argument == null)
-			{
-				throw new System.ArgumentException("No such argument '" + name + "' exists on this command");
-			}
+        public virtual IList<ParsedCommandNode<S>> Nodes => nodes;
 
-			object result = argument.Result;
-			if (clazz.IsInstanceOfType(argument.Result))
-			{
-				return (V) result;
-			}
-			else
-			{
-				throw new System.ArgumentException("Argument '" + name + "' is defined as " + result.GetType().Name + ", not " + clazz);
-			}
-		}
+        public virtual bool Forked => forks;
 
-		public override bool Equals(object o)
-		{
-			if (this == o)
-			{
-				return true;
-			}
-			if (!(o is CommandContext<S>))
-			{
-				return false;
-			}
+        public virtual CommandContext<S> CopyFor(S source)
+        {
+            if (Equals(this.source, source)) return this;
+            return new CommandContext<S>(source, input, arguments, command, rootNode, nodes, range, child, modifier,
+                forks);
+        }
 
-			CommandContext<S> that = (CommandContext<S>) o;
+        public virtual V GetArgument<V>(string name)
+        {
+            return GetArgument<V>(name, typeof(V));
+        }
 
-			if (!arguments.Equals(that.arguments))
-			{
-				return false;
-			}
-			if (!rootNode.Equals(that.rootNode))
-			{
-				return false;
-			}
-			if (nodes.Count != that.nodes.Count || !nodes.SequenceEqual(that.nodes))
-			{
-				return false;
-			}
-			if (command != null ?!command.Equals(that.command) : that.command != null)
-			{
-				return false;
-			}
-			if (!source.Equals(that.source))
-			{
-				return false;
-			}
-			if (child != null ?!child.Equals(that.child) : that.child != null)
-			{
-				return false;
-			}
+        public virtual V GetArgument<V>(string name, Type clazz)
+        {
+            var argument = arguments[name];
 
-			return true;
-		}
+            if (argument == null) throw new ArgumentException("No such argument '" + name + "' exists on this command");
 
-		public override int GetHashCode()
-		{
-			int result = source.GetHashCode();
-			result = 31 * result + arguments.GetHashCode();
-			result = 31 * result + (command != null ? command.GetHashCode() : 0);
-			result = 31 * result + rootNode.GetHashCode();
-			result = 31 * result + nodes.GetHashCode();
-			result = 31 * result + (child != null ? child.GetHashCode() : 0);
-			return result;
-		}
+            var result = argument.Result;
+            if (clazz.IsInstanceOfType(argument.Result))
+                return (V) result;
+            throw new ArgumentException("Argument '" + name + "' is defined as " + result.GetType().Name + ", not " +
+                                        clazz);
+        }
 
-		public virtual RedirectModifier<S> RedirectModifier
-		{
-			get
-			{
-				return modifier;
-			}
-		}
+        public override bool Equals(object o)
+        {
+            if (this == o) return true;
+            if (!(o is CommandContext<S>)) return false;
 
-		public virtual StringRange Range
-		{
-			get
-			{
-				return range;
-			}
-		}
+            var that = (CommandContext<S>) o;
 
-		public virtual string Input
-		{
-			get
-			{
-				return input;
-			}
-		}
+            if (!arguments.Equals(that.arguments)) return false;
+            if (!rootNode.Equals(that.rootNode)) return false;
+            if (nodes.Count != that.nodes.Count || !nodes.SequenceEqual(that.nodes)) return false;
+            if (command != null ? !command.Equals(that.command) : that.command != null) return false;
+            if (!source.Equals(that.source)) return false;
+            if (child != null ? !child.Equals(that.child) : that.child != null) return false;
 
-		public virtual CommandNode<S> RootNode
-		{
-			get
-			{
-				return rootNode;
-			}
-		}
+            return true;
+        }
 
-		public virtual IList<ParsedCommandNode<S>> Nodes
-		{
-			get
-			{
-				return nodes;
-			}
-		}
+        public override int GetHashCode()
+        {
+            var result = source.GetHashCode();
+            result = 31 * result + arguments.GetHashCode();
+            result = 31 * result + (command != null ? command.GetHashCode() : 0);
+            result = 31 * result + rootNode.GetHashCode();
+            result = 31 * result + nodes.GetHashCode();
+            result = 31 * result + (child != null ? child.GetHashCode() : 0);
+            return result;
+        }
 
-		public virtual bool HasNodes()
-		{
-			return nodes.Count > 0;
-		}
-
-		public virtual bool Forked
-		{
-			get
-			{
-				return forks;
-			}
-		}
-	}
-
+        public virtual bool HasNodes()
+        {
+            return nodes.Count > 0;
+        }
+    }
 }

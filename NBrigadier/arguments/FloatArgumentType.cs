@@ -7,119 +7,89 @@ using NBrigadier.Exceptions;
 
 namespace NBrigadier.Arguments
 {
-	using StringReader = StringReader;
-    using CommandSyntaxException = CommandSyntaxException;
+    public class FloatArgumentType : ArgumentType<float>
+    {
+        private static readonly ICollection<string> EXAMPLES = new List<string>
+            {"0", "1.2", ".5", "-1", "-.5", "-1234.56"};
 
+        private readonly float maximum;
 
-	public class FloatArgumentType : ArgumentType<float>
-	{
-		private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "1.2", ".5", "-1", "-.5", "-1234.56"};
+        private readonly float minimum;
 
-		private readonly float minimum;
-		private readonly float maximum;
+        private FloatArgumentType(float minimum, float maximum)
+        {
+            this.minimum = minimum;
+            this.maximum = maximum;
+        }
 
-		private FloatArgumentType(float minimum, float maximum)
-		{
-			this.minimum = minimum;
-			this.maximum = maximum;
-		}
+        public virtual float Minimum => minimum;
 
-		public static FloatArgumentType FloatArg()
-		{
-			return FloatArg(-float.MaxValue);
-		}
+        public virtual float Maximum => maximum;
 
-		public static FloatArgumentType FloatArg(float min)
-		{
-			return FloatArg(min, float.MaxValue);
-		}
+        public virtual ICollection<string> Examples => EXAMPLES;
 
-		public static FloatArgumentType FloatArg(float min, float max)
-		{
-			return new FloatArgumentType(min, max);
-		}
+        public float Parse(StringReader reader)
+        {
+            var start = reader.Cursor;
+            var result = reader.ReadFloat();
+            if (result < minimum)
+            {
+                reader.Cursor = start;
+                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.FloatTooLow()
+                    .CreateWithContext(reader, result, minimum);
+            }
 
-		public static float GetFloat<T1>(CommandContext<T1> context, string name)
-		{
-			return context.GetArgument<float>(name, typeof(float));
-		}
+            if (result > maximum)
+            {
+                reader.Cursor = start;
+                throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.FloatTooHigh()
+                    .CreateWithContext(reader, result, maximum);
+            }
 
-		public virtual float Minimum
-		{
-			get
-			{
-				return minimum;
-			}
-		}
+            return result;
+        }
 
-		public virtual float Maximum
-		{
-			get
-			{
-				return maximum;
-			}
-		}
+        public static FloatArgumentType FloatArg()
+        {
+            return FloatArg(-float.MaxValue);
+        }
 
-		public float Parse(StringReader reader)
-		{
-			int start = reader.Cursor;
-			float result = reader.ReadFloat();
-			if (result < minimum)
-			{
-				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.FloatTooLow().CreateWithContext(reader, result, minimum);
-			}
-			if (result > maximum)
-			{
-				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.FloatTooHigh().CreateWithContext(reader, result, maximum);
-			}
-			return result;
-		}
+        public static FloatArgumentType FloatArg(float min)
+        {
+            return FloatArg(min, float.MaxValue);
+        }
 
-		public override bool Equals(object o)
-		{
-			if (this == o)
-			{
-				return true;
-			}
-			if (!(o is FloatArgumentType))
-			{
-				return false;
-			}
+        public static FloatArgumentType FloatArg(float min, float max)
+        {
+            return new(min, max);
+        }
 
-			FloatArgumentType that = (FloatArgumentType) o;
-			return maximum == that.maximum && minimum == that.minimum;
-		}
+        public static float GetFloat<T1>(CommandContext<T1> context, string name)
+        {
+            return context.GetArgument<float>(name, typeof(float));
+        }
 
-		public override int GetHashCode()
-		{
-			return (int)(31 * minimum + maximum);
-		}
+        public override bool Equals(object o)
+        {
+            if (this == o) return true;
+            if (!(o is FloatArgumentType)) return false;
 
-		public override string ToString()
-		{
-			if (minimum == -float.MaxValue && maximum == float.MaxValue)
-			{
-				return "float()";
-			}
-			else if (maximum == float.MaxValue)
-			{
-				return "float(" + minimum + ")";
-			}
-			else
-			{
-				return "float(" + minimum + ", " + maximum + ")";
-			}
-		}
+            var that = (FloatArgumentType) o;
+            return maximum == that.maximum && minimum == that.minimum;
+        }
 
-		public virtual ICollection<string> Examples
-		{
-			get
-			{
-				return EXAMPLES;
-			}
-		}
-	}
+        public override int GetHashCode()
+        {
+            return (int) (31 * minimum + maximum);
+        }
 
+        public override string ToString()
+        {
+            if (minimum == -float.MaxValue && maximum == float.MaxValue)
+                return "float()";
+            if (maximum == float.MaxValue)
+                return "float(" + minimum + ")";
+            return "float(" + minimum + ", " + maximum + ")";
+        }
+    }
 }

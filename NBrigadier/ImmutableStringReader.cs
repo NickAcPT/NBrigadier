@@ -3,27 +3,26 @@
 
 namespace NBrigadier
 {
-	public interface ImmutableStringReader
-	{
-		string String {get;}
+    public interface ImmutableStringReader
+    {
+        string String { get; }
 
-		int RemainingLength {get;}
+        int RemainingLength { get; }
 
-		int TotalLength {get;}
+        int TotalLength { get; }
 
-		int Cursor {get;}
+        int Cursor { get; }
 
-		string ReadValue {get;}
+        string ReadValue { get; }
 
-		string Remaining {get;}
+        string Remaining { get; }
 
-		bool CanRead(int length);
+        bool CanRead(int length);
 
-		bool CanRead();
+        bool CanRead();
 
-		char Peek();
+        char Peek();
 
-		char Peek(int offset);
-	}
-
+        char Peek(int offset);
+    }
 }

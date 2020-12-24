@@ -3,27 +3,20 @@
 
 namespace NBrigadier
 {
-	public class LiteralMessage : Message
-	{
-		private readonly string @string;
+    public class LiteralMessage : Message
+    {
+        private readonly string @string;
 
-		public LiteralMessage(string @string)
-		{
-			this.@string = @string;
-		}
+        public LiteralMessage(string @string)
+        {
+            this.@string = @string;
+        }
 
-		public virtual string String
-		{
-			get
-			{
-				return @string;
-			}
-		}
+        public virtual string String => @string;
 
-		public override string ToString()
-		{
-			return @string;
-		}
-	}
-
+        public override string ToString()
+        {
+            return @string;
+        }
+    }
 }

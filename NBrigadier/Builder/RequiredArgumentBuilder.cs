@@ -8,71 +8,42 @@ using NBrigadier.Tree;
 namespace NBrigadier.Builder
 {
     public class RequiredArgumentBuilder<S, T> : ArgumentBuilder<S, RequiredArgumentBuilder<S, T>>
-	{
-		private readonly string name;
-		private readonly ArgumentType<T> type;
-		private SuggestionProvider<S> suggestionsProvider = null;
+    {
+        private SuggestionProvider<S> suggestionsProvider;
 
-		private RequiredArgumentBuilder(string name, ArgumentType<T> type)
-		{
-			this.name = name;
-			this.type = type;
-		}
+        private RequiredArgumentBuilder(string name, ArgumentType<T> type)
+        {
+            this.Name = name;
+            this.Type = type;
+        }
 
-		public static RequiredArgumentBuilder<S, T> Argument(string name, ArgumentType<T> type)
-		{
-			return new RequiredArgumentBuilder<S, T>(name, type);
-		}
+        public virtual SuggestionProvider<S> SuggestionsProvider => suggestionsProvider;
 
-		public virtual RequiredArgumentBuilder<S, T> Suggests(SuggestionProvider<S> provider)
-		{
-			this.suggestionsProvider = provider;
-			return This;
-		}
+        protected internal override RequiredArgumentBuilder<S, T> This => this;
 
-		public virtual SuggestionProvider<S> SuggestionsProvider
-		{
-			get
-			{
-				return suggestionsProvider;
-			}
-		}
+        public virtual ArgumentType<T> Type { get; }
 
-		protected internal override RequiredArgumentBuilder<S, T> This
-		{
-			get
-			{
-				return this;
-			}
-		}
+        public virtual string Name { get; }
 
-		public virtual ArgumentType<T> Type
-		{
-			get
-			{
-				return type;
-			}
-		}
+        public static RequiredArgumentBuilder<S, T> Argument(string name, ArgumentType<T> type)
+        {
+            return new(name, type);
+        }
 
-		public virtual string Name
-		{
-			get
-			{
-				return name;
-			}
-		}
+        public virtual RequiredArgumentBuilder<S, T> Suggests(SuggestionProvider<S> provider)
+        {
+            suggestionsProvider = provider;
+            return This;
+        }
 
-		public override CommandNode<S> Build()
-		{
-			ArgumentCommandNode<S, T> result = new ArgumentCommandNode<S, T>(Name, Type, Command, Requirement, Redirect, RedirectModifier, Fork, SuggestionsProvider);
+        public override CommandNode<S> Build()
+        {
+            var result = new ArgumentCommandNode<S, T>(Name, Type, Command, Requirement, Redirect, RedirectModifier,
+                Fork, SuggestionsProvider);
 
-			foreach (CommandNode<S> argument in Arguments)
-			{
-				result.AddChild(argument);
-			}
+            foreach (var argument in Arguments) result.AddChild(argument);
 
-			return result;
-		}
-	}
-
+            return result;
+        }
+    }
 }

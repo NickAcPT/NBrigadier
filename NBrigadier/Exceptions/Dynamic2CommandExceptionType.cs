@@ -3,11 +3,10 @@
 
 namespace NBrigadier.Exceptions
 {
-    using ImmutableStringReader = ImmutableStringReader;
-    using Message = Message;
-
     public class Dynamic2CommandExceptionType : CommandExceptionType
     {
+        public delegate Message Function(object a, object b);
+
         private readonly Function function;
 
         public Dynamic2CommandExceptionType(Function function)
@@ -17,14 +16,12 @@ namespace NBrigadier.Exceptions
 
         public virtual CommandSyntaxException Create(object a, object b)
         {
-            return new CommandSyntaxException(this, function(a, b));
+            return new(this, function(a, b));
         }
 
         public virtual CommandSyntaxException CreateWithContext(ImmutableStringReader reader, object a, object b)
         {
-            return new CommandSyntaxException(this, function(a, b), reader.String, reader.Cursor);
+            return new(this, function(a, b), reader.String, reader.Cursor);
         }
-
-        public delegate Message Function(object a, object b);
     }
 }
