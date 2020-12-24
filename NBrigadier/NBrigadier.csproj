@@ -13,8 +13,8 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>NBrigadier,brigadier,command,command parser,command dispatcher, dispatcher, parser</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.17.0</AssemblyVersion>
-    <Version>1.0.17</Version>
+    <AssemblyVersion>1.0.17.1</AssemblyVersion>
+    <Version>1.0.17.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

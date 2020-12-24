@@ -62,7 +62,7 @@ namespace NBrigadier.Tree
 
         public virtual CommandNode<TS> GetChild(string name)
         {
-            return _children[name];
+            return _children.GetValueOrNull(name);
         }
 
         public virtual bool CanUse(TS source)
@@ -151,7 +151,7 @@ namespace NBrigadier.Tree
                 while (input.CanRead() && input.Peek() != ' ') input.Skip();
                 var text = input.String.Substring(cursor, input.Cursor - cursor);
                 input.Cursor = cursor;
-                var literal = _literals[text];
+                var literal = _literals.GetValueOrNull(text);
                 if (literal != null)
                     return new List<CommandNode<TS>> {literal};
                 return _arguments.Values.Cast<CommandNode<TS>>().ToList();

@@ -86,7 +86,7 @@ namespace NBrigadier.Context
 
         public virtual TV GetArgument<TV>(string name, Type clazz)
         {
-            var argument = _arguments[name];
+            var argument = _arguments.GetValueOrNull(name);
 
             if (argument == null) throw new ArgumentException("No such argument '" + name + "' exists on this command");
 
