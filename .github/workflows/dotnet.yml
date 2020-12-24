@@ -1,4 +1,4 @@
-name: Build SharpILMixins (Windows)
+name: Build NBrigadier
 
 on:
   push:
