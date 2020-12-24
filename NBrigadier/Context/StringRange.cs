@@ -7,14 +7,17 @@ namespace NBrigadier.Context
 {
     public class StringRange
     {
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_end * 397) ^ _start;
+            }
+        }
+
         protected bool Equals(StringRange other)
         {
             return _end == other._end && _start == other._start;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_end, _start);
         }
 
         public static bool operator ==(StringRange left, StringRange right)
@@ -71,10 +74,10 @@ namespace NBrigadier.Context
 
         public override bool Equals(object o)
         {
-            if (this == o) return true;
-            if (!(o is StringRange)) return false;
-            var that = (StringRange) o;
-            return _start == that._start && _end == that._end;
+            if (ReferenceEquals(null, o)) return false;
+            if (ReferenceEquals(this, o)) return true;
+            if (o.GetType() != this.GetType()) return false;
+            return Equals((StringRange) o);
         }
 
         public override string ToString()

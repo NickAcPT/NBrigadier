@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NBrigadier.Context;
+using NBrigadier.Suggestion;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -34,6 +35,16 @@ namespace NBrigadier.Arguments
             if (_type == StringType.SingleWord)
                 return reader.ReadUnquotedString();
             return reader.ReadString();
+        }
+
+        public Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
+        {
+            return Suggestions.Empty();
+        }
+
+        public IList<string> GetExamples()
+        {
+            return new List<string>();
         }
 
         public static StringArgumentType Word()

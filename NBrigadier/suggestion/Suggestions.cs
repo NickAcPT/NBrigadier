@@ -10,14 +10,17 @@ namespace NBrigadier.Suggestion
 {
     public class Suggestions
     {
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_range != null ? _range.GetHashCode() : 0) * 397) ^ (_suggestions != null ? _suggestions.GetHashCode() : 0);
+            }
+        }
+
         protected bool Equals(Suggestions other)
         {
             return Equals(_range, other._range) && Equals(_suggestions, other._suggestions);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_range, _suggestions);
         }
 
         public static bool operator ==(Suggestions left, Suggestions right)
@@ -49,10 +52,10 @@ namespace NBrigadier.Suggestion
 
         public override bool Equals(object o)
         {
-            if (this == o) return true;
-            if (!(o is Suggestions)) return false;
-            var that = (Suggestions) o;
-            return Equals(_range, that._range) && Equals(_suggestions, that._suggestions);
+            if (ReferenceEquals(null, o)) return false;
+            if (ReferenceEquals(this, o)) return true;
+            if (o.GetType() != this.GetType()) return false;
+            return Equals((Suggestions) o);
         }
 
         public override string ToString()

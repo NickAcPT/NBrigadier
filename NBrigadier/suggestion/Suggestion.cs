@@ -9,14 +9,20 @@ namespace NBrigadier.Suggestion
 {
     public class Suggestion : IComparable<Suggestion>
     {
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (_range != null ? _range.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_text != null ? _text.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_tooltip != null ? _tooltip.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
         protected bool Equals(Suggestion other)
         {
             return Equals(_range, other._range) && _text == other._text && Equals(_tooltip, other._tooltip);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_range, _text, _tooltip);
         }
 
         public static bool operator ==(Suggestion left, Suggestion right)
@@ -67,10 +73,10 @@ namespace NBrigadier.Suggestion
 
         public override bool Equals(object o)
         {
-            if (this == o) return true;
-            if (!(o is Suggestion)) return false;
-            var that = (Suggestion) o;
-            return Equals(_range, that._range) && Equals(_text, that._text) && Equals(_tooltip, that._tooltip);
+            if (ReferenceEquals(null, o)) return false;
+            if (ReferenceEquals(this, o)) return true;
+            if (o.GetType() != this.GetType()) return false;
+            return Equals((Suggestion) o);
         }
 
         public override string ToString()

@@ -14,6 +14,14 @@ namespace NBrigadier.Suggestion
         {
         }
 
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ _value;
+            }
+        }
+
         public IntegerSuggestion(StringRange range, int value, IMessage tooltip) : base(range, Convert.ToString(value),
             tooltip)
         {
@@ -45,11 +53,6 @@ namespace NBrigadier.Suggestion
         protected bool Equals(IntegerSuggestion other)
         {
             return base.Equals(other) && _value == other._value;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(base.GetHashCode(), _value);
         }
 
         public static bool operator ==(IntegerSuggestion left, IntegerSuggestion right)

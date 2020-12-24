@@ -8,14 +8,17 @@ namespace NBrigadier.Context
 {
     public class ParsedArgument<TS, T>
     {
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_range != null ? _range.GetHashCode() : 0) * 397) ^ EqualityComparer<T>.Default.GetHashCode(_result);
+            }
+        }
+
         protected bool Equals(ParsedArgument<TS, T> other)
         {
             return Equals(_range, other._range) && EqualityComparer<T>.Default.Equals(_result, other._result);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_range, _result);
         }
 
         public static bool operator ==(ParsedArgument<TS, T> left, ParsedArgument<TS, T> right)
@@ -43,10 +46,10 @@ namespace NBrigadier.Context
 
         public override bool Equals(object o)
         {
-            if (this == o) return true;
-            if (!(o is ParsedArgument<TS, T>)) return false;
-            var that = o as ParsedArgument<TS, T>;
-            return Equals(_range, that._range) && Equals(_result, that._result);
+            if (ReferenceEquals(null, o)) return false;
+            if (ReferenceEquals(this, o)) return true;
+            if (o.GetType() != this.GetType()) return false;
+            return Equals((ParsedArgument<TS, T>) o);
         }
     }
 }

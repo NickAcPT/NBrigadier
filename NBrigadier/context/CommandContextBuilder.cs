@@ -87,7 +87,7 @@ namespace NBrigadier.Context
         {
             var copy = new CommandContextBuilder<TS>(_dispatcher, _source, _rootNode, _range.Start);
             copy._command = _command;
-            foreach (var (key, value) in _arguments) _arguments[key] = value;
+            foreach (var keyVal in _arguments) _arguments[keyVal.Key] = keyVal.Value;
             ((List<ParsedCommandNode<TS>>) copy._nodes).AddRange(_nodes);
             copy._child = _child;
             copy._range = _range;

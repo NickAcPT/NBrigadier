@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
+using NBrigadier.Suggestion;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -10,14 +11,17 @@ namespace NBrigadier.Arguments
 {
     public class LongArgumentType : IArgumentType<long>
     {
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_maximum.GetHashCode() * 397) ^ _minimum.GetHashCode();
+            }
+        }
+
         protected bool Equals(LongArgumentType other)
         {
             return _maximum == other._maximum && _minimum == other._minimum;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_maximum, _minimum);
         }
 
         public static bool operator ==(LongArgumentType left, LongArgumentType right)
@@ -68,6 +72,16 @@ namespace NBrigadier.Arguments
             return result;
         }
 
+        public Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
+        {
+            return Suggestions.Empty();
+        }
+
+        public IList<string> GetExamples()
+        {
+            return new List<string>();
+        }
+
         public static LongArgumentType LongArg()
         {
             return LongArg(long.MinValue);
@@ -90,11 +104,10 @@ namespace NBrigadier.Arguments
 
         public override bool Equals(object o)
         {
-            if (this == o) return true;
-            if (!(o is LongArgumentType)) return false;
-
-            var that = (LongArgumentType) o;
-            return _maximum == that._maximum && _minimum == that._minimum;
+            if (ReferenceEquals(null, o)) return false;
+            if (ReferenceEquals(this, o)) return true;
+            if (o.GetType() != this.GetType()) return false;
+            return Equals((LongArgumentType) o);
         }
 
 

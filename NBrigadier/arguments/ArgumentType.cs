@@ -12,14 +12,8 @@ namespace NBrigadier.Arguments
     {
         T Parse(StringReader reader);
 
-        Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
-        {
-            return Suggestions.Empty();
-        }
+        Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder);
 
-        IList<string> GetExamples()
-        {
-            return new List<string>();
-        }
+        IList<string> GetExamples();
     }
 }

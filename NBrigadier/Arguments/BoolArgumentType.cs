@@ -30,6 +30,11 @@ namespace NBrigadier.Arguments
             return builder.BuildFuture();
         }
 
+        public IList<string> GetExamples()
+        {
+            return new List<string>();
+        }
+
         public static BoolArgumentType Bool()
         {
             return new();

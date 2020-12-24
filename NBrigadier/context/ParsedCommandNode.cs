@@ -8,15 +8,19 @@ namespace NBrigadier.Context
 {
     public class ParsedCommandNode<TS>
     {
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((_node != null ? _node.GetHashCode() : 0) * 397) ^ (_range != null ? _range.GetHashCode() : 0);
+            }
+        }
+
         protected bool Equals(ParsedCommandNode<TS> other)
         {
             return Equals(_node, other._node) && Equals(_range, other._range);
         }
 
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(_node, _range);
-        }
 
         public static bool operator ==(ParsedCommandNode<TS> left, ParsedCommandNode<TS> right)
         {
@@ -49,10 +53,10 @@ namespace NBrigadier.Context
 
         public override bool Equals(object o)
         {
-            if (this == o) return true;
-            if (o == null || GetType() != o.GetType()) return false;
-            var that = (ParsedCommandNode<object>) o;
-            return Equals(_node, that._node) && Equals(_range, that._range);
+            if (ReferenceEquals(null, o)) return false;
+            if (ReferenceEquals(this, o)) return true;
+            if (o.GetType() != this.GetType()) return false;
+            return Equals((ParsedCommandNode<TS>) o);
         }
     }
 }
