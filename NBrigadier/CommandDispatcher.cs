@@ -3,26 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NBrigadier.Builder;
+using NBrigadier.Context;
+using NBrigadier.Exceptions;
+using NBrigadier.Suggestion;
+using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
+namespace NBrigadier
 {
-	using com.mojang.brigadier.builder;
-	using com.mojang.brigadier.context;
-	using com.mojang.brigadier.context;
-	using com.mojang.brigadier.context;
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
-	using Suggestions = com.mojang.brigadier.suggestion.Suggestions;
-	using SuggestionsBuilder = com.mojang.brigadier.suggestion.SuggestionsBuilder;
-	using com.mojang.brigadier.tree;
-	using com.mojang.brigadier.tree;
-	using com.mojang.brigadier.tree;
+    using CommandSyntaxException = CommandSyntaxException;
+	using Suggestions = Suggestions;
+	using SuggestionsBuilder = SuggestionsBuilder;
 
 
-
-	/// <summary>
+    /// <summary>
 	/// The core command dispatcher, for registering, parsing, and executing commands.
 	/// </summary>
 	/// @param <S> a custom "source" type, such as a user or originator of a command </param>
@@ -676,7 +673,7 @@ namespace com.mojang.brigadier
 				{
 					future = node.ListSuggestions(context.Build(truncatedInput), new SuggestionsBuilder(truncatedInput, start));
 				}
-				catch (com.mojang.brigadier.exceptions.CommandSyntaxException)
+				catch (CommandSyntaxException)
 				{
 				}
 				futures[i++] = future;

@@ -1,7 +1,7 @@
 ﻿using System;
-using com.mojang.brigadier;
-using com.mojang.brigadier.arguments;
-using com.mojang.brigadier.builder;
+using NBrigadier;
+using NBrigadier.Arguments;
+using NBrigadier.Builder;
 
 Console.WriteLine("Hello world");
 var dispatcher = new CommandDispatcher<string>();

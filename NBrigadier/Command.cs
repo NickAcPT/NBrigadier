@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
-{
-	using com.mojang.brigadier.context;
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
+using NBrigadier.Context;
+using NBrigadier.Exceptions;
 
-	public delegate int Command<S>(CommandContext<S> context);
+namespace NBrigadier
+{
+    public delegate int Command<S>(CommandContext<S> context);
 
 	public static class Command_Fields
 	{

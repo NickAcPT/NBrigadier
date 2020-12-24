@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
+namespace NBrigadier
 {
 	public interface Message
 	{

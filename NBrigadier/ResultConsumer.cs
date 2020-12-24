@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
-{
-	using com.mojang.brigadier.context;
+using NBrigadier.Context;
 
-	public delegate void ResultConsumer<S>(CommandContext<S> context, bool success, int result);
+namespace NBrigadier
+{
+    public delegate void ResultConsumer<S>(CommandContext<S> context, bool success, int result);
 
 }
