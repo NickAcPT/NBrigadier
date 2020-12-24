@@ -16,8 +16,8 @@ namespace NBrigadier.Suggestion
 
         public SuggestionsBuilder(string input, int start)
         {
-            this._input = input;
-            this._start = start;
+            _input = input;
+            _start = start;
             _remaining = input.Substring(start);
         }
 

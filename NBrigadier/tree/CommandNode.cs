@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NBrigadier.Builder;
 using NBrigadier.Context;
 using NBrigadier.Suggestion;
 
@@ -12,22 +11,22 @@ namespace NBrigadier.Tree
 {
     public abstract class CommandNode<TS> : IComparable<CommandNode<TS>>
     {
-        private readonly Predicate<TS> _requirement;
-
         private readonly IDictionary<string, IArgumentCommandNode<TS>> _arguments =
             new Dictionary<string, IArgumentCommandNode<TS>>();
-
-        private IDictionary<string, CommandNode<TS>> _children = new Dictionary<string, CommandNode<TS>>();
-        private Command<TS> _command;
 
         private readonly IDictionary<string, LiteralCommandNode<TS>> _literals =
             new Dictionary<string, LiteralCommandNode<TS>>();
 
+        private readonly Predicate<TS> _requirement;
+
+        private IDictionary<string, CommandNode<TS>> _children = new Dictionary<string, CommandNode<TS>>();
+        private Command<TS> _command;
+
         protected internal CommandNode(Command<TS> command, Predicate<TS> requirement, CommandNode<TS> redirect,
             RedirectModifier<TS> modifier, bool forks)
         {
-            this._command = command;
-            this._requirement = requirement;
+            _command = command;
+            _requirement = requirement;
             Redirect = redirect;
             RedirectModifier = modifier;
             Fork = forks;
@@ -88,7 +87,8 @@ namespace NBrigadier.Tree
                 _children[node.Name] = node;
                 if (node is LiteralCommandNode<TS> commandNode)
                     _literals[node.Name] = commandNode;
-                else if (node is IArgumentCommandNode<TS> argumentCommandNode) _arguments[node.Name] = argumentCommandNode;
+                else if (node is IArgumentCommandNode<TS> argumentCommandNode)
+                    _arguments[node.Name] = argumentCommandNode;
             }
 
             _children = _children.SetOfKeyValuePairs().OrderBy(c => c.Value).ToDictionary(c => c.Key, c => c.Value);

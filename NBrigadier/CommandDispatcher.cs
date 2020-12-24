@@ -57,7 +57,7 @@ namespace NBrigadier
         /// <param name="root"> the existing <seealso cref="RootCommandNode" /> to use as the basis for this tree </param>
         public CommandDispatcher(RootCommandNode<TS> root)
         {
-            this._root = root;
+            _root = root;
         }
 
         /// <summary>
@@ -817,7 +817,8 @@ namespace NBrigadier
             _root.FindAmbiguities(consumer);
         }
 
-        private void AddPaths(CommandNode<TS> node, IList<IList<CommandNode<TS>>> result, IList<CommandNode<TS>> parents)
+        private void AddPaths(CommandNode<TS> node, IList<IList<CommandNode<TS>>> result,
+            IList<CommandNode<TS>> parents)
         {
             IList<CommandNode<TS>> current = new List<CommandNode<TS>>(parents);
             current.Add(node);

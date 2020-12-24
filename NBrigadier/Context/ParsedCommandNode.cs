@@ -1,13 +1,26 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-using System;
 using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
     public class ParsedCommandNode<TS>
     {
+        private readonly CommandNode<TS> _node;
+
+        private readonly StringRange _range;
+
+        public ParsedCommandNode(CommandNode<TS> node, StringRange range)
+        {
+            _node = node;
+            _range = range;
+        }
+
+        public virtual CommandNode<TS> Node => _node;
+
+        public virtual StringRange Range => _range;
+
         public override int GetHashCode()
         {
             unchecked
@@ -32,20 +45,6 @@ namespace NBrigadier.Context
             return !Equals(left, right);
         }
 
-        private readonly CommandNode<TS> _node;
-
-        private readonly StringRange _range;
-
-        public ParsedCommandNode(CommandNode<TS> node, StringRange range)
-        {
-            this._node = node;
-            this._range = range;
-        }
-
-        public virtual CommandNode<TS> Node => _node;
-
-        public virtual StringRange Range => _range;
-
         public override string ToString()
         {
             return _node + "@" + _range;
@@ -55,7 +54,7 @@ namespace NBrigadier.Context
         {
             if (ReferenceEquals(null, o)) return false;
             if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != this.GetType()) return false;
+            if (o.GetType() != GetType()) return false;
             return Equals((ParsedCommandNode<TS>) o);
         }
     }

@@ -12,8 +12,8 @@ namespace NBrigadier.Context
 
         public SuggestionContext(CommandNode<TS> parent, int startPos)
         {
-            this.Parent = parent;
-            this.StartPos = startPos;
+            Parent = parent;
+            StartPos = startPos;
         }
     }
 }

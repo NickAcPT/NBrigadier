@@ -9,7 +9,7 @@ namespace NBrigadier
 
         public LiteralMessage(string @string)
         {
-            this._string = @string;
+            _string = @string;
         }
 
         public virtual string String => _string;

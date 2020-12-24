@@ -21,12 +21,13 @@ namespace NBrigadier.Tree
         private readonly IArgumentType<T> _type;
 
         public ArgumentCommandNode(string name, IArgumentType<T> type, Command<TS> command, Predicate<TS> requirement,
-            CommandNode<TS> redirect, RedirectModifier<TS> modifier, bool forks, SuggestionProvider<TS> customSuggestions)
+            CommandNode<TS> redirect, RedirectModifier<TS> modifier, bool forks,
+            SuggestionProvider<TS> customSuggestions)
             : base(command, requirement, redirect, modifier, forks)
         {
-            this._name = name;
-            this._type = type;
-            this._customSuggestions = customSuggestions;
+            _name = name;
+            _type = type;
+            _customSuggestions = customSuggestions;
         }
 
         public virtual IArgumentType<T> Type => _type;

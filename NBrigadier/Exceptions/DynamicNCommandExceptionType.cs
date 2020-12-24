@@ -9,7 +9,7 @@ namespace NBrigadier.Exceptions
 
         public DynamicNCommandExceptionType(IFunction function)
         {
-            this._function = function;
+            _function = function;
         }
 
         public virtual CommandSyntaxException Create(object a, params object[] args)

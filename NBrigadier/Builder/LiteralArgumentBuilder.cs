@@ -9,7 +9,7 @@ namespace NBrigadier.Builder
     {
         protected internal LiteralArgumentBuilder(string literal)
         {
-            this.Literal = literal;
+            Literal = literal;
         }
 
         protected internal override LiteralArgumentBuilder<TS> This => this;

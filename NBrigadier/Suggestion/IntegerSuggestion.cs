@@ -14,6 +14,14 @@ namespace NBrigadier.Suggestion
         {
         }
 
+        public IntegerSuggestion(StringRange range, int value, IMessage tooltip) : base(range, Convert.ToString(value),
+            tooltip)
+        {
+            _value = value;
+        }
+
+        public virtual int Value => _value;
+
         public override int GetHashCode()
         {
             unchecked
@@ -22,19 +30,11 @@ namespace NBrigadier.Suggestion
             }
         }
 
-        public IntegerSuggestion(StringRange range, int value, IMessage tooltip) : base(range, Convert.ToString(value),
-            tooltip)
-        {
-            this._value = value;
-        }
-
-        public virtual int Value => _value;
-
         public override bool Equals(object o)
         {
             if (ReferenceEquals(null, o)) return false;
             if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != this.GetType()) return false;
+            if (o.GetType() != GetType()) return false;
             return Equals((IntegerSuggestion) o);
         }
 

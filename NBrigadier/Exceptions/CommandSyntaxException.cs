@@ -18,8 +18,8 @@ namespace NBrigadier.Exceptions
         public CommandSyntaxException(ICommandExceptionType type, IMessage message) :
             base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
         {
-            this.Type = type;
-            this._message = message;
+            Type = type;
+            _message = message;
             _input = null;
             _cursor = -1;
         }
@@ -27,17 +27,17 @@ namespace NBrigadier.Exceptions
         public CommandSyntaxException(ICommandExceptionType type, IMessage message, string input, int cursor) :
             base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
         {
-            this.Type = type;
-            this._message = message;
-            this._input = input;
-            this._cursor = cursor;
+            Type = type;
+            _message = message;
+            _input = input;
+            _cursor = cursor;
         }
 
         public override string Message
         {
             get
             {
-                var message = this._message.String;
+                var message = _message.String;
                 var context = Context;
                 if (!ReferenceEquals(context, null)) message += " at position " + _cursor + ": " + context;
                 return message;
@@ -51,7 +51,7 @@ namespace NBrigadier.Exceptions
             get
             {
                 if (ReferenceEquals(_input, null)) return null;
-                var cursor = Math.Min(_input.Length, this._cursor);
+                var cursor = Math.Min(_input.Length, _cursor);
                 var builder = new StringBuilder();
 
                 if (cursor > ContextAmount) builder.Append("...");

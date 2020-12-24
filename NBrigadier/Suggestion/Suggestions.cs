@@ -10,11 +10,29 @@ namespace NBrigadier.Suggestion
 {
     public class Suggestions
     {
+        private static readonly Suggestions EMPTY = new(StringRange.At(0), new List<Suggestion>());
+
+        private readonly StringRange _range;
+        private readonly IList<Suggestion> _suggestions;
+
+        public Suggestions(StringRange range, IList<Suggestion> suggestions)
+        {
+            _range = range;
+            _suggestions = suggestions;
+        }
+
+        public virtual StringRange Range => _range;
+
+        public virtual IList<Suggestion> List => _suggestions;
+
+        public virtual bool IsEmpty => _suggestions.Count == 0;
+
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((_range != null ? _range.GetHashCode() : 0) * 397) ^ (_suggestions != null ? _suggestions.GetHashCode() : 0);
+                return ((_range != null ? _range.GetHashCode() : 0) * 397) ^
+                       (_suggestions != null ? _suggestions.GetHashCode() : 0);
             }
         }
 
@@ -33,28 +51,11 @@ namespace NBrigadier.Suggestion
             return !Equals(left, right);
         }
 
-        private static readonly Suggestions EMPTY = new(StringRange.At(0), new List<Suggestion>());
-
-        private readonly StringRange _range;
-        private readonly IList<Suggestion> _suggestions;
-
-        public Suggestions(StringRange range, IList<Suggestion> suggestions)
-        {
-            this._range = range;
-            this._suggestions = suggestions;
-        }
-
-        public virtual StringRange Range => _range;
-
-        public virtual IList<Suggestion> List => _suggestions;
-
-        public virtual bool IsEmpty => _suggestions.Count == 0;
-
         public override bool Equals(object o)
         {
             if (ReferenceEquals(null, o)) return false;
             if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != this.GetType()) return false;
+            if (o.GetType() != GetType()) return false;
             return Equals((Suggestions) o);
         }
 

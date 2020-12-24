@@ -46,13 +46,13 @@ namespace NBrigadier.Builder
 
         public virtual T Executes(Command<TS> command)
         {
-            this._command = command;
+            _command = command;
             return This;
         }
 
         public virtual T Requires(Predicate<TS> requirement)
         {
-            this._requirement = requirement;
+            _requirement = requirement;
             return This;
         }
 
@@ -75,8 +75,8 @@ namespace NBrigadier.Builder
         {
             if (_arguments.Children.Count > 0)
                 throw new InvalidOperationException("Cannot forward a node with children");
-            this._target = target;
-            this._modifier = modifier;
+            _target = target;
+            _modifier = modifier;
             _forks = fork;
             return This;
         }

@@ -20,8 +20,8 @@ namespace NBrigadier.Arguments
 
         private FloatArgumentType(float minimum, float maximum)
         {
-            this._minimum = minimum;
-            this._maximum = maximum;
+            _minimum = minimum;
+            _maximum = maximum;
         }
 
         public virtual float Minimum => _minimum;

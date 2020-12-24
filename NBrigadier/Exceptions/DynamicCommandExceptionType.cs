@@ -11,7 +11,7 @@ namespace NBrigadier.Exceptions
 
         public DynamicCommandExceptionType(Func<object, IMessage> function)
         {
-            this._function = function;
+            _function = function;
         }
 
         public virtual CommandSyntaxException Create(object arg)

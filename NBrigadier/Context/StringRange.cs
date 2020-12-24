@@ -7,6 +7,23 @@ namespace NBrigadier.Context
 {
     public class StringRange
     {
+        private readonly int _end;
+        private readonly int _start;
+
+        public StringRange(int start, int end)
+        {
+            _start = start;
+            _end = end;
+        }
+
+        public virtual int Start => _start;
+
+        public virtual int End => _end;
+
+        public virtual bool Empty => _start == _end;
+
+        public virtual int Length => _end - _start;
+
         public override int GetHashCode()
         {
             unchecked
@@ -29,23 +46,6 @@ namespace NBrigadier.Context
         {
             return !Equals(left, right);
         }
-
-        private readonly int _end;
-        private readonly int _start;
-
-        public StringRange(int start, int end)
-        {
-            this._start = start;
-            this._end = end;
-        }
-
-        public virtual int Start => _start;
-
-        public virtual int End => _end;
-
-        public virtual bool Empty => _start == _end;
-
-        public virtual int Length => _end - _start;
 
         public static StringRange At(int pos)
         {
@@ -76,7 +76,7 @@ namespace NBrigadier.Context
         {
             if (ReferenceEquals(null, o)) return false;
             if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != this.GetType()) return false;
+            if (o.GetType() != GetType()) return false;
             return Equals((StringRange) o);
         }
 

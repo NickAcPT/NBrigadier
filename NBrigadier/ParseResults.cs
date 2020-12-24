@@ -13,9 +13,9 @@ namespace NBrigadier
         public ParseResults(CommandContextBuilder<TS> context, IMmutableStringReader reader,
             IDictionary<CommandNode<TS>, CommandSyntaxException> exceptions)
         {
-            this.Context = context;
-            this.Reader = reader;
-            this.Exceptions = exceptions;
+            Context = context;
+            Reader = reader;
+            Exceptions = exceptions;
         }
 
         public ParseResults(CommandContextBuilder<TS> context) : this(context, new StringReader(""),

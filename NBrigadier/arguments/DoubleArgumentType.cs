@@ -20,8 +20,8 @@ namespace NBrigadier.Arguments
 
         private DoubleArgumentType(double minimum, double maximum)
         {
-            this._minimum = minimum;
-            this._maximum = maximum;
+            _minimum = minimum;
+            _maximum = maximum;
         }
 
         public virtual double Minimum => _minimum;

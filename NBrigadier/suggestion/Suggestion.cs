@@ -9,11 +9,37 @@ namespace NBrigadier.Suggestion
 {
     public class Suggestion : IComparable<Suggestion>
     {
+        private readonly StringRange _range;
+        private readonly string _text;
+        private readonly IMessage _tooltip;
+
+        public Suggestion(StringRange range, string text) : this(range, text, null)
+        {
+        }
+
+        public Suggestion(StringRange range, string text, IMessage tooltip)
+        {
+            _range = range;
+            _text = text;
+            _tooltip = tooltip;
+        }
+
+        public virtual StringRange Range => _range;
+
+        public virtual string Text => _text;
+
+        public virtual IMessage Tooltip => _tooltip;
+
+        public int CompareTo(Suggestion o)
+        {
+            return string.Compare(_text, o._text, StringComparison.Ordinal);
+        }
+
         public override int GetHashCode()
         {
             unchecked
             {
-                var hashCode = (_range != null ? _range.GetHashCode() : 0);
+                var hashCode = _range != null ? _range.GetHashCode() : 0;
                 hashCode = (hashCode * 397) ^ (_text != null ? _text.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_tooltip != null ? _tooltip.GetHashCode() : 0);
                 return hashCode;
@@ -35,32 +61,6 @@ namespace NBrigadier.Suggestion
             return !Equals(left, right);
         }
 
-        private readonly StringRange _range;
-        private readonly string _text;
-        private readonly IMessage _tooltip;
-
-        public Suggestion(StringRange range, string text) : this(range, text, null)
-        {
-        }
-
-        public Suggestion(StringRange range, string text, IMessage tooltip)
-        {
-            this._range = range;
-            this._text = text;
-            this._tooltip = tooltip;
-        }
-
-        public virtual StringRange Range => _range;
-
-        public virtual string Text => _text;
-
-        public virtual IMessage Tooltip => _tooltip;
-
-        public int CompareTo(Suggestion o)
-        {
-            return string.Compare(_text, o._text, StringComparison.Ordinal);
-        }
-
         public virtual string Apply(string input)
         {
             if (_range.Start == 0 && _range.End == input.Length) return _text;
@@ -75,13 +75,14 @@ namespace NBrigadier.Suggestion
         {
             if (ReferenceEquals(null, o)) return false;
             if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != this.GetType()) return false;
+            if (o.GetType() != GetType()) return false;
             return Equals((Suggestion) o);
         }
 
         public override string ToString()
         {
-            return "Suggestion{" + "range=" + _range + ", text='" + _text + '\'' + ", tooltip='" + _tooltip + '\'' + '}';
+            return "Suggestion{" + "range=" + _range + ", text='" + _text + '\'' + ", tooltip='" + _tooltip + '\'' +
+                   '}';
         }
 
         public virtual int CompareToIgnoreCase(Suggestion b)
@@ -91,11 +92,11 @@ namespace NBrigadier.Suggestion
 
         public virtual Suggestion Expand(string command, StringRange range)
         {
-            if (range.Equals(this._range)) return this;
+            if (range.Equals(_range)) return this;
             var result = new StringBuilder();
-            if (range.Start < this._range.Start) result.Append(command.SubstringSpecial(range.Start, this._range.Start));
+            if (range.Start < _range.Start) result.Append(command.SubstringSpecial(range.Start, _range.Start));
             result.Append(_text);
-            if (range.End > this._range.End) result.Append(command.SubstringSpecial(this._range.End, range.End));
+            if (range.End > _range.End) result.Append(command.SubstringSpecial(_range.End, range.End));
             return new Suggestion(range, result.ToString(), _tooltip);
         }
     }

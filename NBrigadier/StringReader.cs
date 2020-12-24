@@ -23,7 +23,7 @@ namespace NBrigadier
 
         public StringReader(string @string)
         {
-            this._string = @string;
+            _string = @string;
         }
 
         public virtual string String => _string;
@@ -243,10 +243,7 @@ namespace NBrigadier
 
             if (value.Equals("true")) return true;
 
-            if (value.Equals("false"))
-            {
-                return false;
-            }
+            if (value.Equals("false")) return false;
 
             _cursor = start;
             throw CommandSyntaxException.BuiltInExceptions.ReaderInvalidBool().CreateWithContext(this, value);

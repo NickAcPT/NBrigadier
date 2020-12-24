@@ -13,8 +13,8 @@ namespace NBrigadier.Builder
 
         private RequiredArgumentBuilder(string name, IArgumentType<T> type)
         {
-            this.Name = name;
-            this.Type = type;
+            Name = name;
+            Type = type;
         }
 
         public virtual SuggestionProvider<TS> SuggestionsProvider => _suggestionsProvider;

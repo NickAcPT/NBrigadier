@@ -18,8 +18,8 @@ namespace NBrigadier.Arguments
 
         private IntegerArgumentType(int minimum, int maximum)
         {
-            this._minimum = minimum;
-            this._maximum = maximum;
+            _minimum = minimum;
+            _maximum = maximum;
         }
 
         public virtual int Minimum => _minimum;

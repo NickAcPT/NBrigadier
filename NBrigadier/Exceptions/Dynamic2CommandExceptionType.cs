@@ -11,7 +11,7 @@ namespace NBrigadier.Exceptions
 
         public Dynamic2CommandExceptionType(Function function)
         {
-            this._function = function;
+            _function = function;
         }
 
         public virtual CommandSyntaxException Create(object a, object b)

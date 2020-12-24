@@ -31,16 +31,16 @@ namespace NBrigadier.Context
             Command<TS> command, CommandNode<TS> rootNode, IList<ParsedCommandNode<TS>> nodes, StringRange range,
             CommandContext<TS> child, RedirectModifier<TS> modifier, bool forks)
         {
-            this._source = source;
-            this._input = input;
-            this._arguments = arguments;
-            this._command = command;
-            this._rootNode = rootNode;
-            this._nodes = nodes;
-            this._range = range;
-            this._child = child;
-            this._modifier = modifier;
-            this._forks = forks;
+            _source = source;
+            _input = input;
+            _arguments = arguments;
+            _command = command;
+            _rootNode = rootNode;
+            _nodes = nodes;
+            _range = range;
+            _child = child;
+            _modifier = modifier;
+            _forks = forks;
         }
 
         public virtual CommandContext<TS> Child => _child;
@@ -73,8 +73,9 @@ namespace NBrigadier.Context
 
         public virtual CommandContext<TS> CopyFor(TS source)
         {
-            if (Equals(this._source, source)) return this;
-            return new CommandContext<TS>(source, _input, _arguments, _command, _rootNode, _nodes, _range, _child, _modifier,
+            if (Equals(_source, source)) return this;
+            return new CommandContext<TS>(source, _input, _arguments, _command, _rootNode, _nodes, _range, _child,
+                _modifier,
                 _forks);
         }
 

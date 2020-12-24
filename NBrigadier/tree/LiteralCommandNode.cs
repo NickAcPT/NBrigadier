@@ -14,10 +14,11 @@ namespace NBrigadier.Tree
     {
         private readonly string _literal;
 
-        public LiteralCommandNode(string literal, Command<TS> command, Predicate<TS> requirement, CommandNode<TS> redirect,
+        public LiteralCommandNode(string literal, Command<TS> command, Predicate<TS> requirement,
+            CommandNode<TS> redirect,
             RedirectModifier<TS> modifier, bool forks) : base(command, requirement, redirect, modifier, forks)
         {
-            this._literal = literal;
+            _literal = literal;
         }
 
         public virtual string Literal => _literal;

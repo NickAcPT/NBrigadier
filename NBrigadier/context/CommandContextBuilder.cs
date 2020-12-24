@@ -24,9 +24,9 @@ namespace NBrigadier.Context
 
         public CommandContextBuilder(CommandDispatcher<TS> dispatcher, TS source, CommandNode<TS> rootNode, int start)
         {
-            this._rootNode = rootNode;
-            this._dispatcher = dispatcher;
-            this._source = source;
+            _rootNode = rootNode;
+            _dispatcher = dispatcher;
+            _source = source;
             _range = StringRange.At(start);
         }
 
@@ -58,7 +58,7 @@ namespace NBrigadier.Context
 
         public virtual CommandContextBuilder<TS> WithSource(TS source)
         {
-            this._source = source;
+            _source = source;
             return this;
         }
 
@@ -70,14 +70,14 @@ namespace NBrigadier.Context
 
         public virtual CommandContextBuilder<TS> WithCommand(Command<TS> command)
         {
-            this._command = command;
+            _command = command;
             return this;
         }
 
         public virtual CommandContextBuilder<TS> WithNode(CommandNode<TS> node, StringRange range)
         {
             _nodes.Add(new ParsedCommandNode<TS>(node, range));
-            this._range = StringRange.Encompassing(this._range, range);
+            _range = StringRange.Encompassing(_range, range);
             _modifier = node.RedirectModifier;
             _forks = node.Fork;
             return this;
@@ -97,7 +97,7 @@ namespace NBrigadier.Context
 
         public virtual CommandContextBuilder<TS> WithChild(CommandContextBuilder<TS> child)
         {
-            this._child = child;
+            _child = child;
             return this;
         }
 

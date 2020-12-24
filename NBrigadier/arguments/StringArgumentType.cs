@@ -16,7 +16,7 @@ namespace NBrigadier.Arguments
 
         private StringArgumentType(StringType type)
         {
-            this._type = type;
+            _type = type;
         }
 
         public virtual StringType Type => _type;
@@ -115,12 +115,12 @@ namespace NBrigadier.Arguments
 
             private static readonly List<StringType> VALUE_LIST = new();
             private static int _nextOrdinal;
+            private readonly string _nameValue;
+            private readonly int _ordinalValue;
 
             internal readonly ICollection<string> examples;
 
             public readonly InnerEnum InnerEnumValue;
-            private readonly string _nameValue;
-            private readonly int _ordinalValue;
 
             static StringType()
             {

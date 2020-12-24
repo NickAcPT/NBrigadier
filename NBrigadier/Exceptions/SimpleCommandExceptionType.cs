@@ -9,7 +9,7 @@ namespace NBrigadier.Exceptions
 
         public SimpleCommandExceptionType(IMessage message)
         {
-            this._message = message;
+            _message = message;
         }
 
         public virtual CommandSyntaxException Create()

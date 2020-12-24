@@ -11,29 +11,6 @@ namespace NBrigadier.Arguments
 {
     public class LongArgumentType : IArgumentType<long>
     {
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (_maximum.GetHashCode() * 397) ^ _minimum.GetHashCode();
-            }
-        }
-
-        protected bool Equals(LongArgumentType other)
-        {
-            return _maximum == other._maximum && _minimum == other._minimum;
-        }
-
-        public static bool operator ==(LongArgumentType left, LongArgumentType right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(LongArgumentType left, LongArgumentType right)
-        {
-            return !Equals(left, right);
-        }
-
         private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "123", "-123"};
         private readonly long _maximum;
 
@@ -41,8 +18,8 @@ namespace NBrigadier.Arguments
 
         private LongArgumentType(long minimum, long maximum)
         {
-            this._minimum = minimum;
-            this._maximum = maximum;
+            _minimum = minimum;
+            _maximum = maximum;
         }
 
         public virtual long Minimum => _minimum;
@@ -82,6 +59,29 @@ namespace NBrigadier.Arguments
             return new List<string>();
         }
 
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (_maximum.GetHashCode() * 397) ^ _minimum.GetHashCode();
+            }
+        }
+
+        protected bool Equals(LongArgumentType other)
+        {
+            return _maximum == other._maximum && _minimum == other._minimum;
+        }
+
+        public static bool operator ==(LongArgumentType left, LongArgumentType right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(LongArgumentType left, LongArgumentType right)
+        {
+            return !Equals(left, right);
+        }
+
         public static LongArgumentType LongArg()
         {
             return LongArg(long.MinValue);
@@ -106,7 +106,7 @@ namespace NBrigadier.Arguments
         {
             if (ReferenceEquals(null, o)) return false;
             if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != this.GetType()) return false;
+            if (o.GetType() != GetType()) return false;
             return Equals((LongArgumentType) o);
         }
 
