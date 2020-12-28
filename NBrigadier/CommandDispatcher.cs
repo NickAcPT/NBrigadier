@@ -255,7 +255,7 @@ namespace NBrigadier
                                 catch (CommandSyntaxException ex)
                                 {
                                     _consumer(context, false, 0);
-                                    if (!forked) throw ex;
+                                    if (!forked) throw;
                                 }
                             }
                         }
@@ -273,7 +273,7 @@ namespace NBrigadier
                         catch (CommandSyntaxException ex)
                         {
                             _consumer(context, false, 0);
-                            if (!forked) throw ex;
+                            if (!forked) throw;
                         }
                     }
                 }
@@ -422,14 +422,14 @@ namespace NBrigadier
             if (potentials != null)
             {
                 if (potentials.Count > 1)
-                    potentials.Sort((a, b) =>
+                    potentials = potentials.Sort((a, b) =>
                     {
                         if (!a.Reader.CanRead() && b.Reader.CanRead()) return -1;
                         if (a.Reader.CanRead() && !b.Reader.CanRead()) return 1;
                         if (a.Exceptions.IsEmpty() && !b.Exceptions.IsEmpty()) return -1;
                         if (!a.Exceptions.IsEmpty() && b.Exceptions.IsEmpty()) return 1;
                         return 0;
-                    });
+                    }).ToList();
                 return potentials[0];
             }
 

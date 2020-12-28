@@ -78,8 +78,7 @@ namespace NBrigadier.CommandSuggestion
             var range = new StringRange(start, end);
             ISet<Suggestion> texts = new HashSet<Suggestion>();
             foreach (var suggestion in suggestions) texts.Add(suggestion.Expand(command, range));
-            IList<Suggestion> sorted = new List<Suggestion>(texts);
-            sorted.Sort((a, b) => a.CompareToIgnoreCase(b));
+            IList<Suggestion> sorted = texts.Sort((a, b) => a.CompareToIgnoreCase(b)).ToList();
             return new Suggestions(range, sorted);
         }
     }
