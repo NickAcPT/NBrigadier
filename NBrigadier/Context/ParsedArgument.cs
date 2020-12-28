@@ -27,9 +27,7 @@ namespace NBrigadier.Context
         {
             if (this == o) return true;
             if (!(o is IParsedArgument)) return false;
-            // WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: ParsedArgument<?, ?> that = (ParsedArgument<?, ?>) o;
-            var that = (ParsedArgument<object, object>) o;
+                        var that = (ParsedArgument<object, object>) o;
             return ObjectsHelper.Equals(_range, that._range) && ObjectsHelper.Equals(_result, that._result);
         }
 

@@ -14,8 +14,6 @@ namespace NBrigadier.Context
     {
         private static readonly IDictionary<Type, Type> _primitiveToWrapper = new Dictionary<Type, Type>();
 
-// WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: private java.util.Map<String, ParsedArgument<S, ?>> arguments;
         private readonly IDictionary<string, IParsedArgument> _arguments;
         private readonly CommandContext<TS> _child;
         private readonly Command<TS> _command;
@@ -40,8 +38,6 @@ namespace NBrigadier.Context
             _primitiveToWrapper[typeof(double)] = typeof(double);
         }
 
-// TODO TASK: Wildcard generics in constructor parameters are not converted. Move the generic type parameter and constraint to the class header:
-// ORIGINAL LINE: public CommandContext(S source, String input, java.util.Map<String, ParsedArgument<S, ?>> arguments, com.mojang.brigadier.Command<S> command, com.mojang.brigadier.tree.CommandNode<S> rootNode, java.util.List<ParsedCommandNode<S>> nodes, StringRange range, CommandContext<S> child, com.mojang.brigadier.RedirectModifier<S> modifier, boolean forks)
         public CommandContext(TS source, string input, IDictionary<string, IParsedArgument> arguments,
             Command<TS> command, CommandNode<TS> rootNode, IList<ParsedCommandNode<TS>> nodes, StringRange range,
             CommandContext<TS> child, RedirectModifier<TS> modifier, bool forks)
@@ -98,18 +94,13 @@ namespace NBrigadier.Context
                 _modifier, _forks);
         }
 
-// TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
-// ORIGINAL LINE: @SuppressWarnings("unchecked") public <V> V getArgument(String name, Class<V> clazz)
         public virtual TV GetArgument<TV>(string name, Type clazz)
         {
-// WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: ParsedArgument<S, ?> argument = arguments.get(name);
             var argument = _arguments.GetValueOrNull(name);
 
             if (argument == null) throw new ArgumentException("No such argument '" + name + "' exists on this command");
 
             var result = argument.ResultObject;
-// ORIGINAL LINE: if (PRIMITIVE_TO_WRAPPER.getOrDefault(clazz, clazz).isAssignableFrom(result.getClass()))
             if (_primitiveToWrapper.GetOrDefault(clazz, clazz).IsAssignableFrom(result.GetType()))
                 return (TV) result;
             throw new ArgumentException("Argument '" + name + "' is defined as " + result.GetType().Name + ", not " +
@@ -125,9 +116,7 @@ namespace NBrigadier.Context
 
             if (!_arguments.Equals(that._arguments)) return false;
             if (!_rootNode.Equals(that._rootNode)) return false;
-            // WARNING: LINQ 'SequenceEqual' is not always identical to Java AbstractList 'equals':
-// ORIGINAL LINE: if (nodes.size() != that.nodes.size() || !nodes.equals(that.nodes))
-            if (_nodes.Count != that._nodes.Count || !_nodes.SequenceEqual(that._nodes)) return false;
+                        if (_nodes.Count != that._nodes.Count || !_nodes.SequenceEqual(that._nodes)) return false;
             if (_command != null ? !_command.Equals(that._command) : that._command != null) return false;
             if (!_source.Equals(that._source)) return false;
             if (_child != null ? !_child.Equals(that._child) : that._child != null) return false;

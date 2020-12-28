@@ -29,9 +29,7 @@ namespace NBrigadier.Arguments
 
         public virtual float Maximum => _maximum;
 
-        // WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: @Override public System.Nullable<float> parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-        public virtual float Parse(StringReader reader)
+                public virtual float Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadFloat();

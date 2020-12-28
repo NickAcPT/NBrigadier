@@ -13,8 +13,6 @@ namespace NBrigadier.Tree
 {
     public abstract class CommandNode<TS> : IComparable<CommandNode<TS>>
     {
-// WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: private java.util.Map<String, ArgumentCommandNode<S, ?>> arguments = new java.util.LinkedHashMap<>();
         private readonly IDictionary<string, IArgumentCommandNode<TS>> _arguments =
             new Dictionary<string, IArgumentCommandNode<TS>>();
 
@@ -91,12 +89,9 @@ namespace NBrigadier.Tree
                 if (node is ILiteralCommandNode)
                     _literals[node.Name] = (LiteralCommandNode<TS>) node;
                 else if (node is IArgumentCommandNode<TS>)
-                    // WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: arguments.put(node.getName(), (ArgumentCommandNode<S, ?>) node);
-                    _arguments[node.Name] = (IArgumentCommandNode<TS>) node;
+                                        _arguments[node.Name] = (IArgumentCommandNode<TS>) node;
             }
 
-// TODO TASK: Method reference constructor syntax is not converted by Java to C# Converter:
             _children = _children.SetOfKeyValuePairs().OrderBy(d => d.Value).ToDictionary(e => e.Key, e => e.Value);
         }
 
@@ -145,20 +140,12 @@ namespace NBrigadier.Tree
             return 31 * _children.GetHashCode() + (_command != null ? _command.GetHashCode() : 0);
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public abstract void parse(com.mojang.brigadier.StringReader reader, com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException;
         public abstract void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder);
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public abstract java.util.concurrent.CompletableFuture<com.mojang.brigadier.suggestion.Suggestions> listSuggestions(com.mojang.brigadier.context.CommandContext<S> context, com.mojang.brigadier.suggestion.SuggestionsBuilder builder) throws com.mojang.brigadier.exceptions.CommandSyntaxException;
         public abstract Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder);
 
-// WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: public abstract com.mojang.brigadier.builder.ArgumentBuilder<S, ?> createBuilder();
         public abstract IArgumentBuilder<TS> CreateBuilder();
 
-// WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: public java.util.Collection<? extends CommandNode<S>> getRelevantNodes(com.mojang.brigadier.StringReader input)
         public virtual ICollection<CommandNode<TS>> GetRelevantNodes(StringReader input)
         {
             if (_literals.Count > 0)

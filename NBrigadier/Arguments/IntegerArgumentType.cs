@@ -27,9 +27,7 @@ namespace NBrigadier.Arguments
 
         public virtual int Maximum => _maximum;
 
-        // WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: @Override public System.Nullable<int> parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-        public virtual int Parse(StringReader reader)
+                public virtual int Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadInt();

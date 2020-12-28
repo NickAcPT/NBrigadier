@@ -7,7 +7,6 @@ namespace NBrigadier.Builder
 {
     public class LiteralArgumentBuilder<TS> : ArgumentBuilder<TS, LiteralArgumentBuilder<TS>>
     {
-// NOTE: Fields cannot have the same name as methods of the current type:
 
         protected internal LiteralArgumentBuilder(string literal)
         {

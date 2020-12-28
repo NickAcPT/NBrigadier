@@ -31,9 +31,7 @@ namespace NBrigadier.Tree
 
         public virtual string Literal { get; }
 
-        // WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: @Override public void parse(com.mojang.brigadier.StringReader reader, com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-        public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
+                public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
         {
             var start = reader.Cursor;
             var end = Parse(reader);

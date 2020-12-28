@@ -89,8 +89,6 @@ namespace NBrigadier
             while (CanRead() && char.IsWhiteSpace(Peek())) Skip();
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public int readInt() throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual int ReadInt()
         {
             var start = _cursor;
@@ -109,8 +107,6 @@ namespace NBrigadier
             }
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public long readLong() throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual long ReadLong()
         {
             var start = _cursor;
@@ -129,8 +125,6 @@ namespace NBrigadier
             }
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public double readDouble() throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual double ReadDouble()
         {
             var start = _cursor;
@@ -149,8 +143,6 @@ namespace NBrigadier
             }
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public float readFloat() throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual float ReadFloat()
         {
             var start = _cursor;
@@ -182,8 +174,6 @@ namespace NBrigadier
             return _string.Substring(start, _cursor - start);
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public String readQuotedString() throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual string ReadQuotedString()
         {
             if (!CanRead()) return "";
@@ -194,8 +184,6 @@ namespace NBrigadier
             return ReadStringUntil(next);
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public String readStringUntil(char terminator) throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual string ReadStringUntil(char terminator)
         {
             var result = new StringBuilder();
@@ -234,8 +222,6 @@ namespace NBrigadier
             throw CommandSyntaxException.builtInExceptions.ReaderExpectedEndOfQuote().CreateWithContext(this);
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public String readString() throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual string ReadString()
         {
             if (!CanRead()) return "";
@@ -249,8 +235,6 @@ namespace NBrigadier
             return ReadUnquotedString();
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public boolean readBoolean() throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual bool ReadBoolean()
         {
             var start = _cursor;
@@ -266,8 +250,6 @@ namespace NBrigadier
             throw CommandSyntaxException.builtInExceptions.ReaderInvalidBool().CreateWithContext(this, value);
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public void expect(char c) throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual void Expect(char c)
         {
             if (!CanRead() || Peek() != c)

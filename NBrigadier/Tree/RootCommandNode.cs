@@ -24,9 +24,7 @@ namespace NBrigadier.Tree
 
         public override ICollection<string> Examples => CollectionsHelper.EmptyList<string>();
 
-        // WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: @Override public void parse(com.mojang.brigadier.StringReader reader, com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-        public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
+                public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
         {
         }
 
@@ -47,8 +45,6 @@ namespace NBrigadier.Tree
             return base.Equals(o);
         }
 
-// WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: @Override public com.mojang.brigadier.builder.ArgumentBuilder<S, ?> createBuilder()
         public override IArgumentBuilder<TS> CreateBuilder()
         {
             throw new InvalidOperationException("Cannot convert root into a builder");

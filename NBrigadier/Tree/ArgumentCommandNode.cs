@@ -42,9 +42,7 @@ namespace NBrigadier.Tree
 
         public virtual SuggestionProvider<TS> CustomSuggestions => _customSuggestions;
 
-        // WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: @Override public void parse(com.mojang.brigadier.StringReader reader, com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-        public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
+                public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
         {
             var start = reader.Cursor;
             var result = _type.Parse(reader);
@@ -54,8 +52,6 @@ namespace NBrigadier.Tree
             contextBuilder.WithNode(this, parsed.Range);
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: @Override public java.util.concurrent.CompletableFuture<com.mojang.brigadier.suggestion.Suggestions> listSuggestions(com.mojang.brigadier.context.CommandContext<S> context, com.mojang.brigadier.suggestion.SuggestionsBuilder builder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public override Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder)
         {
             if (_customSuggestions == null)

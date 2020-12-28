@@ -129,8 +129,6 @@ namespace NBrigadier
         // / <seealso cref= #parse(StringReader, Object) </seealso>
         // / <seealso cref= #execute(ParseResults) </seealso>
         // / <seealso cref= #execute(StringReader, Object) </seealso>
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public int execute(String input, S source) throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual int Execute(string input, TS source)
         {
             return Execute(new StringReader(input), source);
@@ -165,8 +163,6 @@ namespace NBrigadier
         // / <seealso cref= #parse(StringReader, Object) </seealso>
         // / <seealso cref= #execute(ParseResults) </seealso>
         // / <seealso cref= #execute(String, Object) </seealso>
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public int execute(StringReader input, S source) throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual int Execute(StringReader input, TS source)
         {
             var parse = Parse(input, source);
@@ -198,8 +194,6 @@ namespace NBrigadier
         // / <seealso cref= #parse(StringReader, Object) </seealso>
         // / <seealso cref= #execute(String, Object) </seealso>
         // / <seealso cref= #execute(StringReader, Object) </seealso>
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: public int execute(ParseResults<S> parse) throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual int Execute(ParseResults<TS> parse)
         {
             if (parse.Reader.CanRead())
@@ -611,8 +605,6 @@ namespace NBrigadier
 
             var fullInput = parse.Reader.String;
             var truncatedInput = fullInput.Substring(0, cursor);
-// TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
-// ORIGINAL LINE: @SuppressWarnings("unchecked") java.util.concurrent.CompletableFuture<com.mojang.brigadier.suggestion.Suggestions>[] futures = new java.util.concurrent.CompletableFuture[parent.getChildren().size()];
             var futures = new Func<Suggestions>[parent.Children.Count];
             var i = 0;
             foreach (var node in parent.Children)

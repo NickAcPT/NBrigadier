@@ -11,8 +11,6 @@ namespace NBrigadier.Context
 {
     public class CommandContextBuilder<TS>
     {
-// WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: private java.util.Map<String, ParsedArgument<S, ?>> arguments = new java.util.LinkedHashMap<>();
         private readonly IDictionary<string, IParsedArgument> _arguments = new Dictionary<string, IParsedArgument>();
         private readonly CommandDispatcher<TS> _dispatcher;
         private readonly IList<ParsedCommandNode<TS>> _nodes = new List<ParsedCommandNode<TS>>();
@@ -36,9 +34,7 @@ namespace NBrigadier.Context
 
         public virtual CommandNode<TS> RootNode => _rootNode;
 
-        // WARNING: Java wildcard generics have no direct equivalent in C#:
-// ORIGINAL LINE: public java.util.Map<String, ParsedArgument<S, ?>> getArguments()
-        public virtual IDictionary<string, IParsedArgument> Arguments => _arguments;
+                public virtual IDictionary<string, IParsedArgument> Arguments => _arguments;
 
         public virtual CommandContextBuilder<TS> Child => _child;
 

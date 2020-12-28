@@ -21,9 +21,7 @@ namespace NBrigadier.Arguments
 
         public virtual StringType Type => _type;
 
-        // WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: @Override public String parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-        public virtual string Parse(StringReader reader)
+                public virtual string Parse(StringReader reader)
         {
             if (_type == StringType.GreedyPhrase)
             {

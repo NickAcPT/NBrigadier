@@ -17,8 +17,6 @@ namespace NBrigadier.Arguments
         {
         }
 
-// WARNING: Method 'throws' clauses are not available in C#:
-// ORIGINAL LINE: @Override public System.Nullable<bool> parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
         public virtual bool Parse(StringReader reader)
         {
             return reader.ReadBoolean();
