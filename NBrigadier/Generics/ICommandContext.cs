@@ -1,6 +1,6 @@
 ﻿using com.mojang.brigadier.context;
 
-namespace NBrigadier
+namespace NBrigadier.Generics
 {
     public interface ICommandContext
     {

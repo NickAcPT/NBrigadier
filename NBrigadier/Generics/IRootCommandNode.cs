@@ -1,4 +1,4 @@
-﻿namespace NBrigadier
+﻿namespace NBrigadier.Generics
 {
     public interface IRootCommandNode
     {

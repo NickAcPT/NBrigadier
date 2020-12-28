@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using com.mojang.brigadier;
 using com.mojang.brigadier.suggestion;
+using com.mojang.brigadier.tree;
 
-namespace com.mojang.brigadier.tree
+namespace NBrigadier.Generics
 {
     public interface IArgumentCommandNode<S>
     {

@@ -2,7 +2,7 @@
 using com.mojang.brigadier;
 using com.mojang.brigadier.tree;
 
-namespace NBrigadier
+namespace NBrigadier.Generics
 {
     public interface IArgumentBuilder<S>
     {
