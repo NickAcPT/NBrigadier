@@ -97,7 +97,9 @@ namespace NBrigadier
         {
             var build = command.Build();
             _root.AddChild(build);
-            return build;
+            // ReSharper disable RedundantCast
+            return (LiteralCommandNode<TS>) build;
+            // ReSharper restore RedundantCast
         }
 
         // / <summary>
