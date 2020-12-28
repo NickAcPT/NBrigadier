@@ -42,7 +42,7 @@ namespace NBrigadier.Tree
 
         public virtual SuggestionProvider<TS> CustomSuggestions => _customSuggestions;
 
-                public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
+        public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
         {
             var start = reader.Cursor;
             var result = _type.Parse(reader);

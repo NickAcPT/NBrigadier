@@ -24,7 +24,7 @@ namespace NBrigadier.Tree
 
         public override ICollection<string> Examples => CollectionsHelper.EmptyList<string>();
 
-                public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
+        public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
         {
         }
 

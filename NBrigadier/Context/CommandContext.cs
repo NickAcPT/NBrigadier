@@ -116,7 +116,7 @@ namespace NBrigadier.Context
 
             if (!_arguments.Equals(that._arguments)) return false;
             if (!_rootNode.Equals(that._rootNode)) return false;
-                        if (_nodes.Count != that._nodes.Count || !_nodes.SequenceEqual(that._nodes)) return false;
+            if (_nodes.Count != that._nodes.Count || !_nodes.SequenceEqual(that._nodes)) return false;
             if (_command != null ? !_command.Equals(that._command) : that._command != null) return false;
             if (!_source.Equals(that._source)) return false;
             if (_child != null ? !_child.Equals(that._child) : that._child != null) return false;

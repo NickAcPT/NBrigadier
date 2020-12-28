@@ -59,7 +59,7 @@ namespace NBrigadier.CommandSuggestion
 
             ISet<Suggestion> texts = new HashSet<Suggestion>();
             foreach (var suggestions in input)
-                                CollectionsHelper.AddAll(texts, suggestions.List);
+                CollectionsHelper.AddAll(texts, suggestions.List);
             return Create(command, texts.OrderBy(c => c.Text).ToList());
         }
 

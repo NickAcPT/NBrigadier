@@ -29,7 +29,7 @@ namespace NBrigadier.Arguments
 
         public virtual double Maximum => _maximum;
 
-                public virtual double Parse(StringReader reader)
+        public virtual double Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadDouble();

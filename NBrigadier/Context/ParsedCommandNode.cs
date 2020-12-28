@@ -31,7 +31,7 @@ namespace NBrigadier.Context
         {
             if (this == o) return true;
             if (o == null || GetType() != o.GetType()) return false;
-                        var that = (ParsedCommandNode<object>) o;
+            var that = (ParsedCommandNode<object>) o;
             return ObjectsHelper.Equals(_node, that._node) && ObjectsHelper.Equals(_range, that._range);
         }
 

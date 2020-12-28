@@ -29,7 +29,7 @@ namespace NBrigadier.Arguments
 
         public virtual float Maximum => _maximum;
 
-                public virtual float Parse(StringReader reader)
+        public virtual float Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadFloat();

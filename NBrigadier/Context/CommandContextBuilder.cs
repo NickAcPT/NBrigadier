@@ -34,7 +34,7 @@ namespace NBrigadier.Context
 
         public virtual CommandNode<TS> RootNode => _rootNode;
 
-                public virtual IDictionary<string, IParsedArgument> Arguments => _arguments;
+        public virtual IDictionary<string, IParsedArgument> Arguments => _arguments;
 
         public virtual CommandContextBuilder<TS> Child => _child;
 

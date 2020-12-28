@@ -7,7 +7,6 @@ namespace NBrigadier.Builder
 {
     public class LiteralArgumentBuilder<TS> : ArgumentBuilder<TS, LiteralArgumentBuilder<TS>>
     {
-
         protected internal LiteralArgumentBuilder(string literal)
         {
             LiteralValue = literal;

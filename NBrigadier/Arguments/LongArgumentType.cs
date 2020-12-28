@@ -27,7 +27,7 @@ namespace NBrigadier.Arguments
 
         public virtual long Maximum => _maximum;
 
-                public virtual long Parse(StringReader reader)
+        public virtual long Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadLong();

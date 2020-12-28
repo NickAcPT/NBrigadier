@@ -31,7 +31,7 @@ namespace NBrigadier.Tree
 
         public virtual string Literal { get; }
 
-                public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
+        public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
         {
             var start = reader.Cursor;
             var end = Parse(reader);

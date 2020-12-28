@@ -97,7 +97,7 @@ namespace NBrigadier
         {
             var build = command.Build();
             _root.AddChild(build);
-            return (LiteralCommandNode<TS>)build;
+            return build;
         }
 
         // / <summary>

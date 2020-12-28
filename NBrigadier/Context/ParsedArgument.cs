@@ -27,7 +27,7 @@ namespace NBrigadier.Context
         {
             if (this == o) return true;
             if (!(o is IParsedArgument)) return false;
-                        var that = (ParsedArgument<object, object>) o;
+            var that = (ParsedArgument<object, object>) o;
             return ObjectsHelper.Equals(_range, that._range) && ObjectsHelper.Equals(_result, that._result);
         }
 

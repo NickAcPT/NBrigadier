@@ -21,7 +21,7 @@ namespace NBrigadier.Arguments
 
         public virtual StringType Type => _type;
 
-                public virtual string Parse(StringReader reader)
+        public virtual string Parse(StringReader reader)
         {
             if (_type == StringType.GreedyPhrase)
             {
