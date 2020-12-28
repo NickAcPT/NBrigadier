@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
-using NBrigadier.Suggestion;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -11,8 +12,8 @@ namespace NBrigadier.Arguments
 {
     public class DoubleArgumentType : IArgumentType<double>
     {
-        private static readonly ICollection<string> EXAMPLES = new List<string>
-            {"0", "1.2", ".5", "-1", "-.5", "-1234.56"};
+        private static readonly ICollection<string> _examples =
+            CollectionsHelper.AsList("0", "1.2", ".5", "-1", "-.5", "-1234.56");
 
         private readonly double _maximum;
 
@@ -28,23 +29,21 @@ namespace NBrigadier.Arguments
 
         public virtual double Maximum => _maximum;
 
-        public virtual ICollection<string> Examples => EXAMPLES;
-
-        public double Parse(StringReader reader)
+        public virtual double Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadDouble();
             if (result < _minimum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BuiltInExceptions.DoubleTooLow()
+                throw CommandSyntaxException.builtInExceptions.DoubleTooLow()
                     .CreateWithContext(reader, result, _minimum);
             }
 
             if (result > _maximum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BuiltInExceptions.DoubleTooHigh()
+                throw CommandSyntaxException.builtInExceptions.DoubleTooHigh()
                     .CreateWithContext(reader, result, _maximum);
             }
 
@@ -56,10 +55,7 @@ namespace NBrigadier.Arguments
             return Suggestions.Empty();
         }
 
-        public IList<string> GetExamples()
-        {
-            return new List<string>();
-        }
+        public virtual ICollection<string> Examples => _examples;
 
         public static DoubleArgumentType DoubleArg()
         {

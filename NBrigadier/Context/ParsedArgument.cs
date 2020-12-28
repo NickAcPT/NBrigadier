@@ -1,11 +1,12 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+﻿using NBrigadier.Generics;
+using NBrigadier.Helpers;
 
-using System.Collections.Generic;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 namespace NBrigadier.Context
 {
-    public class ParsedArgument<TS, T>
+    public class ParsedArgument<TS, T> : IParsedArgument
     {
         private readonly StringRange _range;
         private readonly T _result;
@@ -16,40 +17,23 @@ namespace NBrigadier.Context
             _result = result;
         }
 
-        public virtual StringRange Range => _range;
-
         public virtual T Result => _result;
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((_range != null ? _range.GetHashCode() : 0) * 397) ^
-                       EqualityComparer<T>.Default.GetHashCode(_result);
-            }
-        }
+        public virtual StringRange Range => _range;
 
-        protected bool Equals(ParsedArgument<TS, T> other)
-        {
-            return Equals(_range, other._range) && EqualityComparer<T>.Default.Equals(_result, other._result);
-        }
-
-        public static bool operator ==(ParsedArgument<TS, T> left, ParsedArgument<TS, T> right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(ParsedArgument<TS, T> left, ParsedArgument<TS, T> right)
-        {
-            return !Equals(left, right);
-        }
+        public object ResultObject => Result;
 
         public override bool Equals(object o)
         {
-            if (ReferenceEquals(null, o)) return false;
-            if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != GetType()) return false;
-            return Equals((ParsedArgument<TS, T>) o);
+            if (this == o) return true;
+            if (!(o is IParsedArgument)) return false;
+            var that = (ParsedArgument<object, object>) o;
+            return ObjectsHelper.Equals(_range, that._range) && ObjectsHelper.Equals(_result, that._result);
+        }
+
+        public override int GetHashCode()
+        {
+            return ObjectsHelper.Hash(_range, _result);
         }
     }
 }

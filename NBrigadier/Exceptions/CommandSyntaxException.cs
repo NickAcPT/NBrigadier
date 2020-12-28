@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -8,9 +9,9 @@ namespace NBrigadier.Exceptions
 {
     public class CommandSyntaxException : Exception
     {
-        public const int ContextAmount = 10;
-        public static bool EnableCommandStackTraces = true;
-        public static IBuiltInExceptionProvider BuiltInExceptions = new BuiltInExceptions();
+        public static int contextAmount = 10;
+        public static bool enableCommandStackTraces = true;
+        public static IBuiltInExceptionProvider builtInExceptions = new BuiltInExceptions();
         private readonly int _cursor;
         private readonly string _input;
         private readonly IMessage _message;
@@ -50,13 +51,13 @@ namespace NBrigadier.Exceptions
         {
             get
             {
-                if (ReferenceEquals(_input, null)) return null;
-                var cursor = Math.Min(_input.Length, _cursor);
+                if (ReferenceEquals(_input, null) || _cursor < 0) return null;
                 var builder = new StringBuilder();
+                var cursor = Math.Min(_input.Length, _cursor);
 
-                if (cursor > ContextAmount) builder.Append("...");
+                if (cursor > contextAmount) builder.Append("...");
 
-                builder.Append(_input.SubstringSpecial(Math.Max(0, cursor - ContextAmount), cursor));
+                builder.Append(_input.SubstringSpecial(Math.Max(0, cursor - contextAmount), cursor));
                 builder.Append("<--[HERE]");
 
                 return builder.ToString();

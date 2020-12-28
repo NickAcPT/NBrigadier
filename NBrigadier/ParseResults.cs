@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
+using NBrigadier.Helpers;
 using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -19,7 +20,7 @@ namespace NBrigadier
         }
 
         public ParseResults(CommandContextBuilder<TS> context) : this(context, new StringReader(""),
-            new Dictionary<CommandNode<TS>, CommandSyntaxException>())
+            CollectionsHelper.EmptyMap<CommandNode<TS>, CommandSyntaxException>())
         {
         }
 

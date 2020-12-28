@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
-using NBrigadier.Suggestion;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -21,9 +21,7 @@ namespace NBrigadier.Arguments
 
         public virtual StringType Type => _type;
 
-        public virtual ICollection<string> Examples => _type.Examples;
-
-        public string Parse(StringReader reader)
+        public virtual string Parse(StringReader reader)
         {
             if (_type == StringType.GreedyPhrase)
             {
@@ -42,10 +40,7 @@ namespace NBrigadier.Arguments
             return Suggestions.Empty();
         }
 
-        public IList<string> GetExamples()
-        {
-            return new List<string>();
-        }
+        public virtual ICollection<string> Examples => _type.Examples;
 
         public static StringArgumentType Word()
         {
@@ -104,13 +99,13 @@ namespace NBrigadier.Arguments
                 GreedyPhrase
             }
 
-            public static readonly StringType SingleWord = new("SingleWord", InnerEnum.SingleWord, "word",
+            public static readonly StringType SingleWord = new("SINGLE_WORD", InnerEnum.SingleWord, "word",
                 "words_with_underscores");
 
-            public static readonly StringType QuotablePhrase = new("QuotablePhrase", InnerEnum.QuotablePhrase,
+            public static readonly StringType QuotablePhrase = new("QUOTABLE_PHRASE", InnerEnum.QuotablePhrase,
                 "\"quoted phrase\"", "word", "\"\"");
 
-            public static readonly StringType GreedyPhrase = new("GreedyPhrase", InnerEnum.GreedyPhrase, "word",
+            public static readonly StringType GreedyPhrase = new("GREEDY_PHRASE", InnerEnum.GreedyPhrase, "word",
                 "words with spaces", "\"and symbols\"");
 
             private static readonly List<StringType> VALUE_LIST = new();
@@ -118,9 +113,9 @@ namespace NBrigadier.Arguments
             private readonly string _nameValue;
             private readonly int _ordinalValue;
 
-            internal readonly ICollection<string> examples;
+            public readonly InnerEnum innerEnumValue;
 
-            public readonly InnerEnum InnerEnumValue;
+            internal ICollection<string> examples;
 
             static StringType()
             {
@@ -131,11 +126,11 @@ namespace NBrigadier.Arguments
 
             internal StringType(string name, InnerEnum innerEnum, params string[] examples)
             {
-                this.examples = examples.ToList();
+                this.examples = CollectionsHelper.AsList(examples);
 
                 _nameValue = name;
                 _ordinalValue = _nextOrdinal++;
-                InnerEnumValue = innerEnum;
+                innerEnumValue = innerEnum;
             }
 
             public ICollection<string> Examples => examples;

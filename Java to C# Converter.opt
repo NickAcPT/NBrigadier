@@ -1,0 +1,738 @@
+﻿<options>
+  <simple_options>
+    <add_to_top_of_files>using NBrigadier;
+using NBrigadier.Helpers;
+using System.Linq;
+</add_to_top_of_files>
+    <add_using_statements_to_minimize_namespace_references>false</add_using_statements_to_minimize_namespace_references>
+    <allow_extended_interfaces>true</allow_extended_interfaces>
+    <assume_java.util_import_for_snippets>true</assume_java.util_import_for_snippets>
+    <break_control_structures>false</break_control_structures>
+    <break_control_structures_closing_parenthesis_on_new_line>false</break_control_structures_closing_parenthesis_on_new_line>
+    <break_control_structures_first_condition_on_new_line>false</break_control_structures_first_condition_on_new_line>
+    <break_control_structures_indent_closing_parenthesis>false</break_control_structures_indent_closing_parenthesis>
+    <break_control_structures_logical_ops_at_start>true</break_control_structures_logical_ops_at_start>
+    <break_control_structures_minimum_conditions>2</break_control_structures_minimum_conditions>
+    <break_control_structures_minimum_line_length>10</break_control_structures_minimum_line_length>
+    <break_control_structures_require_both_conditions>true</break_control_structures_require_both_conditions>
+    <break_method_calls_closing_parenthesis_on_new_line>false</break_method_calls_closing_parenthesis_on_new_line>
+    <break_method_calls_first_item_on_new_line>false</break_method_calls_first_item_on_new_line>
+    <break_method_calls_indent_closing_parenthesis>false</break_method_calls_indent_closing_parenthesis>
+    <break_method_calls_minimum_items>2</break_method_calls_minimum_items>
+    <break_method_calls_minimum_line_length>10</break_method_calls_minimum_line_length>
+    <break_method_calls_on_arguments>false</break_method_calls_on_arguments>
+    <break_method_calls_require_both_conditions>true</break_method_calls_require_both_conditions>
+    <break_method_declarations_closing_parenthesis_on_new_line>true</break_method_declarations_closing_parenthesis_on_new_line>
+    <break_method_declarations_first_item_on_new_line>true</break_method_declarations_first_item_on_new_line>
+    <break_method_declarations_indent_closing_parenthesis>false</break_method_declarations_indent_closing_parenthesis>
+    <break_method_declarations_minimum_items>2</break_method_declarations_minimum_items>
+    <break_method_declarations_minimum_line_length>10</break_method_declarations_minimum_line_length>
+    <break_method_declarations_on_parameters>false</break_method_declarations_on_parameters>
+    <break_method_declarations_require_both_conditions>true</break_method_declarations_require_both_conditions>
+    <break_string_concatenation>false</break_string_concatenation>
+    <break_string_concatenation_minimum_line_length>50</break_string_concatenation_minimum_line_length>
+    <break_string_concatenation_with_operator_at_start>true</break_string_concatenation_with_operator_at_start>
+    <class_constant_idiomatic_naming>None</class_constant_idiomatic_naming>
+    <comment_code_tag></comment_code_tag>
+    <convert_and_uncomment_code_in_comments></convert_and_uncomment_code_in_comments>
+    <convert_complex_enums_to_classes>true</convert_complex_enums_to_classes>
+    <convert_final_params_to_csharp_in_params>true</convert_final_params_to_csharp_in_params>
+    <convert_hashmap_get_to_strict_equivalent>true</convert_hashmap_get_to_strict_equivalent>
+    <convert_to_auto_properties_if_possible>false</convert_to_auto_properties_if_possible>
+    <copy_non_code_files_in_folder_conversion>false</copy_non_code_files_in_folder_conversion>
+    <default_namespace_if_package_missing></default_namespace_if_package_missing>
+    <delete_code_tag></delete_code_tag>
+    <enum_types_to_nullable_types>true</enum_types_to_nullable_types>
+    <enum_value_idiomatic_naming>None</enum_value_idiomatic_naming>
+    <field_idiomatic_naming>None</field_idiomatic_naming>
+    <functional_interfaces_to_delegates>true</functional_interfaces_to_delegates>
+    <ignore_imports>java;javax</ignore_imports>
+    <indent_braces>false</indent_braces>
+    <leading_white_space_tabs>true</leading_white_space_tabs>
+    <local_idiomatic_naming>None</local_idiomatic_naming>
+    <method_idiomatic_naming>None</method_idiomatic_naming>
+    <methods_to_properties>true</methods_to_properties>
+    <methods_to_properties_include_is>true</methods_to_properties_include_is>
+    <namespace_idiomatic_naming>None</namespace_idiomatic_naming>
+    <note_message>NOTE: </note_message>
+    <opening_braces_on_statement_line>false</opening_braces_on_statement_line>
+    <pad_brace_initializers>true</pad_brace_initializers>
+    <pad_bracket_contents>false</pad_bracket_contents>
+    <pad_parenthesis_contents>false</pad_parenthesis_contents>
+    <place_else_and_catch_on_same_line_as_closing_brace>false</place_else_and_catch_on_same_line_as_closing_brace>
+    <place_while_on_same_line_as_closing_brace>true</place_while_on_same_line_as_closing_brace>
+    <private_field_idiomatic_naming>None</private_field_idiomatic_naming>
+    <promote_nested_class_private_members_to_internal>true</promote_nested_class_private_members_to_internal>
+    <promote_non_private_instance_methods_to_public>false</promote_non_private_instance_methods_to_public>
+    <promote_types_to_public>true</promote_types_to_public>
+    <property_idiomatic_naming>UpperCamelCase</property_idiomatic_naming>
+    <regard_comments_as_statements_for_braces_on_single_statement_block_option>false</regard_comments_as_statements_for_braces_on_single_statement_block_option>
+    <remove_braces_for_single_statement_blocks>false</remove_braces_for_single_statement_blocks>
+    <renaming_suffix>true</renaming_suffix>
+    <renaming_token>_Conflict</renaming_token>
+    <slash_n_line_endings>false</slash_n_line_endings>
+    <tab_size>4</tab_size>
+    <todo_message>TODO TASK: </todo_message>
+    <type_idiomatic_naming>None</type_idiomatic_naming>
+    <uncomment_code_in_comments_without_conversion></uncomment_code_in_comments_without_conversion>
+    <use_leading_underscore_for_non_private_fields>false</use_leading_underscore_for_non_private_fields>
+    <use_leading_underscore_for_private_fields>false</use_leading_underscore_for_private_fields>
+    <use_nullable_biginteger>false</use_nullable_biginteger>
+    <use_nullable_datetime>false</use_nullable_datetime>
+    <use_nullable_decimal>false</use_nullable_decimal>
+    <use_nullable_guid>false</use_nullable_guid>
+    <use_primitives_for_generic_type_args>true</use_primitives_for_generic_type_args>
+    <use_space_after_comment_token>true</use_space_after_comment_token>
+    <use_spaces_after_control_flow_keywords>true</use_spaces_after_control_flow_keywords>
+    <use_spaces_around_binary_operators>true</use_spaces_around_binary_operators>
+    <use_spaces_around_unary_operators>false</use_spaces_around_unary_operators>
+    <use_stringcomparison.ordinal_for_string_methods>true</use_stringcomparison.ordinal_for_string_methods>
+    <use_verbatim_strings_instead_of_escaped_chars>false</use_verbatim_strings_instead_of_escaped_chars>
+    <warning_message>WARNING: </warning_message>
+  </simple_options>
+
+  <bypass_conversion_types>
+  </bypass_conversion_types>
+
+  <string_replacements>
+    <replacement>
+      <find>final</find>
+      <replace></replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>false</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>false</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>.isAssignableFrom(</find>
+      <replace>.IsAssignableFrom(</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>.GetEnumerator().next()</find>
+      <replace>.First()</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>System.Func.completedFuture(</find>
+      <replace>() => (</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>new LinkedHashMap<</find>
+      <replace>new Dictionary<</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>DictionaryEntry.comparingByValue()</find>
+      <replace>d => d.Value</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>DictionaryEntry.getKey</find>
+      <replace>e => e.Key</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>DictionaryEntry.getValue</find>
+      <replace>e => e.Value</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>, LinkedHashMap::new</find>
+      <replace></replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>, (e1, e2) => e1</find>
+      <replace></replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>typeof(Float)</find>
+      <replace>typeof(float)</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>typeof(short)</find>
+      <replace>typeof(short)</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>false</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>typeof(Character)</find>
+      <replace>typeof(char)</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>false</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>typeof(Integer)</find>
+      <replace>typeof(int)</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>false</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>typeof(Long)</find>
+      <replace>typeof(long)</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>false</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>Arrays.asList</find>
+      <replace>CollectionsHelper.AsList</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>,;</find>
+      <replace>;</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>false</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>false</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>(message.String,</find>
+      <replace>(message.String) //,</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>false</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>.onCommandComplete(</find>
+      <replace>(</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>? parse(</find>
+      <replace> parse(</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find> -> </find>
+      <replace> => </replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>false</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>.test(</find>
+      <replace>(</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>(Exceptions)\.Empty</find>
+      <replace>$1.IsEmpty()</replace>
+      <active>true</active>
+      <regex>true</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>typeof(Double)</find>
+      <replace>typeof(double)</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>false</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>new LinkedHashSet</find>
+      <replace>new HashSet</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>RootCommandNode<S> : CommandNode<S></find>
+      <replace>RootCommandNode<S> : CommandNode<S>, IRootCommandNode</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>class ParsedArgument<S, T></find>
+      <replace>class ParsedArgument<S, T> : IParsedArgument</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>class LiteralCommandNode<S> : CommandNode<S></find>
+      <replace>class LiteralCommandNode<S> : CommandNode<S>, ILiteralCommandNode</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>class CommandContext<S></find>
+      <replace>class CommandContext<S> : ICommandContext</replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>class ArgumentCommandNode<S, T> : CommandNode<S></find>
+      <replace>class ArgumentCommandNode<S, T> : CommandNode<S>, IArgumentCommandNode<S></replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+
+    <replacement>
+      <find>class ArgumentBuilder<S, T> where T : ArgumentBuilder<S, T></find>
+      <replace>class ArgumentBuilder<S, T> : IArgumentBuilder<S> where T : ArgumentBuilder<S, T></replace>
+      <active>true</active>
+      <regex>false</regex>
+      <match_case>true</match_case>
+      <match_in_string_literals>false</match_in_string_literals>
+      <match_in_comments>false</match_in_comments>
+      <match_whole_word>true</match_whole_word>
+      <post_conversion>true</post_conversion>
+    </replacement>
+  </string_replacements>
+
+  <type_replacements>
+    <type>
+      <original_type>java.util.Objects</original_type>
+      <replacement_type>NBrigadier.Helpers.ObjectsHelper</replacement_type>
+      <members>
+        <member>
+          <original_name>equals</original_name>
+          <original_instance>false</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>2</original_argument_count>
+          <include_commented_original_statement>false</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>Equals</replacement_name>
+          <replacement_instance>false</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class>ObjectsHelper</replacement_class>
+          <replacement_argument_list>a1, a2</replacement_argument_list>
+        </member>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.util.Map<?, ?></original_type>
+      <replacement_type></replacement_type>
+      <members>
+        <member>
+          <original_name>getOrDefault</original_name>
+          <original_instance>true</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>2</original_argument_count>
+          <include_commented_original_statement>true</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>GetOrDefault</replacement_name>
+          <replacement_instance>false</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class>MapHelper</replacement_class>
+          <replacement_argument_list>instance, a1, a2</replacement_argument_list>
+        </member>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.lang.Class<?></original_type>
+      <replacement_type></replacement_type>
+      <members>
+        <member>
+          <original_name>isAssignableFrom</original_name>
+          <original_instance>true</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>1</original_argument_count>
+          <include_commented_original_statement>true</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>IsAssignableFrom</replacement_name>
+          <replacement_instance>true</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class></replacement_class>
+          <replacement_argument_list>a1</replacement_argument_list>
+        </member>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.lang.Object</original_type>
+      <replacement_type></replacement_type>
+      <members>
+        <member>
+          <original_name>isAssignableFrom</original_name>
+          <original_instance>true</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>1</original_argument_count>
+          <include_commented_original_statement>false</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>IsAssignableFrom</replacement_name>
+          <replacement_instance>true</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class></replacement_class>
+          <replacement_argument_list>a1</replacement_argument_list>
+        </member>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.util.concurrent.CompletableFuture</original_type>
+      <replacement_type>System.Func</replacement_type>
+      <members>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.util.concurrent.CompletableFuture<?></original_type>
+      <replacement_type>System.Func<?></replacement_type>
+      <members>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.lang.Class</original_type>
+      <replacement_type></replacement_type>
+      <members>
+        <member>
+          <original_name>isAssignableFrom</original_name>
+          <original_instance>true</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>1</original_argument_count>
+          <include_commented_original_statement>false</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>IsAssignableFrom</replacement_name>
+          <replacement_instance>true</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class></replacement_class>
+          <replacement_argument_list>a1</replacement_argument_list>
+        </member>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.util.Collections</original_type>
+      <replacement_type>CollectionsHelper</replacement_type>
+      <members>
+        <member>
+          <original_name>emptyList</original_name>
+          <original_instance>false</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>0</original_argument_count>
+          <include_commented_original_statement>false</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>EmptyList</replacement_name>
+          <replacement_instance>false</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class>CollectionsHelper</replacement_class>
+          <replacement_argument_list></replacement_argument_list>
+        </member>
+
+        <member>
+          <original_name>emptyMap</original_name>
+          <original_instance>false</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>0</original_argument_count>
+          <include_commented_original_statement>false</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>EmptyMap</replacement_name>
+          <replacement_instance>false</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class>CollectionsHelper</replacement_class>
+          <replacement_argument_list></replacement_argument_list>
+        </member>
+
+        <member>
+          <original_name>singletonList</original_name>
+          <original_instance>false</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>1</original_argument_count>
+          <include_commented_original_statement>false</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>SingletonList</replacement_name>
+          <replacement_instance>false</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class>CollectionsHelper</replacement_class>
+          <replacement_argument_list>a1</replacement_argument_list>
+        </member>
+
+        <member>
+          <original_name>singleton</original_name>
+          <original_instance>false</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>1</original_argument_count>
+          <include_commented_original_statement>false</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>SingletonList</replacement_name>
+          <replacement_instance>false</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class>CollectionsHelper</replacement_class>
+          <replacement_argument_list>a1</replacement_argument_list>
+        </member>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.util.Set<?></original_type>
+      <replacement_type></replacement_type>
+      <members>
+        <member>
+          <original_name>addAll</original_name>
+          <original_instance>true</original_instance>
+          <original_method>true</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>1</original_argument_count>
+          <include_commented_original_statement>true</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>AddAll</replacement_name>
+          <replacement_instance>false</replacement_instance>
+          <replacement_method>true</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class>CollectionsHelper</replacement_class>
+          <replacement_argument_list>instance, a1</replacement_argument_list>
+        </member>
+      </members>
+    </type>
+
+    <type>
+      <original_type>java.util.LinkedHashSet<?></original_type>
+      <replacement_type>System.Collections.Generic.HashSet<?></replacement_type>
+      <members>
+      </members>
+    </type>
+
+    <type>
+      <original_type>com.mojang.brigadier.context.ParsedArgument</original_type>
+      <replacement_type>IParsedArgument</replacement_type>
+      <members>
+      </members>
+    </type>
+
+    <type>
+      <original_type>com.mojang.brigadier.tree.RootCommandNode</original_type>
+      <replacement_type>IRootCommandNode</replacement_type>
+      <members>
+      </members>
+    </type>
+
+    <type>
+      <original_type>com.mojang.brigadier.tree.LiteralCommandNode</original_type>
+      <replacement_type>ILiteralCommandNode</replacement_type>
+      <members>
+        <member>
+          <original_name>literal</original_name>
+          <original_instance>true</original_instance>
+          <original_method>false</original_method>
+          <original_constructor>false</original_constructor>
+          <original_argument_count>0</original_argument_count>
+          <include_commented_original_statement>false</include_commented_original_statement>
+          <argument_becoming_instance>1</argument_becoming_instance>
+          <replacement_name>Literal</replacement_name>
+          <replacement_instance>true</replacement_instance>
+          <replacement_method>false</replacement_method>
+          <replacement_constructor>false</replacement_constructor>
+          <replacement_class></replacement_class>
+          <replacement_argument_list></replacement_argument_list>
+        </member>
+      </members>
+    </type>
+
+    <type>
+      <original_type>com.mojang.brigadier.context.CommandContext</original_type>
+      <replacement_type>ICommandContext</replacement_type>
+      <members>
+      </members>
+    </type>
+  </type_replacements>
+</options>

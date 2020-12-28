@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
-using NBrigadier.Suggestion;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -10,30 +11,25 @@ namespace NBrigadier.Arguments
 {
     public class BoolArgumentType : IArgumentType<bool>
     {
-        private static readonly ICollection<string> EXAMPLES = new List<string> {"true", "false"};
+        private static readonly ICollection<string> _examples = CollectionsHelper.AsList("true", "false");
 
         private BoolArgumentType()
         {
         }
 
-        public virtual ICollection<string> Examples => EXAMPLES;
-
-        public bool Parse(StringReader reader)
+        public virtual bool Parse(StringReader reader)
         {
             return reader.ReadBoolean();
         }
 
-        public Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
+        public virtual Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
         {
             if ("true".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal)) builder.Suggest("true");
             if ("false".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal)) builder.Suggest("false");
             return builder.BuildFuture();
         }
 
-        public IList<string> GetExamples()
-        {
-            return new List<string>();
-        }
+        public virtual ICollection<string> Examples => _examples;
 
         public static BoolArgumentType Bool()
         {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using NBrigadier.Generics;
+using NBrigadier.Helpers;
 using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -9,9 +11,7 @@ namespace NBrigadier.Context
 {
     public class CommandContextBuilder<TS>
     {
-        private readonly IDictionary<string, ParsedArgument<TS, object>> _arguments =
-            new Dictionary<string, ParsedArgument<TS, object>>();
-
+        private readonly IDictionary<string, IParsedArgument> _arguments = new Dictionary<string, IParsedArgument>();
         private readonly CommandDispatcher<TS> _dispatcher;
         private readonly IList<ParsedCommandNode<TS>> _nodes = new List<ParsedCommandNode<TS>>();
         private readonly CommandNode<TS> _rootNode;
@@ -34,7 +34,7 @@ namespace NBrigadier.Context
 
         public virtual CommandNode<TS> RootNode => _rootNode;
 
-        public virtual IDictionary<string, ParsedArgument<TS, object>> Arguments => _arguments;
+        public virtual IDictionary<string, IParsedArgument> Arguments => _arguments;
 
         public virtual CommandContextBuilder<TS> Child => _child;
 
@@ -62,7 +62,7 @@ namespace NBrigadier.Context
             return this;
         }
 
-        public virtual CommandContextBuilder<TS> WithArgument(string name, ParsedArgument<TS, object> argument)
+        public virtual CommandContextBuilder<TS> WithArgument<T1>(string name, IParsedArgument argument)
         {
             _arguments[name] = argument;
             return this;
@@ -87,7 +87,7 @@ namespace NBrigadier.Context
         {
             var copy = new CommandContextBuilder<TS>(_dispatcher, _source, _rootNode, _range.Start);
             copy._command = _command;
-            foreach (var keyVal in _arguments) _arguments[keyVal.Key] = keyVal.Value;
+            copy._arguments.PutAll(_arguments);
             ((List<ParsedCommandNode<TS>>) copy._nodes).AddRange(_nodes);
             copy._child = _child;
             copy._range = _range;
@@ -104,7 +104,7 @@ namespace NBrigadier.Context
         public virtual CommandContext<TS> Build(string input)
         {
             return new(_source, input, _arguments, _command, _rootNode, _nodes, _range,
-                _child?.Build(input), _modifier, _forks);
+                _child == null ? null : _child.Build(input), _modifier, _forks);
         }
 
         public virtual SuggestionContext<TS> FindSuggestionContext(int cursor)

@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>9</LangVersion>
+    <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
+    <LangVersion>preview</LangVersion>
     <Authors>Mojang, NickAc</Authors>
     <Company />
     <Product />
@@ -13,8 +13,8 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>NBrigadier,brigadier,command,command parser,command dispatcher, dispatcher, parser</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>1.0.17.1</AssemblyVersion>
-    <Version>1.0.17.1</Version>
+    <AssemblyVersion>1.0.17.2</AssemblyVersion>
+    <Version>1.0.17.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

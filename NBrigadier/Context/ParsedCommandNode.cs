@@ -1,7 +1,8 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-
+﻿using NBrigadier.Helpers;
 using NBrigadier.Tree;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 namespace NBrigadier.Context
 {
@@ -21,30 +22,6 @@ namespace NBrigadier.Context
 
         public virtual StringRange Range => _range;
 
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return ((_node != null ? _node.GetHashCode() : 0) * 397) ^ (_range != null ? _range.GetHashCode() : 0);
-            }
-        }
-
-        protected bool Equals(ParsedCommandNode<TS> other)
-        {
-            return Equals(_node, other._node) && Equals(_range, other._range);
-        }
-
-
-        public static bool operator ==(ParsedCommandNode<TS> left, ParsedCommandNode<TS> right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(ParsedCommandNode<TS> left, ParsedCommandNode<TS> right)
-        {
-            return !Equals(left, right);
-        }
-
         public override string ToString()
         {
             return _node + "@" + _range;
@@ -52,10 +29,15 @@ namespace NBrigadier.Context
 
         public override bool Equals(object o)
         {
-            if (ReferenceEquals(null, o)) return false;
-            if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != GetType()) return false;
-            return Equals((ParsedCommandNode<TS>) o);
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            var that = (ParsedCommandNode<object>) o;
+            return ObjectsHelper.Equals(_node, that._node) && ObjectsHelper.Equals(_range, that._range);
+        }
+
+        public override int GetHashCode()
+        {
+            return ObjectsHelper.Hash(_node, _range);
         }
     }
 }

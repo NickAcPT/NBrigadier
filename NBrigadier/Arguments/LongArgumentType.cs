@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
-using NBrigadier.Suggestion;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -11,7 +12,7 @@ namespace NBrigadier.Arguments
 {
     public class LongArgumentType : IArgumentType<long>
     {
-        private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "123", "-123"};
+        private static readonly ICollection<string> _examples = CollectionsHelper.AsList("0", "123", "-123");
         private readonly long _maximum;
 
         private readonly long _minimum;
@@ -26,23 +27,20 @@ namespace NBrigadier.Arguments
 
         public virtual long Maximum => _maximum;
 
-        public virtual ICollection<string> Examples => EXAMPLES;
-
-        public long Parse(StringReader reader)
+        public virtual long Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadLong();
             if (result < _minimum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BuiltInExceptions.LongTooLow()
-                    .CreateWithContext(reader, result, _minimum);
+                throw CommandSyntaxException.builtInExceptions.LongTooLow().CreateWithContext(reader, result, _minimum);
             }
 
             if (result > _maximum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BuiltInExceptions.LongTooHigh()
+                throw CommandSyntaxException.builtInExceptions.LongTooHigh()
                     .CreateWithContext(reader, result, _maximum);
             }
 
@@ -54,33 +52,7 @@ namespace NBrigadier.Arguments
             return Suggestions.Empty();
         }
 
-        public IList<string> GetExamples()
-        {
-            return new List<string>();
-        }
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (_maximum.GetHashCode() * 397) ^ _minimum.GetHashCode();
-            }
-        }
-
-        protected bool Equals(LongArgumentType other)
-        {
-            return _maximum == other._maximum && _minimum == other._minimum;
-        }
-
-        public static bool operator ==(LongArgumentType left, LongArgumentType right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(LongArgumentType left, LongArgumentType right)
-        {
-            return !Equals(left, right);
-        }
+        public virtual ICollection<string> Examples => _examples;
 
         public static LongArgumentType LongArg()
         {
@@ -104,12 +76,17 @@ namespace NBrigadier.Arguments
 
         public override bool Equals(object o)
         {
-            if (ReferenceEquals(null, o)) return false;
-            if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != GetType()) return false;
-            return Equals((LongArgumentType) o);
+            if (this == o) return true;
+            if (!(o is LongArgumentType)) return false;
+
+            var that = (LongArgumentType) o;
+            return _maximum == that._maximum && _minimum == that._minimum;
         }
 
+        public override int GetHashCode()
+        {
+            return 31 * ObjectsHelper.Hash(_minimum, _maximum);
+        }
 
         public override string ToString()
         {

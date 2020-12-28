@@ -13,7 +13,7 @@ namespace NBrigadier
 
         int Cursor { get; }
 
-        string ReadValue { get; }
+        string PreviouslyReadString { get; }
 
         string Remaining { get; }
 

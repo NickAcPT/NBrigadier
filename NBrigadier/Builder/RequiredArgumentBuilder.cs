@@ -1,9 +1,9 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
-
-using NBrigadier.Arguments;
-using NBrigadier.Suggestion;
+﻿using NBrigadier.Arguments;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Tree;
+
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 namespace NBrigadier.Builder
 {
@@ -38,8 +38,8 @@ namespace NBrigadier.Builder
 
         public override CommandNode<TS> Build()
         {
-            var result = new ArgumentCommandNode<TS, T>(Name, Type, Command, Requirement, Redirect, RedirectModifier,
-                Fork, SuggestionsProvider);
+            var result = new ArgumentCommandNode<TS, T>(Name, Type, Command, Requirement, RedirectTarget,
+                RedirectModifier, HasFork, SuggestionsProvider);
 
             foreach (var argument in Arguments) result.AddChild(argument);
 

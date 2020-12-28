@@ -1,7 +1,7 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT license.
+﻿using NBrigadier.Tree;
 
-using NBrigadier.Tree;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT license.
 
 namespace NBrigadier.Builder
 {
@@ -9,26 +9,26 @@ namespace NBrigadier.Builder
     {
         protected internal LiteralArgumentBuilder(string literal)
         {
-            Literal = literal;
+            LiteralValue = literal;
         }
 
         protected internal override LiteralArgumentBuilder<TS> This => this;
 
-        public virtual string Literal { get; }
+        public virtual string LiteralValue { get; }
 
-        public static LiteralArgumentBuilder<TS> LiteralBuilder(string name)
+        public static LiteralArgumentBuilder<TS> Literal(string name)
         {
             return new(name);
         }
 
+#if NETSTANDARD
         public override CommandNode<TS> Build()
+#else
+        public override LiteralCommandNode<TS> Build()
+#endif
         {
-            return BuildLiteral();
-        }
-
-        public LiteralCommandNode<TS> BuildLiteral()
-        {
-            var result = new LiteralCommandNode<TS>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
+            var result = new LiteralCommandNode<TS>(LiteralValue, Command, Requirement, RedirectTarget,
+                RedirectModifier, HasFork);
 
             foreach (var argument in Arguments) result.AddChild(argument);
 

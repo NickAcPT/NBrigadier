@@ -1,4 +1,5 @@
 ﻿using System;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -23,29 +24,6 @@ namespace NBrigadier.Context
         public virtual bool Empty => _start == _end;
 
         public virtual int Length => _end - _start;
-
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                return (_end * 397) ^ _start;
-            }
-        }
-
-        protected bool Equals(StringRange other)
-        {
-            return _end == other._end && _start == other._start;
-        }
-
-        public static bool operator ==(StringRange left, StringRange right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(StringRange left, StringRange right)
-        {
-            return !Equals(left, right);
-        }
 
         public static StringRange At(int pos)
         {
@@ -74,10 +52,15 @@ namespace NBrigadier.Context
 
         public override bool Equals(object o)
         {
-            if (ReferenceEquals(null, o)) return false;
-            if (ReferenceEquals(this, o)) return true;
-            if (o.GetType() != GetType()) return false;
-            return Equals((StringRange) o);
+            if (this == o) return true;
+            if (!(o is StringRange)) return false;
+            var that = (StringRange) o;
+            return _start == that._start && _end == that._end;
+        }
+
+        public override int GetHashCode()
+        {
+            return ObjectsHelper.Hash(_start, _end);
         }
 
         public override string ToString()

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
-using NBrigadier.Suggestion;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -11,8 +12,8 @@ namespace NBrigadier.Arguments
 {
     public class FloatArgumentType : IArgumentType<float>
     {
-        private static readonly ICollection<string> EXAMPLES = new List<string>
-            {"0", "1.2", ".5", "-1", "-.5", "-1234.56"};
+        private static readonly ICollection<string> _examples =
+            CollectionsHelper.AsList("0", "1.2", ".5", "-1", "-.5", "-1234.56");
 
         private readonly float _maximum;
 
@@ -28,23 +29,21 @@ namespace NBrigadier.Arguments
 
         public virtual float Maximum => _maximum;
 
-        public virtual ICollection<string> Examples => EXAMPLES;
-
-        public float Parse(StringReader reader)
+        public virtual float Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadFloat();
             if (result < _minimum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BuiltInExceptions.FloatTooLow()
+                throw CommandSyntaxException.builtInExceptions.FloatTooLow()
                     .CreateWithContext(reader, result, _minimum);
             }
 
             if (result > _maximum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BuiltInExceptions.FloatTooHigh()
+                throw CommandSyntaxException.builtInExceptions.FloatTooHigh()
                     .CreateWithContext(reader, result, _maximum);
             }
 
@@ -56,10 +55,7 @@ namespace NBrigadier.Arguments
             return Suggestions.Empty();
         }
 
-        public IList<string> GetExamples()
-        {
-            return new List<string>();
-        }
+        public virtual ICollection<string> Examples => _examples;
 
         public static FloatArgumentType FloatArg()
         {

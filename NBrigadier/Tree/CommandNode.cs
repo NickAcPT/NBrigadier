@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
-using NBrigadier.Suggestion;
+using NBrigadier.Generics;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -52,12 +54,11 @@ namespace NBrigadier.Tree
 
         public abstract ICollection<string> Examples { get; }
 
-        public int CompareTo(CommandNode<TS> o)
+        public virtual int CompareTo(CommandNode<TS> o)
         {
-            if (this is LiteralCommandNode<TS> == o is LiteralCommandNode<TS>)
-                return string.Compare(SortedKey, o.SortedKey, StringComparison.Ordinal);
+            if (this is LiteralCommandNode<TS> == o is ILiteralCommandNode) return SortedKey.CompareTo(o.SortedKey);
 
-            return o is LiteralCommandNode<TS> ? 1 : -1;
+            return o is ILiteralCommandNode ? 1 : -1;
         }
 
         public virtual CommandNode<TS> GetChild(string name)
@@ -72,7 +73,7 @@ namespace NBrigadier.Tree
 
         public virtual void AddChild(CommandNode<TS> node)
         {
-            if (node is RootCommandNode<TS>)
+            if (node is IRootCommandNode)
                 throw new NotSupportedException("Cannot add a RootCommandNode as a child to any other CommandNode");
 
             var child = _children.GetValueOrNull(node.Name);
@@ -85,13 +86,13 @@ namespace NBrigadier.Tree
             else
             {
                 _children[node.Name] = node;
-                if (node is LiteralCommandNode<TS> commandNode)
-                    _literals[node.Name] = commandNode;
-                else if (node is IArgumentCommandNode<TS> argumentCommandNode)
-                    _arguments[node.Name] = argumentCommandNode;
+                if (node is ILiteralCommandNode)
+                    _literals[node.Name] = (LiteralCommandNode<TS>) node;
+                else if (node is IArgumentCommandNode<TS>)
+                    _arguments[node.Name] = (IArgumentCommandNode<TS>) node;
             }
 
-            _children = _children.SetOfKeyValuePairs().OrderBy(c => c.Value).ToDictionary(c => c.Key, c => c.Value);
+            _children = _children.SetOfKeyValuePairs().OrderBy(d => d.Value).ToDictionary(e => e.Key, e => e.Value);
         }
 
         public virtual void FindAmbiguities(AmbiguityConsumer<TS> consumer)
@@ -119,7 +120,7 @@ namespace NBrigadier.Tree
             }
         }
 
-        public abstract bool IsValidInput(string input);
+        protected internal abstract bool IsValidInput(string input);
 
         public override bool Equals(object o)
         {
@@ -129,7 +130,7 @@ namespace NBrigadier.Tree
             var that = (CommandNode<TS>) o;
 
             if (!_children.Equals(that._children)) return false;
-            if (!_command?.Equals(that._command) ?? that._command != null) return false;
+            if (_command != null ? !_command.Equals(that._command) : that._command != null) return false;
 
             return true;
         }
@@ -143,6 +144,8 @@ namespace NBrigadier.Tree
 
         public abstract Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder);
 
+        public abstract IArgumentBuilder<TS> CreateBuilder();
+
         public virtual ICollection<CommandNode<TS>> GetRelevantNodes(StringReader input)
         {
             if (_literals.Count > 0)
@@ -153,7 +156,7 @@ namespace NBrigadier.Tree
                 input.Cursor = cursor;
                 var literal = _literals.GetValueOrNull(text);
                 if (literal != null)
-                    return new List<CommandNode<TS>> {literal};
+                    return CollectionsHelper.SingletonList(literal).Cast<CommandNode<TS>>().ToList();
                 return _arguments.Values.Cast<CommandNode<TS>>().ToList();
             }
 

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
-using NBrigadier.Suggestion;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -11,7 +12,7 @@ namespace NBrigadier.Arguments
 {
     public class IntegerArgumentType : IArgumentType<int>
     {
-        private static readonly ICollection<string> EXAMPLES = new List<string> {"0", "123", "-123"};
+        private static readonly ICollection<string> _examples = CollectionsHelper.AsList("0", "123", "-123");
         private readonly int _maximum;
 
         private readonly int _minimum;
@@ -26,23 +27,21 @@ namespace NBrigadier.Arguments
 
         public virtual int Maximum => _maximum;
 
-        public virtual ICollection<string> Examples => EXAMPLES;
-
-        public int Parse(StringReader reader)
+        public virtual int Parse(StringReader reader)
         {
             var start = reader.Cursor;
             var result = reader.ReadInt();
             if (result < _minimum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BuiltInExceptions.IntegerTooLow()
+                throw CommandSyntaxException.builtInExceptions.IntegerTooLow()
                     .CreateWithContext(reader, result, _minimum);
             }
 
             if (result > _maximum)
             {
                 reader.Cursor = start;
-                throw CommandSyntaxException.BuiltInExceptions.IntegerTooHigh()
+                throw CommandSyntaxException.builtInExceptions.IntegerTooHigh()
                     .CreateWithContext(reader, result, _maximum);
             }
 
@@ -54,10 +53,7 @@ namespace NBrigadier.Arguments
             return Suggestions.Empty();
         }
 
-        public IList<string> GetExamples()
-        {
-            return new List<string>();
-        }
+        public virtual ICollection<string> Examples => _examples;
 
         public static IntegerArgumentType Integer()
         {
