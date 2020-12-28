@@ -27,7 +27,7 @@ namespace com.mojang.brigadier.tree
 		private IDictionary<string, LiteralCommandNode<S>> literals = new Dictionary<string, LiteralCommandNode<S>>();
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: private java.util.Map<String, ArgumentCommandNode<S, ?>> arguments = new java.util.LinkedHashMap<>();
-		private IDictionary<string, ArgumentCommandNode<S, object>> arguments = new Dictionary<string, ArgumentCommandNode<S, object>>();
+		private IDictionary<string, IArgumentCommandNode<S>> arguments = new Dictionary<string, IArgumentCommandNode<S>>();
 		private System.Predicate<S> requirement;
 		private CommandNode<S> redirect;
 		private RedirectModifier<S> modifier;
@@ -112,11 +112,11 @@ namespace com.mojang.brigadier.tree
 				{
 					literals[node.Name] = (LiteralCommandNode<S>) node;
 				}
-				else if (node is ArgumentCommandNode)
+				else if (node is IArgumentCommandNode<S>)
 				{
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: arguments.put(node.getName(), (ArgumentCommandNode<S, ?>) node);
-					arguments[node.Name] = (ArgumentCommandNode<S, object>) node;
+					arguments[node.Name] = (IArgumentCommandNode<S>) node;
 				}
 			}
 
@@ -164,7 +164,7 @@ namespace com.mojang.brigadier.tree
 			{
 				return true;
 			}
-			if (!(o is CommandNode))
+			if (!(o is CommandNode<S>))
 			{
 				return false;
 			}
@@ -210,7 +210,7 @@ namespace com.mojang.brigadier.tree
 
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: public abstract com.mojang.brigadier.builder.ArgumentBuilder<S, ?> createBuilder();
-		public abstract ArgumentBuilder<S, object> createBuilder();
+		public abstract IArgumentBuilder<S> createBuilder();
 
 		protected internal abstract string SortedKey { get; }
 
@@ -230,22 +230,22 @@ namespace com.mojang.brigadier.tree
 				 LiteralCommandNode<S> literal = literals.GetValueOrNull(text);
 				if (literal != null)
 				{
-					return CollectionsHelper.SingletonList(literal);
+					return CollectionsHelper.SingletonList(literal).Cast<CommandNode<S>>().ToList();
 				}
 				else
 				{
-					return arguments.Values;
+					return arguments.Values.Cast<CommandNode<S>>().ToList();
 				}
 			}
 			else
 			{
-				return arguments.Values;
+				return arguments.Values.Cast<CommandNode<S>>().ToList();
 			}
 		}
 
 		public virtual int CompareTo(CommandNode<S> o)
 		{
-			if (this is LiteralCommandNode == o is ILiteralCommandNode)
+			if (this is LiteralCommandNode<S> == o is ILiteralCommandNode)
 			{
 				return SortedKey.CompareTo(o.SortedKey);
 			}

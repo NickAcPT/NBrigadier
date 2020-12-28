@@ -14,7 +14,7 @@ namespace com.mojang.brigadier.builder
 	using com.mojang.brigadier.tree;
 
 
-	public abstract class ArgumentBuilder<S, T> where T : ArgumentBuilder<S, T>
+	public abstract class ArgumentBuilder<S, T> : IArgumentBuilder<S> where T : ArgumentBuilder<S, T>
 	{
 		private com.mojang.brigadier.tree.RootCommandNode<S> arguments = new com.mojang.brigadier.tree.RootCommandNode<S>();
 		private Command<S> command;
@@ -25,7 +25,7 @@ namespace com.mojang.brigadier.builder
 
 		protected internal abstract T This { get; }
 
-		public virtual T then<T1>(ArgumentBuilder<T1> argument)
+		public virtual T then<T1>(IArgumentBuilder<S> argument)
 		{
 			if (target != null)
 			{

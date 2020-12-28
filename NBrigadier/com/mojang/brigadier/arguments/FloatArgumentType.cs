@@ -41,7 +41,7 @@ namespace com.mojang.brigadier.arguments
 
 		public static float getFloat<T1>(com.mojang.brigadier.context.CommandContext<T1> context, string name)
 		{
-			return context.getArgument(name, typeof(float));
+			return context.getArgument<float>(name, typeof(float));
 		}
 
 		public virtual float Minimum

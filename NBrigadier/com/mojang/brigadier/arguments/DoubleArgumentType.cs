@@ -41,7 +41,7 @@ namespace com.mojang.brigadier.arguments
 
 		public static double getDouble<T1>(com.mojang.brigadier.context.CommandContext<T1> context, string name)
 		{
-			return context.getArgument(name, typeof(double));
+			return context.getArgument<double>(name, typeof(double));
 		}
 
 		public virtual double Minimum

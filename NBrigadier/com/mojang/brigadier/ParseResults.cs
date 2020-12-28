@@ -26,7 +26,7 @@ namespace com.mojang.brigadier
 			this.exceptions = exceptions;
 		}
 
-		public ParseResults(CommandContextBuilder<S> context) : this(context, new StringReader(""), CollectionsHelper.EmptyMap())
+		public ParseResults(CommandContextBuilder<S> context) : this(context, new StringReader(""), CollectionsHelper.EmptyMap<CommandNode<S>, CommandSyntaxException>())
 		{
 		}
 

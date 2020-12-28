@@ -4,6 +4,7 @@ using System.Linq;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -46,7 +47,7 @@ namespace com.mojang.brigadier
 
 		private com.mojang.brigadier.tree.RootCommandNode<S> root;
 
-		private System.Predicate<CommandNode<S>> hasCommand = (CommandNode<S> input) =>
+		private static System.Predicate<CommandNode<S>> hasCommand = (CommandNode<S> input) =>
 		{
 		return input != null && (input.Command != null || input.Children.Any(hasCommand));
 		};
@@ -68,7 +69,7 @@ namespace com.mojang.brigadier
 		// / <summary>
 		// / Creates a new <seealso cref="CommandDispatcher"/> with an empty command tree.
 		// / </summary>
-		public CommandDispatcher() : this(new com.mojang.brigadier.tree.RootCommandNode<>())
+		public CommandDispatcher() : this(new com.mojang.brigadier.tree.RootCommandNode<S>())
 		{
 		}
 
@@ -445,7 +446,7 @@ namespace com.mojang.brigadier
 					{
 						potentials = new List<ParseResults<S>>(1);
 					}
-					potentials.Add(new ParseResults<>(context, reader, CollectionsHelper.EmptyMap()));
+					potentials.Add(new ParseResults<S>(context, reader, CollectionsHelper.EmptyMap<CommandNode<S>, CommandSyntaxException>()));
 				}
 			}
 
@@ -477,7 +478,7 @@ namespace com.mojang.brigadier
 				return potentials[0];
 			}
 
-			return new ParseResults<S>(contextSoFar, originalReader, errors == null ? CollectionsHelper.EmptyMap() : errors);
+			return new ParseResults<S>(contextSoFar, originalReader, errors == null ? CollectionsHelper.EmptyMap<CommandNode<S>, CommandSyntaxException>() : errors);
 		}
 
 		// / <summary>
@@ -672,33 +673,31 @@ namespace com.mojang.brigadier
 			 string truncatedInput = fullInput.Substring(0, cursor);
 // TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
 // ORIGINAL LINE: @SuppressWarnings("unchecked") java.util.concurrent.CompletableFuture<com.mojang.brigadier.suggestion.Suggestions>[] futures = new java.util.concurrent.CompletableFuture[parent.getChildren().size()];
-			System.Func<Suggestions>[] futures = new System.Func[parent.Children.Count];
-			int i = 0;
-			foreach (CommandNode<S> node in parent.Children)
-			{
-				System.Func<Suggestions> future = Suggestions.empty();
-				try
-				{
-					future = node.listSuggestions(context.build(truncatedInput), new SuggestionsBuilder(truncatedInput, start));
-				}
-				catch (CommandSyntaxException)
-				{
-				}
-				futures[i++] = future;
-			}
+            var futures = new Func<Suggestions>[parent.Children.Count];
+            var i = 0;
+            foreach (var node in parent.Children)
+            {
+                var future = Suggestions.empty();
+                try
+                {
+                    future = node.listSuggestions(context.build(truncatedInput),
+                        new SuggestionsBuilder(truncatedInput, start));
+                }
+                catch (CommandSyntaxException)
+                {
+                }
 
-			 System.Func<Suggestions> result = new java.util.concurrent.CompletableFuture<Suggestions>();
-			System.Func.allOf(futures).thenRun(() =>
-			{
-			IList<Suggestions> suggestions = new List<Suggestions>();
-			foreach (System.Func<Suggestions> future in futures)
-			{
-				suggestions.Add(future.join());
-			}
-			result.complete(Suggestions.merge(fullInput, suggestions));
-			});
+                futures[i++] = future;
+            }
 
-			return result;
+
+            IList<Suggestions> suggestions = new List<Suggestions>();
+
+
+            Parallel.Invoke(futures.Select(c => new Action(() => { suggestions.Add(c()); })).ToArray());
+
+
+            return () => Suggestions.merge(fullInput, suggestions);
 		}
 
 		// / <summary>
@@ -751,7 +750,7 @@ namespace com.mojang.brigadier
 				}
 			}
 
-			return CollectionsHelper.EmptyList();
+			return CollectionsHelper.EmptyList<string>();
 		}
 
 		// / <summary>

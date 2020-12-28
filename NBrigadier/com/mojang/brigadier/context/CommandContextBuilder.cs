@@ -18,7 +18,7 @@ namespace com.mojang.brigadier.context
 	{
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: private java.util.Map<String, ParsedArgument<S, ?>> arguments = new java.util.LinkedHashMap<>();
-		private IDictionary<string, ParsedArgument<S, object>> arguments = new Dictionary<string, ParsedArgument<S, object>>();
+		private IDictionary<string, IParsedArgument> arguments = new Dictionary<string, IParsedArgument>();
 		private CommandNode<S> rootNode;
 		private IList<ParsedCommandNode<S>> nodes = new List<ParsedCommandNode<S>>();
 		private CommandDispatcher<S> dispatcher;
@@ -59,7 +59,7 @@ namespace com.mojang.brigadier.context
 			}
 		}
 
-		public virtual CommandContextBuilder<S> withArgument<T1>(string name, ParsedArgument<T1> argument)
+		public virtual CommandContextBuilder<S> withArgument<T1>(string name, IParsedArgument argument)
 		{
 			this.arguments[name] = argument;
 			return this;
@@ -67,7 +67,7 @@ namespace com.mojang.brigadier.context
 
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: public java.util.Map<String, ParsedArgument<S, ?>> getArguments()
-		public virtual IDictionary<string, ParsedArgument<S, object>> Arguments
+		public virtual IDictionary<string, IParsedArgument> Arguments
 		{
 			get
 			{
@@ -83,7 +83,7 @@ namespace com.mojang.brigadier.context
 
 		public virtual CommandContextBuilder<S> withNode(CommandNode<S> node, StringRange range)
 		{
-			nodes.Add(new ParsedCommandNode<>(node, range));
+			nodes.Add(new ParsedCommandNode<S>(node, range));
 			this.range = StringRange.encompassing(this.range, range);
 			this.modifier = node.RedirectModifier;
 			this.forks = node.Fork;

@@ -41,7 +41,7 @@ namespace com.mojang.brigadier.arguments
 
 		public static long getLong<T1>(com.mojang.brigadier.context.CommandContext<T1> context, string name)
 		{
-			return context.getArgument(name, typeof(long));
+			return context.getArgument<long>(name, typeof(long));
 		}
 
 		public virtual long Minimum
@@ -96,7 +96,7 @@ namespace com.mojang.brigadier.arguments
 
 		public override int GetHashCode()
 		{
-			return 31 * Long.hashCode(minimum) + Long.hashCode(maximum);
+			return 31 * ObjectsHelper.hash(minimum, maximum);
 		}
 
 		public override string ToString()

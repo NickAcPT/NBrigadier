@@ -41,7 +41,7 @@ namespace com.mojang.brigadier.arguments
 
 		public static int getInteger<T1>(com.mojang.brigadier.context.CommandContext<T1> context, string name)
 		{
-			return context.getArgument(name, typeof(int));
+			return context.getArgument<int>(name, typeof(int));
 		}
 
 		public virtual int Minimum

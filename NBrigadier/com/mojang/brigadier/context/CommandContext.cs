@@ -37,7 +37,7 @@ namespace com.mojang.brigadier.context
 		private Command<S> command;
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: private java.util.Map<String, ParsedArgument<S, ?>> arguments;
-		private IDictionary<string, ParsedArgument<S, object>> arguments;
+		private IDictionary<string, IParsedArgument> arguments;
 		private CommandNode<S> rootNode;
 		private IList<ParsedCommandNode<S>> nodes;
 		private StringRange range;
@@ -47,7 +47,7 @@ namespace com.mojang.brigadier.context
 
 // TODO TASK: Wildcard generics in constructor parameters are not converted. Move the generic type parameter and constraint to the class header:
 // ORIGINAL LINE: public CommandContext(S source, String input, java.util.Map<String, ParsedArgument<S, ?>> arguments, com.mojang.brigadier.Command<S> command, com.mojang.brigadier.tree.CommandNode<S> rootNode, java.util.List<ParsedCommandNode<S>> nodes, StringRange range, CommandContext<S> child, com.mojang.brigadier.RedirectModifier<S> modifier, boolean forks)
-		public CommandContext(S source, string input, IDictionary<T1> arguments, Command<S> command, CommandNode<S> rootNode, IList<ParsedCommandNode<S>> nodes, StringRange range, CommandContext<S> child, RedirectModifier<S> modifier, bool forks)
+		public CommandContext(S source, string input, IDictionary<string, IParsedArgument> arguments, Command<S> command, CommandNode<S> rootNode, IList<ParsedCommandNode<S>> nodes, StringRange range, CommandContext<S> child, RedirectModifier<S> modifier, bool forks)
 		{
 			this.source = source;
 			this.input = input;
@@ -63,7 +63,7 @@ namespace com.mojang.brigadier.context
 
 		public virtual CommandContext<S> copyFor(S source)
 		{
-			if (this.source == source)
+			if (this.source.Equals(source))
 			{
 				return this;
 			}
@@ -113,14 +113,14 @@ namespace com.mojang.brigadier.context
 		{
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: ParsedArgument<S, ?> argument = arguments.get(name);
-			 ParsedArgument<S, object> argument = arguments.GetValueOrNull(name);
+			 IParsedArgument argument = arguments.GetValueOrNull(name);
 
 			if (argument == null)
 			{
 				throw new System.ArgumentException("No such argument '" + name + "' exists on this command");
 			}
 
-			 object result = argument.Result;
+			 object result = argument.ResultObject;
 // ORIGINAL LINE: if (PRIMITIVE_TO_WRAPPER.getOrDefault(clazz, clazz).isAssignableFrom(result.getClass()))
 			if (MapHelper.GetOrDefault(PRIMITIVE_TO_WRAPPER, clazz, clazz).IsAssignableFrom(result.GetType()))
 			{
@@ -143,7 +143,7 @@ namespace com.mojang.brigadier.context
 				return false;
 			}
 
-			 ICommandContext that = (ICommandContext) o;
+			 CommandContext<S> that = (CommandContext<S>) o;
 
 			if (!arguments.Equals(that.arguments))
 			{
@@ -155,7 +155,7 @@ namespace com.mojang.brigadier.context
 			}
 // WARNING: LINQ 'SequenceEqual' is not always identical to Java AbstractList 'equals':
 // ORIGINAL LINE: if (nodes.size() != that.nodes.size() || !nodes.equals(that.nodes))
-			if (nodes.Count != that.nodes.size() || !nodes.SequenceEqual(that.nodes))
+			if (nodes.Count != that.nodes.Count || !nodes.SequenceEqual(that.nodes))
 			{
 				return false;
 			}

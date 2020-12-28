@@ -23,7 +23,7 @@ namespace com.mojang.brigadier.builder
 			this.type = type;
 		}
 
-		public static RequiredArgumentBuilder<S, T> argument<S, T>(string name, ArgumentType<T> type)
+		public static RequiredArgumentBuilder<S, T> argument(string name, ArgumentType<T> type)
 		{
 			return new RequiredArgumentBuilder<S, T>(name, type);
 		}
@@ -66,7 +66,7 @@ namespace com.mojang.brigadier.builder
 			}
 		}
 
-		public override ArgumentCommandNode<S, T> build()
+		public override CommandNode<S> build()
 		{
 			 ArgumentCommandNode<S, T> result = new ArgumentCommandNode<S, T>(Name, Type, Command, Requirement, Redirect, RedirectModifier, Fork, SuggestionsProvider);
 

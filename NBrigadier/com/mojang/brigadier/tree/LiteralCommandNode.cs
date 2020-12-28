@@ -26,7 +26,7 @@ namespace com.mojang.brigadier.tree
 
 		public LiteralCommandNode(string literal, Command<S> command, System.Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, bool forks) : base(command, requirement, redirect, modifier, forks)
 		{
-			this.Literal = literal;
+			this.literal = literal;
 		}
 
 		public virtual string Literal
@@ -94,7 +94,7 @@ namespace com.mojang.brigadier.tree
 			}
 		}
 
-		public override bool isValidInput(string input)
+        protected internal override bool isValidInput(string input)
 		{
 			return parse(new StringReader(input)) > -1;
 		}
@@ -134,9 +134,9 @@ namespace com.mojang.brigadier.tree
 			return result;
 		}
 
-		public override LiteralArgumentBuilder<S> createBuilder()
+		public override IArgumentBuilder<S> createBuilder()
 		{
-			 LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder.literal(this.Literal);
+			 LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder<S>.literal(this.Literal);
 			builder.requires(Requirement);
 			builder.forward(Redirect, RedirectModifier, Fork);
 			if (Command != null)

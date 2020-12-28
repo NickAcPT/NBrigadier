@@ -60,7 +60,7 @@ namespace com.mojang.brigadier.suggestion
 		{
 			if (o is IntegerSuggestion)
 			{
-				return Integer.compare(value, ((IntegerSuggestion) o).value);
+				return (value).CompareTo(((IntegerSuggestion) o).value);
 			}
 			return base.CompareTo(o);
 		}

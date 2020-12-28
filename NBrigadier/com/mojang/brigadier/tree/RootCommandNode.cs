@@ -49,7 +49,7 @@ namespace com.mojang.brigadier.tree
 			return Suggestions.empty();
 		}
 
-		public override bool isValidInput(string input)
+        protected internal override bool isValidInput(string input)
 		{
 			return false;
 		}
@@ -69,7 +69,7 @@ namespace com.mojang.brigadier.tree
 
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: @Override public com.mojang.brigadier.builder.ArgumentBuilder<S, ?> createBuilder()
-		public override ArgumentBuilder<S, object> createBuilder()
+		public override IArgumentBuilder<S> createBuilder()
 		{
 			throw new System.InvalidOperationException("Cannot convert root into a builder");
 		}
@@ -86,7 +86,7 @@ namespace com.mojang.brigadier.tree
 		{
 			get
 			{
-				return CollectionsHelper.EmptyList();
+				return CollectionsHelper.EmptyList<string>();
 			}
 		}
 

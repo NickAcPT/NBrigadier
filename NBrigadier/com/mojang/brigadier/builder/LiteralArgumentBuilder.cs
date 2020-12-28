@@ -18,7 +18,7 @@ namespace com.mojang.brigadier.builder
 			this.literal_Conflict = literal;
 		}
 
-		public static LiteralArgumentBuilder<S> literal<S>(string name)
+		public static LiteralArgumentBuilder<S> literal(string name)
 		{
 			return new LiteralArgumentBuilder<S>(name);
 		}

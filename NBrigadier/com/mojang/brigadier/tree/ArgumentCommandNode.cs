@@ -20,7 +20,7 @@ namespace com.mojang.brigadier.tree
 	using SuggestionsBuilder = com.mojang.brigadier.suggestion.SuggestionsBuilder;
 
 
-	public class ArgumentCommandNode<S, T> : CommandNode<S>
+	public class ArgumentCommandNode<S, T> : CommandNode<S>, IArgumentCommandNode<S>
 	{
 		private static string USAGE_ARGUMENT_OPEN = "<";
 		private static string USAGE_ARGUMENT_CLOSE = ">";
@@ -76,7 +76,7 @@ namespace com.mojang.brigadier.tree
 			 T result = type.parse(reader);
 			 com.mojang.brigadier.context.ParsedArgument<S, T> parsed = new com.mojang.brigadier.context.ParsedArgument<S, T>(start, reader.Cursor, result);
 
-			contextBuilder.withArgument(name, parsed);
+			contextBuilder.withArgument<T>(name, parsed);
 			contextBuilder.withNode(this, parsed.Range);
 		}
 
@@ -94,9 +94,9 @@ namespace com.mojang.brigadier.tree
 			}
 		}
 
-		public override RequiredArgumentBuilder<S, T> createBuilder()
+		public override IArgumentBuilder<S> createBuilder()
 		{
-			 RequiredArgumentBuilder<S, T> builder = RequiredArgumentBuilder.argument(name, type);
+			 RequiredArgumentBuilder<S, T> builder = RequiredArgumentBuilder<S, T>.argument(name, type);
 			builder.requires(Requirement);
 			builder.forward(Redirect, RedirectModifier, Fork);
 			builder.suggests(customSuggestions);
@@ -107,7 +107,7 @@ namespace com.mojang.brigadier.tree
 			return builder;
 		}
 
-		public override bool isValidInput(string input)
+        protected internal override bool isValidInput(string input)
 		{
 			try
 			{
@@ -127,12 +127,12 @@ namespace com.mojang.brigadier.tree
 			{
 				return true;
 			}
-			if (!(o is ArgumentCommandNode))
+			if (!(o is ArgumentCommandNode<S, T>))
 			{
 				return false;
 			}
 
-			 ArgumentCommandNode that = (ArgumentCommandNode) o;
+			 ArgumentCommandNode<S, T> that = (ArgumentCommandNode<S, T>) o;
 
 			if (!name.Equals(that.name))
 			{

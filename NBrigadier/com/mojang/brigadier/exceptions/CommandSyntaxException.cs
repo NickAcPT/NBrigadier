@@ -64,7 +64,7 @@ namespace com.mojang.brigadier.exceptions
 		{
 			get
 			{
-				if (string.ReferenceEquals(input, null) || cursor < 0)
+				if (string.ReferenceEquals(input, null) || this.cursor < 0)
 				{
 					return null;
 				}

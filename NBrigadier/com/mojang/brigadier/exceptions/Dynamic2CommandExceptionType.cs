@@ -20,18 +20,16 @@ namespace com.mojang.brigadier.exceptions
 
 		public virtual CommandSyntaxException create(object a, object b)
 		{
-			return new CommandSyntaxException(this, function.apply(a, b));
+			return new CommandSyntaxException(this, function(a, b));
 		}
 
 		public virtual CommandSyntaxException createWithContext(ImmutableStringReader reader, object a, object b)
 		{
-			return new CommandSyntaxException(this, function.apply(a, b), reader.String, reader.Cursor);
+			return new CommandSyntaxException(this, function(a, b), reader.String, reader.Cursor);
 		}
 
-		public interface Function
-		{
-			Message apply(object a, object b);
-		}
+		public delegate Message Function(object a, object b);
+		
 	}
 
 }

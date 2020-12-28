@@ -26,7 +26,9 @@ namespace com.mojang.brigadier.context
 			}
 		}
 
-		public virtual T Result
+        public object ResultObject => Result;
+
+        public virtual T Result
 		{
 			get
 			{

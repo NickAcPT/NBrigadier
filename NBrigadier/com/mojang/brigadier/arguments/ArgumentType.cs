@@ -29,7 +29,7 @@ namespace com.mojang.brigadier.arguments
 		{
 			get
 			{
-				return CollectionsHelper.EmptyList();
+				return CollectionsHelper.EmptyList<string>();
 			}
 		}
 	}

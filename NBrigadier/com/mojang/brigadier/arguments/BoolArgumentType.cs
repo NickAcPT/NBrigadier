@@ -30,7 +30,7 @@ namespace com.mojang.brigadier.arguments
 
 		public static bool getBool<T1>(com.mojang.brigadier.context.CommandContext<T1> context, string name)
 		{
-			return context.getArgument(name, typeof(Boolean));
+			return context.getArgument<bool>(name, typeof(Boolean));
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:

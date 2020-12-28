@@ -6,6 +6,7 @@
 //-------------------------------------------------------------------------------------------
 using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 internal static class StringHelper
 {
@@ -31,7 +32,7 @@ internal static class StringHelper
 	//------------------------------------------------------------------------------
 	public static string[] Split(this string self, string regexDelimiter, bool trimTrailingEmptyStrings)
 	{
-		string[] splitArray = RegularExpressions.Regex.Split(self, regexDelimiter);
+		string[] splitArray = Regex.Split(self, regexDelimiter);
 
 		if (trimTrailingEmptyStrings)
 		{
