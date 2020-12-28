@@ -1,14 +1,11 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System;
+﻿using System;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.context
+namespace NBrigadier.Context
 {
-	using ImmutableStringReader = com.mojang.brigadier.ImmutableStringReader;
+	using ImmutableStringReader = ImmutableStringReader;
 
 	public class StringRange
 	{

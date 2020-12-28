@@ -1,27 +1,26 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NBrigadier.Builder;
+using NBrigadier.Context;
+using NBrigadier.Exceptions;
+using NBrigadier.Helpers;
+using NBrigadier.Suggestion;
+using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
+namespace NBrigadier
 {
-	using com.mojang.brigadier.builder;
-	using com.mojang.brigadier.context;
-	using com.mojang.brigadier.context;
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
-	using Suggestions = com.mojang.brigadier.suggestion.Suggestions;
-	using SuggestionsBuilder = com.mojang.brigadier.suggestion.SuggestionsBuilder;
-	using com.mojang.brigadier.tree;
+    using CommandSyntaxException = CommandSyntaxException;
+	using Suggestions = Suggestions;
+	using SuggestionsBuilder = SuggestionsBuilder;
 
 
-
-	// / <summary>
+    // / <summary>
 	// / The core command dispatcher, for registering, parsing, and executing commands.
 	// / </summary>
 	// / @param <S> a custom "source" type, such as a user or originator of a command </param>
@@ -45,7 +44,7 @@ namespace com.mojang.brigadier
 		private static string USAGE_REQUIRED_CLOSE = ")";
 		private static string USAGE_OR = "|";
 
-		private com.mojang.brigadier.tree.RootCommandNode<S> root;
+		private RootCommandNode<S> root;
 
 		private static System.Predicate<CommandNode<S>> hasCommand = (CommandNode<S> input) =>
 		{
@@ -61,7 +60,7 @@ namespace com.mojang.brigadier
 		// / <para>This is often useful to copy existing or pre-defined command trees.</para>
 		// / </summary>
 		// / <param name="root"> the existing <seealso cref="RootCommandNode"/> to use as the basis for this tree </param>
-		public CommandDispatcher(com.mojang.brigadier.tree.RootCommandNode<S> root)
+		public CommandDispatcher(RootCommandNode<S> root)
 		{
 			this.root = root;
 		}
@@ -69,7 +68,7 @@ namespace com.mojang.brigadier
 		// / <summary>
 		// / Creates a new <seealso cref="CommandDispatcher"/> with an empty command tree.
 		// / </summary>
-		public CommandDispatcher() : this(new com.mojang.brigadier.tree.RootCommandNode<S>())
+		public CommandDispatcher() : this(new RootCommandNode<S>())
 		{
 		}
 
@@ -82,9 +81,9 @@ namespace com.mojang.brigadier
 		// / </summary>
 		// / <param name="command"> a literal argument builder to add to this command tree </param>
 		// / <returns> the node added to this tree </returns>
-		public virtual com.mojang.brigadier.tree.LiteralCommandNode<S> register(LiteralArgumentBuilder<S> command)
+		public virtual LiteralCommandNode<S> register(LiteralArgumentBuilder<S> command)
 		{
-			 com.mojang.brigadier.tree.LiteralCommandNode<S> build = command.build();
+			 LiteralCommandNode<S> build = command.build();
 			root.addChild(build);
 			return build;
 		}
@@ -224,17 +223,17 @@ namespace com.mojang.brigadier
 			bool forked = false;
 			bool foundCommand = false;
 			 string command = parse.Reader.String;
-			 com.mojang.brigadier.context.CommandContext<S> original = parse.Context.build(command);
-			IList<com.mojang.brigadier.context.CommandContext<S>> contexts = CollectionsHelper.SingletonList(original);
-			List<com.mojang.brigadier.context.CommandContext<S>> next = null;
+			 CommandContext<S> original = parse.Context.build(command);
+			IList<CommandContext<S>> contexts = CollectionsHelper.SingletonList(original);
+			List<CommandContext<S>> next = null;
 
 			while (contexts != null)
 			{
 				 int size = contexts.Count;
 				for (int i = 0; i < size; i++)
 				{
-					 com.mojang.brigadier.context.CommandContext<S> context = contexts[i];
-					 com.mojang.brigadier.context.CommandContext<S> child = context.Child;
+					 CommandContext<S> context = contexts[i];
+					 CommandContext<S> child = context.Child;
 					if (child != null)
 					{
 						forked |= context.Forked;
@@ -246,7 +245,7 @@ namespace com.mojang.brigadier
 							{
 								if (next == null)
 								{
-									next = new List<com.mojang.brigadier.context.CommandContext<S>>(1);
+									next = new List<CommandContext<S>>(1);
 								}
 								next.Add(child.copyFor(context.Source));
 							}
@@ -259,7 +258,7 @@ namespace com.mojang.brigadier
 									{
 										if (next == null)
 										{
-											next = new List<com.mojang.brigadier.context.CommandContext<S>>(results.Count);
+											next = new List<CommandContext<S>>(results.Count);
 										}
 										foreach (S source in results)
 										{
@@ -708,7 +707,7 @@ namespace com.mojang.brigadier
 		// / You may also use it to clone the command tree via <seealso cref="CommandDispatcher(RootCommandNode)"/>.</para>
 		// / </summary>
 		// / <returns> root of the command tree </returns>
-		public virtual com.mojang.brigadier.tree.RootCommandNode<S> Root
+		public virtual RootCommandNode<S> Root
 		{
 			get
 			{

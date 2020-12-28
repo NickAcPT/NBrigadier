@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
-using com.mojang.brigadier;
-using com.mojang.brigadier.tree;
+using NBrigadier.Tree;
 
 namespace NBrigadier.Generics
 {

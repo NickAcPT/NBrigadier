@@ -1,22 +1,16 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using NBrigadier.Generics;
+using NBrigadier.Helpers;
+using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.context
+namespace NBrigadier.Context
 {
-	using com.mojang.brigadier;
-	using com.mojang.brigadier;
-	using com.mojang.brigadier.tree;
-
-
-	public class CommandContext<S> : ICommandContext
+    public class CommandContext<S> : ICommandContext
 	{
 
 		private static IDictionary<Type, Type> PRIMITIVE_TO_WRAPPER = new Dictionary<Type, Type>();

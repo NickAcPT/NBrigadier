@@ -1,18 +1,18 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using NBrigadier.Context;
+using NBrigadier.Exceptions;
+using NBrigadier.Helpers;
+using NBrigadier.Suggestion;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.arguments
+namespace NBrigadier.Arguments
 {
-	using StringReader = com.mojang.brigadier.StringReader;
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
-	using Suggestions = com.mojang.brigadier.suggestion.Suggestions;
-	using SuggestionsBuilder = com.mojang.brigadier.suggestion.SuggestionsBuilder;
+	using StringReader = StringReader;
+    using Suggestions = Suggestions;
+	using SuggestionsBuilder = SuggestionsBuilder;
 
 
 	public class BoolArgumentType : ArgumentType<bool>
@@ -28,7 +28,7 @@ namespace com.mojang.brigadier.arguments
 			return new BoolArgumentType();
 		}
 
-		public static bool getBool<T1>(com.mojang.brigadier.context.CommandContext<T1> context, string name)
+		public static bool getBool<T1>(CommandContext<T1> context, string name)
 		{
 			return context.getArgument<bool>(name, typeof(Boolean));
 		}
@@ -40,7 +40,7 @@ namespace com.mojang.brigadier.arguments
 			return reader.readBoolean();
 		}
 
-		public virtual System.Func<Suggestions> listSuggestions<S>(com.mojang.brigadier.context.CommandContext<S> context, SuggestionsBuilder builder)
+		public virtual System.Func<Suggestions> listSuggestions<S>(CommandContext<S> context, SuggestionsBuilder builder)
 		{
 			if ("true".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
 			{

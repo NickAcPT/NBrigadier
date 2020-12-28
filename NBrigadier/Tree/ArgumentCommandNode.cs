@@ -1,24 +1,20 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using NBrigadier.Arguments;
+using NBrigadier.Builder;
+using NBrigadier.Context;
+using NBrigadier.Exceptions;
 using NBrigadier.Generics;
+using NBrigadier.Suggestion;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.tree
+namespace NBrigadier.Tree
 {
-	using com.mojang.brigadier;
-	using com.mojang.brigadier;
-	using StringReader = com.mojang.brigadier.StringReader;
-	using com.mojang.brigadier.arguments;
-	using com.mojang.brigadier.builder;
-	using com.mojang.brigadier.context;
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
-	using com.mojang.brigadier.suggestion;
-	using Suggestions = com.mojang.brigadier.suggestion.Suggestions;
-	using SuggestionsBuilder = com.mojang.brigadier.suggestion.SuggestionsBuilder;
+    using StringReader = StringReader;
+    using CommandSyntaxException = CommandSyntaxException;
+    using Suggestions = Suggestions;
+	using SuggestionsBuilder = SuggestionsBuilder;
 
 
 	public class ArgumentCommandNode<S, T> : CommandNode<S>, IArgumentCommandNode<S>
@@ -75,7 +71,7 @@ namespace com.mojang.brigadier.tree
 		{
 			 int start = reader.Cursor;
 			 T result = type.parse(reader);
-			 com.mojang.brigadier.context.ParsedArgument<S, T> parsed = new com.mojang.brigadier.context.ParsedArgument<S, T>(start, reader.Cursor, result);
+			 ParsedArgument<S, T> parsed = new ParsedArgument<S, T>(start, reader.Cursor, result);
 
 			contextBuilder.withArgument<T>(name, parsed);
 			contextBuilder.withNode(this, parsed.Range);
@@ -83,7 +79,7 @@ namespace com.mojang.brigadier.tree
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public java.util.concurrent.CompletableFuture<com.mojang.brigadier.suggestion.Suggestions> listSuggestions(com.mojang.brigadier.context.CommandContext<S> context, com.mojang.brigadier.suggestion.SuggestionsBuilder builder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public override System.Func<Suggestions> listSuggestions(com.mojang.brigadier.context.CommandContext<S> context, SuggestionsBuilder builder)
+		public override System.Func<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
 		{
 			if (customSuggestions == null)
 			{

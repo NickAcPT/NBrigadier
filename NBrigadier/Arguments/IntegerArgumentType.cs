@@ -1,15 +1,15 @@
-﻿using NBrigadier;
+﻿using System.Collections.Generic;
+using NBrigadier.Context;
+using NBrigadier.Exceptions;
 using NBrigadier.Helpers;
-using System.Linq;
-using System.Collections.Generic;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.arguments
+namespace NBrigadier.Arguments
 {
-	using StringReader = com.mojang.brigadier.StringReader;
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
+	using StringReader = StringReader;
+	using CommandSyntaxException = CommandSyntaxException;
 
 	public class IntegerArgumentType : ArgumentType<int>
 	{
@@ -39,7 +39,7 @@ namespace com.mojang.brigadier.arguments
 			return new IntegerArgumentType(min, max);
 		}
 
-		public static int getInteger<T1>(com.mojang.brigadier.context.CommandContext<T1> context, string name)
+		public static int getInteger<T1>(CommandContext<T1> context, string name)
 		{
 			return context.getArgument<int>(name, typeof(int));
 		}

@@ -1,12 +1,10 @@
-﻿using NBrigadier;
+﻿using NBrigadier.Generics;
 using NBrigadier.Helpers;
-using System.Linq;
-using NBrigadier.Generics;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.context
+namespace NBrigadier.Context
 {
 
 	public class ParsedArgument<S, T> : IParsedArgument

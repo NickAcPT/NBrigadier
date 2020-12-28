@@ -1,4 +1,4 @@
-﻿using com.mojang.brigadier.context;
+﻿using NBrigadier.Context;
 
 namespace NBrigadier.Generics
 {

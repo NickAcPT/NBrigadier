@@ -1,21 +1,14 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NBrigadier.Generics;
+using NBrigadier.Helpers;
+using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.context
+namespace NBrigadier.Context
 {
-	using com.mojang.brigadier;
-	using com.mojang.brigadier;
-	using com.mojang.brigadier;
-	using com.mojang.brigadier.tree;
-
-
-	public class CommandContextBuilder<S>
+    public class CommandContextBuilder<S>
 	{
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: private java.util.Map<String, ParsedArgument<S, ?>> arguments = new java.util.LinkedHashMap<>();

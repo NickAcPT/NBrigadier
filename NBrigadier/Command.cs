@@ -1,13 +1,11 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
+﻿using NBrigadier.Context;
+using NBrigadier.Exceptions;
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
+namespace NBrigadier
 {
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
-
-	public delegate int Command<S>(com.mojang.brigadier.context.CommandContext<S> context);
+    public delegate int Command<S>(CommandContext<S> context);
 
 }

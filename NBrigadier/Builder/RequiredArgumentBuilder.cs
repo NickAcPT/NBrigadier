@@ -1,17 +1,13 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
+﻿using NBrigadier.Arguments;
+using NBrigadier.Suggestion;
+using NBrigadier.Tree;
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.builder
+namespace NBrigadier.Builder
 {
-	using com.mojang.brigadier.arguments;
-	using com.mojang.brigadier.suggestion;
-	using com.mojang.brigadier.tree;
-	using com.mojang.brigadier.tree;
-
-	public class RequiredArgumentBuilder<S, T> : ArgumentBuilder<S, RequiredArgumentBuilder<S, T>>
+    public class RequiredArgumentBuilder<S, T> : ArgumentBuilder<S, RequiredArgumentBuilder<S, T>>
 	{
 		private string name;
 		private ArgumentType<T> type;

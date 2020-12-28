@@ -1,14 +1,11 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
+﻿using NBrigadier.Tree;
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.builder
+namespace NBrigadier.Builder
 {
-	using com.mojang.brigadier.tree;
-
-	public class LiteralArgumentBuilder<S> : ArgumentBuilder<S, LiteralArgumentBuilder<S>>
+    public class LiteralArgumentBuilder<S> : ArgumentBuilder<S, LiteralArgumentBuilder<S>>
 	{
 // NOTE: Fields cannot have the same name as methods of the current type:
 		private string literal_Conflict;
@@ -39,9 +36,9 @@ namespace com.mojang.brigadier.builder
 			}
 		}
 
-		public override com.mojang.brigadier.tree.LiteralCommandNode<S> build()
+		public override LiteralCommandNode<S> build()
 		{
-			 com.mojang.brigadier.tree.LiteralCommandNode<S> result = new com.mojang.brigadier.tree.LiteralCommandNode<S>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
+			 LiteralCommandNode<S> result = new LiteralCommandNode<S>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
 
 			foreach (CommandNode<S> argument in Arguments)
 			{

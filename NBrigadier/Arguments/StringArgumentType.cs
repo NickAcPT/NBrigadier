@@ -1,18 +1,17 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using NBrigadier.Context;
+using NBrigadier.Exceptions;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.arguments
+namespace NBrigadier.Arguments
 {
-	using StringReader = com.mojang.brigadier.StringReader;
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
+	using StringReader = StringReader;
 
-	public class StringArgumentType : ArgumentType<string>
+    public class StringArgumentType : ArgumentType<string>
 	{
 		private StringType type;
 
@@ -36,7 +35,7 @@ namespace com.mojang.brigadier.arguments
 			return new StringArgumentType(StringType.GREEDY_PHRASE);
 		}
 
-		public static string getString<T1>(com.mojang.brigadier.context.CommandContext<T1> context, string name)
+		public static string getString<T1>(CommandContext<T1> context, string name)
 		{
 			return context.getArgument<string>(name, typeof(string));
 		}

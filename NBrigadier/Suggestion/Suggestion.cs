@@ -1,16 +1,15 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System;
+﻿using System;
 using System.Text;
+using NBrigadier.Context;
+using NBrigadier.Helpers;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.suggestion
+namespace NBrigadier.Suggestion
 {
-	using Message = com.mojang.brigadier.Message;
-	using StringRange = com.mojang.brigadier.context.StringRange;
+	using Message = Message;
+	using StringRange = StringRange;
 
 	public class Suggestion : IComparable<Suggestion>
 	{

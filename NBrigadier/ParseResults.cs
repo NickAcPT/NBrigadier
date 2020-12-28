@@ -1,19 +1,18 @@
-﻿using NBrigadier;
+﻿using System.Collections.Generic;
+using NBrigadier.Context;
+using NBrigadier.Exceptions;
 using NBrigadier.Helpers;
-using System.Linq;
-using System.Collections.Generic;
+using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
+namespace NBrigadier
 {
-	using com.mojang.brigadier.context;
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
-	using com.mojang.brigadier.tree;
+    using CommandSyntaxException = CommandSyntaxException;
 
 
-	public class ParseResults<S>
+    public class ParseResults<S>
 	{
 		private CommandContextBuilder<S> context;
 		private IDictionary<CommandNode<S>, CommandSyntaxException> exceptions;

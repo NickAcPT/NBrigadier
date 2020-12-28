@@ -1,14 +1,12 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
+using NBrigadier.Exceptions;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
+namespace NBrigadier
 {
-	using CommandSyntaxException = com.mojang.brigadier.exceptions.CommandSyntaxException;
+	using CommandSyntaxException = CommandSyntaxException;
 
 	public class StringReader : ImmutableStringReader
 	{

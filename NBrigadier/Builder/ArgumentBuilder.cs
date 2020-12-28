@@ -1,23 +1,16 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using NBrigadier.Generics;
+using NBrigadier.Helpers;
+using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.builder
+namespace NBrigadier.Builder
 {
-	using com.mojang.brigadier;
-	using com.mojang.brigadier;
-	using com.mojang.brigadier;
-	using com.mojang.brigadier.tree;
-
-
-	public abstract class ArgumentBuilder<S, T> : IArgumentBuilder<S> where T : ArgumentBuilder<S, T>
+    public abstract class ArgumentBuilder<S, T> : IArgumentBuilder<S> where T : ArgumentBuilder<S, T>
 	{
-		private com.mojang.brigadier.tree.RootCommandNode<S> arguments = new com.mojang.brigadier.tree.RootCommandNode<S>();
+		private RootCommandNode<S> arguments = new RootCommandNode<S>();
 		private Command<S> command;
 		private System.Predicate<S> requirement = s => true;
 		private CommandNode<S> target;

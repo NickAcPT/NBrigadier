@@ -1,12 +1,11 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
+﻿using NBrigadier.Context;
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier
+namespace NBrigadier
 {
 
-	public delegate void ResultConsumer<S>(com.mojang.brigadier.context.CommandContext<S> context, bool success, int result);
+	public delegate void ResultConsumer<S>(CommandContext<S> context, bool success, int result);
 
 }

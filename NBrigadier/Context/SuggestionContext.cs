@@ -1,14 +1,11 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
+﻿using NBrigadier.Tree;
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.context
+namespace NBrigadier.Context
 {
-	using com.mojang.brigadier.tree;
-
-	public class SuggestionContext<S>
+    public class SuggestionContext<S>
 	{
 		public CommandNode<S> parent;
 		public int startPos;

@@ -1,4 +1,4 @@
-﻿namespace com.mojang.brigadier.tree
+﻿namespace NBrigadier.Tree
 {
     public interface ILiteralCommandNode
     {

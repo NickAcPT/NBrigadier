@@ -1,14 +1,12 @@
-﻿using NBrigadier;
-using NBrigadier.Helpers;
-using System.Linq;
+﻿using NBrigadier.Helpers;
+using NBrigadier.Tree;
+
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace com.mojang.brigadier.context
+namespace NBrigadier.Context
 {
-	using com.mojang.brigadier.tree;
-
-	public class ParsedCommandNode<S>
+    public class ParsedCommandNode<S>
 	{
 
 		private CommandNode<S> node;
