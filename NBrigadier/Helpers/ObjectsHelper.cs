@@ -4,11 +4,12 @@
     {
         public new static bool Equals(object thizz, object other)
         {
-            return thizz.Equals(other);
+            if (thizz == null && other == null) return true;
+            return thizz?.Equals(other) == true;
         }
-        public new static int Hash(params object[] objects)
+        public static int Hash(params object[] objects)
         {
-            return objects.GetHashCode();
+            return objects?.GetHashCode() ?? 0;
         }
     }
 }

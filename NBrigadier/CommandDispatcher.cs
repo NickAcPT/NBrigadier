@@ -7,7 +7,7 @@ using NBrigadier.Builder;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
 using NBrigadier.Helpers;
-using NBrigadier.Suggestion;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -83,7 +83,7 @@ namespace NBrigadier
 		// / <returns> the node added to this tree </returns>
 		public virtual LiteralCommandNode<TS> Register(LiteralArgumentBuilder<TS> command)
 		{
-			 LiteralCommandNode<TS> build = command.Build();
+			 LiteralCommandNode<TS> build = (LiteralCommandNode<TS>) command.Build();
 			_root.AddChild(build);
 			return build;
 		}

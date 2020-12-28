@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using NBrigadier.Suggestion;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Tree;
 
 namespace NBrigadier.Generics

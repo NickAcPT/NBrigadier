@@ -4,7 +4,7 @@ using NBrigadier.Builder;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
 using NBrigadier.Generics;
-using NBrigadier.Suggestion;
+using NBrigadier.CommandSuggestion;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.

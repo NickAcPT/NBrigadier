@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
 using NBrigadier.Helpers;
-using NBrigadier.Suggestion;
+using NBrigadier.CommandSuggestion;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.

@@ -1,5 +1,5 @@
 ﻿using NBrigadier.Arguments;
-using NBrigadier.Suggestion;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Tree;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.

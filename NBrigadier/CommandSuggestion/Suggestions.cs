@@ -7,7 +7,7 @@ using NBrigadier.Helpers;
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
-namespace NBrigadier.Suggestion
+namespace NBrigadier.CommandSuggestion
 {
 	using StringRange = StringRange;
 
@@ -95,7 +95,7 @@ namespace NBrigadier.Suggestion
 // ORIGINAL LINE: texts.addAll(suggestions.getList());
 				CollectionsHelper.AddAll(texts, suggestions.List);
 			}
-			return Create(command, texts);
+			return Create(command, texts.OrderBy(c => c.Text).ToList());
 		}
 
 		public static Suggestions Create(string command, ICollection<Suggestion> suggestions)
