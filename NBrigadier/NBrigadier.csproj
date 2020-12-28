@@ -3,6 +3,22 @@
   <PropertyGroup>
     <TargetFrameworks>net5.0;netstandard2.0</TargetFrameworks>
     <LangVersion>preview</LangVersion>
+    <Authors>Mojang, NickAc</Authors>
+    <Company />
+    <Product />
+    <Description>Brigadier is a command parser &amp; dispatcher, designed and developed for Minecraft: Java Edition, ported for C#.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/NickAcPT/NBrigadier</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/NickAcPT/NBrigadier</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>NBrigadier,brigadier,command,command parser,command dispatcher, dispatcher, parser</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>1.0.17.2</AssemblyVersion>
+    <Version>1.0.17.2</Version>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
 
 </Project>
