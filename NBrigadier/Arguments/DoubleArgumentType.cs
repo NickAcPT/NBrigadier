@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
 using NBrigadier.Helpers;
+using NBrigadier.Suggestion;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -79,7 +81,12 @@ namespace NBrigadier.Arguments
 			return result;
 		}
 
-		public override bool Equals(object o)
+        public Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
+        {
+            return Suggestions.Empty();
+        }
+
+        public override bool Equals(object o)
 		{
 			if (this == o)
 			{

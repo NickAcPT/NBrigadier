@@ -36,8 +36,13 @@ namespace NBrigadier.Builder
 			}
 		}
 
+#if NETSTANDARD
+        
+		public override CommandNode<TS> Build()
+#else
 		public override LiteralCommandNode<TS> Build()
-		{
+#endif
+        {
 			 LiteralCommandNode<TS> result = new LiteralCommandNode<TS>(LiteralValue, Command, Requirement, RedirectTarget, RedirectModifier, HasFork);
 
 			foreach (CommandNode<TS> argument in Arguments)

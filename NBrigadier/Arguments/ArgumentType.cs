@@ -20,18 +20,9 @@ namespace NBrigadier.Arguments
 // ORIGINAL LINE: T parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException;
 		T Parse(StringReader reader);
 
-		virtual System.Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
-		{
-			return Suggestions.Empty();
-		}
+		System.Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder);
 
-		virtual ICollection<string> Examples
-		{
-			get
-			{
-				return CollectionsHelper.EmptyList<string>();
-			}
-		}
-	}
+        ICollection<string> Examples { get; }
+    }
 
 }

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
 using NBrigadier.Helpers;
+using NBrigadier.Suggestion;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
@@ -68,7 +70,12 @@ namespace NBrigadier.Arguments
 			}
 		}
 
-		public override string ToString()
+        public Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
+        {
+            return Suggestions.Empty();
+        }
+
+        public override string ToString()
 		{
 			return "string()";
 		}
