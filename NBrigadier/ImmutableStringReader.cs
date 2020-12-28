@@ -5,7 +5,7 @@
 
 namespace NBrigadier
 {
-	public interface ImmutableStringReader
+	public interface IMmutableStringReader
 	{
 		string String { get; }
 
@@ -15,17 +15,17 @@ namespace NBrigadier
 
 		int Cursor { get; }
 
-		string Read { get; }
+		string PreviouslyReadString { get; }
 
 		string Remaining { get; }
 
-		bool canRead(int length);
+		bool CanRead(int length);
 
-		bool canRead();
+		bool CanRead();
 
-		char peek();
+		char Peek();
 
-		char peek(int offset);
+		char Peek(int offset);
 	}
 
 }

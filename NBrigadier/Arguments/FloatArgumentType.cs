@@ -11,44 +11,44 @@ namespace NBrigadier.Arguments
 	using StringReader = StringReader;
 	using CommandSyntaxException = CommandSyntaxException;
 
-	public class FloatArgumentType : ArgumentType<float>
+	public class FloatArgumentType : IArgumentType<float>
 	{
-		private static ICollection<string> EXAMPLES = CollectionsHelper.AsList("0", "1.2", ".5", "-1", "-.5", "-1234.56");
+		private static ICollection<string> _examples = CollectionsHelper.AsList("0", "1.2", ".5", "-1", "-.5", "-1234.56");
 
-		private float minimum;
-		private float maximum;
+		private float _minimum;
+		private float _maximum;
 
 		private FloatArgumentType(float minimum, float maximum)
 		{
-			this.minimum = minimum;
-			this.maximum = maximum;
+			this._minimum = minimum;
+			this._maximum = maximum;
 		}
 
-		public static FloatArgumentType floatArg()
+		public static FloatArgumentType FloatArg()
 		{
-			return floatArg(-float.MaxValue);
+			return FloatArg(-float.MaxValue);
 		}
 
-		public static FloatArgumentType floatArg(float min)
+		public static FloatArgumentType FloatArg(float min)
 		{
-			return floatArg(min, float.MaxValue);
+			return FloatArg(min, float.MaxValue);
 		}
 
-		public static FloatArgumentType floatArg(float min, float max)
+		public static FloatArgumentType FloatArg(float min, float max)
 		{
 			return new FloatArgumentType(min, max);
 		}
 
-		public static float getFloat<T1>(CommandContext<T1> context, string name)
+		public static float GetFloat<T1>(CommandContext<T1> context, string name)
 		{
-			return context.getArgument<float>(name, typeof(float));
+			return context.GetArgument<float>(name, typeof(float));
 		}
 
 		public virtual float Minimum
 		{
 			get
 			{
-				return minimum;
+				return _minimum;
 			}
 		}
 
@@ -56,25 +56,25 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return maximum;
+				return _maximum;
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public System.Nullable<float> parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual float parse(StringReader reader)
+		public virtual float Parse(StringReader reader)
 		{
 			 int start = reader.Cursor;
-			 float result = reader.readFloat();
-			if (result < minimum)
+			 float result = reader.ReadFloat();
+			if (result < _minimum)
 			{
 				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.floatTooLow().createWithContext(reader, result, minimum);
+				throw CommandSyntaxException.builtInExceptions.FloatTooLow().CreateWithContext(reader, result, _minimum);
 			}
-			if (result > maximum)
+			if (result > _maximum)
 			{
 				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.floatTooHigh().createWithContext(reader, result, maximum);
+				throw CommandSyntaxException.builtInExceptions.FloatTooHigh().CreateWithContext(reader, result, _maximum);
 			}
 			return result;
 		}
@@ -91,27 +91,27 @@ namespace NBrigadier.Arguments
 			}
 
 			 FloatArgumentType that = (FloatArgumentType) o;
-			return maximum == that.maximum && minimum == that.minimum;
+			return _maximum == that._maximum && _minimum == that._minimum;
 		}
 
 		public override int GetHashCode()
 		{
-			return (int)(31 * minimum + maximum);
+			return (int)(31 * _minimum + _maximum);
 		}
 
 		public override string ToString()
 		{
-			if (minimum == -float.MaxValue && maximum == float.MaxValue)
+			if (_minimum == -float.MaxValue && _maximum == float.MaxValue)
 			{
 				return "float()";
 			}
-			else if (maximum == float.MaxValue)
+			else if (_maximum == float.MaxValue)
 			{
-				return "float(" + minimum + ")";
+				return "float(" + _minimum + ")";
 			}
 			else
 			{
-				return "float(" + minimum + ", " + maximum + ")";
+				return "float(" + _minimum + ", " + _maximum + ")";
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return EXAMPLES;
+				return _examples;
 			}
 		}
 	}

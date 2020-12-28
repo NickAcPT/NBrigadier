@@ -6,6 +6,6 @@ using NBrigadier.Exceptions;
 
 namespace NBrigadier
 {
-    public delegate int Command<S>(CommandContext<S> context);
+    public delegate int Command<TS>(CommandContext<TS> context);
 
 }

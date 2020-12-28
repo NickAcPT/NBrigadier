@@ -6,24 +6,24 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
-    public class ParsedCommandNode<S>
+    public class ParsedCommandNode<TS>
 	{
 
-		private CommandNode<S> node;
+		private CommandNode<TS> _node;
 
-		private StringRange range;
+		private StringRange _range;
 
-		public ParsedCommandNode(CommandNode<S> node, StringRange range)
+		public ParsedCommandNode(CommandNode<TS> node, StringRange range)
 		{
-			this.node = node;
-			this.range = range;
+			this._node = node;
+			this._range = range;
 		}
 
-		public virtual CommandNode<S> Node
+		public virtual CommandNode<TS> Node
 		{
 			get
 			{
-				return node;
+				return _node;
 			}
 		}
 
@@ -31,13 +31,13 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return range;
+				return _range;
 			}
 		}
 
 		public override string ToString()
 		{
-			return node + "@" + range;
+			return _node + "@" + _range;
 		}
 
 		public override bool Equals(object o)
@@ -53,12 +53,12 @@ namespace NBrigadier.Context
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: ParsedCommandNode<?> that = (ParsedCommandNode<?>) o;
 			ParsedCommandNode<object> that = (ParsedCommandNode<object>) o;
-			return ObjectsHelper.Equals(node, that.node) && ObjectsHelper.Equals(range, that.range);
+			return ObjectsHelper.Equals(_node, that._node) && ObjectsHelper.Equals(_range, that._range);
 		}
 
 		public override int GetHashCode()
 		{
-			return NBrigadier.Helpers.ObjectsHelper.hash(node, range);
+			return NBrigadier.Helpers.ObjectsHelper.Hash(_node, _range);
 		}
 	}
 

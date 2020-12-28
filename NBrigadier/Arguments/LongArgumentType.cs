@@ -11,44 +11,44 @@ namespace NBrigadier.Arguments
 	using StringReader = StringReader;
 	using CommandSyntaxException = CommandSyntaxException;
 
-	public class LongArgumentType : ArgumentType<long>
+	public class LongArgumentType : IArgumentType<long>
 	{
-		private static ICollection<string> EXAMPLES = CollectionsHelper.AsList("0", "123", "-123");
+		private static ICollection<string> _examples = CollectionsHelper.AsList("0", "123", "-123");
 
-		private long minimum;
-		private long maximum;
+		private long _minimum;
+		private long _maximum;
 
 		private LongArgumentType(long minimum, long maximum)
 		{
-			this.minimum = minimum;
-			this.maximum = maximum;
+			this._minimum = minimum;
+			this._maximum = maximum;
 		}
 
-		public static LongArgumentType longArg()
+		public static LongArgumentType LongArg()
 		{
-			return longArg(long.MinValue);
+			return LongArg(long.MinValue);
 		}
 
-		public static LongArgumentType longArg(long min)
+		public static LongArgumentType LongArg(long min)
 		{
-			return longArg(min, long.MaxValue);
+			return LongArg(min, long.MaxValue);
 		}
 
-		public static LongArgumentType longArg(long min, long max)
+		public static LongArgumentType LongArg(long min, long max)
 		{
 			return new LongArgumentType(min, max);
 		}
 
-		public static long getLong<T1>(CommandContext<T1> context, string name)
+		public static long GetLong<T1>(CommandContext<T1> context, string name)
 		{
-			return context.getArgument<long>(name, typeof(long));
+			return context.GetArgument<long>(name, typeof(long));
 		}
 
 		public virtual long Minimum
 		{
 			get
 			{
-				return minimum;
+				return _minimum;
 			}
 		}
 
@@ -56,25 +56,25 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return maximum;
+				return _maximum;
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public System.Nullable<long> parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual long parse(StringReader reader)
+		public virtual long Parse(StringReader reader)
 		{
 			 int start = reader.Cursor;
-			 long result = reader.readLong();
-			if (result < minimum)
+			 long result = reader.ReadLong();
+			if (result < _minimum)
 			{
 				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.longTooLow().createWithContext(reader, result, minimum);
+				throw CommandSyntaxException.builtInExceptions.LongTooLow().CreateWithContext(reader, result, _minimum);
 			}
-			if (result > maximum)
+			if (result > _maximum)
 			{
 				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.longTooHigh().createWithContext(reader, result, maximum);
+				throw CommandSyntaxException.builtInExceptions.LongTooHigh().CreateWithContext(reader, result, _maximum);
 			}
 			return result;
 		}
@@ -91,27 +91,27 @@ namespace NBrigadier.Arguments
 			}
 
 			 LongArgumentType that = (LongArgumentType) o;
-			return maximum == that.maximum && minimum == that.minimum;
+			return _maximum == that._maximum && _minimum == that._minimum;
 		}
 
 		public override int GetHashCode()
 		{
-			return 31 * ObjectsHelper.hash(minimum, maximum);
+			return 31 * ObjectsHelper.Hash(_minimum, _maximum);
 		}
 
 		public override string ToString()
 		{
-			if (minimum == long.MinValue && maximum == long.MaxValue)
+			if (_minimum == long.MinValue && _maximum == long.MaxValue)
 			{
 				return "longArg()";
 			}
-			else if (maximum == long.MaxValue)
+			else if (_maximum == long.MaxValue)
 			{
-				return "longArg(" + minimum + ")";
+				return "longArg(" + _minimum + ")";
 			}
 			else
 			{
-				return "longArg(" + minimum + ", " + maximum + ")";
+				return "longArg(" + _minimum + ", " + _maximum + ")";
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return EXAMPLES;
+				return _examples;
 			}
 		}
 	}

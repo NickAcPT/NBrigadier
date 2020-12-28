@@ -8,31 +8,30 @@ using NBrigadier.Helpers;
 
 namespace NBrigadier.Suggestion
 {
-	using Message = Message;
-	using StringRange = StringRange;
+    using StringRange = StringRange;
 
 	public class Suggestion : IComparable<Suggestion>
 	{
-		private StringRange range;
-		private string text;
-		private Message tooltip;
+		private StringRange _range;
+		private string _text;
+		private IMessage _tooltip;
 
 		public Suggestion(StringRange range, string text) : this(range, text, null)
 		{
 		}
 
-		public Suggestion(StringRange range, string text, Message tooltip)
+		public Suggestion(StringRange range, string text, IMessage tooltip)
 		{
-			this.range = range;
-			this.text = text;
-			this.tooltip = tooltip;
+			this._range = range;
+			this._text = text;
+			this._tooltip = tooltip;
 		}
 
 		public virtual StringRange Range
 		{
 			get
 			{
-				return range;
+				return _range;
 			}
 		}
 
@@ -40,33 +39,33 @@ namespace NBrigadier.Suggestion
 		{
 			get
 			{
-				return text;
+				return _text;
 			}
 		}
 
-		public virtual Message Tooltip
+		public virtual IMessage Tooltip
 		{
 			get
 			{
-				return tooltip;
+				return _tooltip;
 			}
 		}
 
-		public virtual string apply(string input)
+		public virtual string Apply(string input)
 		{
-			if (range.Start == 0 && range.End == input.Length)
+			if (_range.Start == 0 && _range.End == input.Length)
 			{
-				return text;
+				return _text;
 			}
 			 StringBuilder result = new StringBuilder();
-			if (range.Start > 0)
+			if (_range.Start > 0)
 			{
-				result.Append(input.Substring(0, range.Start));
+				result.Append(input.Substring(0, _range.Start));
 			}
-			result.Append(text);
-			if (range.End < input.Length)
+			result.Append(_text);
+			if (_range.End < input.Length)
 			{
-				result.Append(input.Substring(range.End));
+				result.Append(input.Substring(_range.End));
 			}
 			return result.ToString();
 		}
@@ -82,46 +81,46 @@ namespace NBrigadier.Suggestion
 				return false;
 			}
 			 Suggestion that = (Suggestion) o;
-			return ObjectsHelper.Equals(range, that.range) && ObjectsHelper.Equals(text, that.text) && ObjectsHelper.Equals(tooltip, that.tooltip);
+			return ObjectsHelper.Equals(_range, that._range) && ObjectsHelper.Equals(_text, that._text) && ObjectsHelper.Equals(_tooltip, that._tooltip);
 		}
 
 		public override int GetHashCode()
 		{
-			return NBrigadier.Helpers.ObjectsHelper.hash(range, text, tooltip);
+			return NBrigadier.Helpers.ObjectsHelper.Hash(_range, _text, _tooltip);
 		}
 
 		public override string ToString()
 		{
-			return "Suggestion{" + "range=" + range + ", text='" + text + '\'' + ", tooltip='" + tooltip + '\'' + '}';
+			return "Suggestion{" + "range=" + _range + ", text='" + _text + '\'' + ", tooltip='" + _tooltip + '\'' + '}';
 		}
 
 		public virtual int CompareTo(Suggestion o)
 		{
-			return text.CompareTo(o.text);
+			return _text.CompareTo(o._text);
 		}
 
-		public virtual int compareToIgnoreCase(Suggestion b)
+		public virtual int CompareToIgnoreCase(Suggestion b)
 		{
-			return string.Compare(text, b.text, StringComparison.OrdinalIgnoreCase);
+			return string.Compare(_text, b._text, StringComparison.OrdinalIgnoreCase);
 		}
 
-		public virtual Suggestion expand(string command, StringRange range)
+		public virtual Suggestion Expand(string command, StringRange range)
 		{
-			if (range.Equals(this.range))
+			if (range.Equals(this._range))
 			{
 				return this;
 			}
 			 StringBuilder result = new StringBuilder();
-			if (range.Start < this.range.Start)
+			if (range.Start < this._range.Start)
 			{
-				result.Append(StringHelper.SubstringSpecial(command, range.Start, this.range.Start));
+				result.Append(StringHelper.SubstringSpecial(command, range.Start, this._range.Start));
 			}
-			result.Append(text);
-			if (range.End > this.range.End)
+			result.Append(_text);
+			if (range.End > this._range.End)
 			{
-				result.Append(StringHelper.SubstringSpecial(command, this.range.End, range.End));
+				result.Append(StringHelper.SubstringSpecial(command, this._range.End, range.End));
 			}
-			return new Suggestion(range, result.ToString(), tooltip);
+			return new Suggestion(range, result.ToString(), _tooltip);
 		}
 	}
 

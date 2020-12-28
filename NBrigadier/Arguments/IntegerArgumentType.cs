@@ -11,44 +11,44 @@ namespace NBrigadier.Arguments
 	using StringReader = StringReader;
 	using CommandSyntaxException = CommandSyntaxException;
 
-	public class IntegerArgumentType : ArgumentType<int>
+	public class IntegerArgumentType : IArgumentType<int>
 	{
-		private static ICollection<string> EXAMPLES = CollectionsHelper.AsList("0", "123", "-123");
+		private static ICollection<string> _examples = CollectionsHelper.AsList("0", "123", "-123");
 
-		private int minimum;
-		private int maximum;
+		private int _minimum;
+		private int _maximum;
 
 		private IntegerArgumentType(int minimum, int maximum)
 		{
-			this.minimum = minimum;
-			this.maximum = maximum;
+			this._minimum = minimum;
+			this._maximum = maximum;
 		}
 
-		public static IntegerArgumentType integer()
+		public static IntegerArgumentType Integer()
 		{
-			return integer(int.MinValue);
+			return Integer(int.MinValue);
 		}
 
-		public static IntegerArgumentType integer(int min)
+		public static IntegerArgumentType Integer(int min)
 		{
-			return integer(min, int.MaxValue);
+			return Integer(min, int.MaxValue);
 		}
 
-		public static IntegerArgumentType integer(int min, int max)
+		public static IntegerArgumentType Integer(int min, int max)
 		{
 			return new IntegerArgumentType(min, max);
 		}
 
-		public static int getInteger<T1>(CommandContext<T1> context, string name)
+		public static int GetInteger<T1>(CommandContext<T1> context, string name)
 		{
-			return context.getArgument<int>(name, typeof(int));
+			return context.GetArgument<int>(name, typeof(int));
 		}
 
 		public virtual int Minimum
 		{
 			get
 			{
-				return minimum;
+				return _minimum;
 			}
 		}
 
@@ -56,25 +56,25 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return maximum;
+				return _maximum;
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public System.Nullable<int> parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual int parse(StringReader reader)
+		public virtual int Parse(StringReader reader)
 		{
 			 int start = reader.Cursor;
-			 int result = reader.readInt();
-			if (result < minimum)
+			 int result = reader.ReadInt();
+			if (result < _minimum)
 			{
 				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.integerTooLow().createWithContext(reader, result, minimum);
+				throw CommandSyntaxException.builtInExceptions.IntegerTooLow().CreateWithContext(reader, result, _minimum);
 			}
-			if (result > maximum)
+			if (result > _maximum)
 			{
 				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.integerTooHigh().createWithContext(reader, result, maximum);
+				throw CommandSyntaxException.builtInExceptions.IntegerTooHigh().CreateWithContext(reader, result, _maximum);
 			}
 			return result;
 		}
@@ -91,27 +91,27 @@ namespace NBrigadier.Arguments
 			}
 
 			 IntegerArgumentType that = (IntegerArgumentType) o;
-			return maximum == that.maximum && minimum == that.minimum;
+			return _maximum == that._maximum && _minimum == that._minimum;
 		}
 
 		public override int GetHashCode()
 		{
-			return 31 * minimum + maximum;
+			return 31 * _minimum + _maximum;
 		}
 
 		public override string ToString()
 		{
-			if (minimum == int.MinValue && maximum == int.MaxValue)
+			if (_minimum == int.MinValue && _maximum == int.MaxValue)
 			{
 				return "integer()";
 			}
-			else if (maximum == int.MaxValue)
+			else if (_maximum == int.MaxValue)
 			{
-				return "integer(" + minimum + ")";
+				return "integer(" + _minimum + ")";
 			}
 			else
 			{
-				return "integer(" + minimum + ", " + maximum + ")";
+				return "integer(" + _minimum + ", " + _maximum + ")";
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return EXAMPLES;
+				return _examples;
 			}
 		}
 	}

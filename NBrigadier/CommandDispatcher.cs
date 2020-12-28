@@ -24,33 +24,33 @@ namespace NBrigadier
 	// / The core command dispatcher, for registering, parsing, and executing commands.
 	// / </summary>
 	// / @param <S> a custom "source" type, such as a user or originator of a command </param>
-	public class CommandDispatcher<S>
+	public class CommandDispatcher<TS>
 	{
 		// / <summary>
 		// / The string required to separate individual arguments in an input string
 		// / </summary>
 		// / <seealso cref= #ARGUMENT_SEPARATOR_CHAR </seealso>
-		public static string ARGUMENT_SEPARATOR = " ";
+		public static string argumentSeparator = " ";
 
 		// / <summary>
 		// / The char required to separate individual arguments in an input string
 		// / </summary>
 		// / <seealso cref= #ARGUMENT_SEPARATOR </seealso>
-		public static char ARGUMENT_SEPARATOR_CHAR = ' ';
+		public static char argumentSeparatorChar = ' ';
 
-		private static string USAGE_OPTIONAL_OPEN = "[";
-		private static string USAGE_OPTIONAL_CLOSE = "]";
-		private static string USAGE_REQUIRED_OPEN = "(";
-		private static string USAGE_REQUIRED_CLOSE = ")";
-		private static string USAGE_OR = "|";
+		private static string _usageOptionalOpen = "[";
+		private static string _usageOptionalClose = "]";
+		private static string _usageRequiredOpen = "(";
+		private static string _usageRequiredClose = ")";
+		private static string _usageOr = "|";
 
-		private RootCommandNode<S> root;
+		private RootCommandNode<TS> _root;
 
-		private static System.Predicate<CommandNode<S>> hasCommand = (CommandNode<S> input) =>
+		private static System.Predicate<CommandNode<TS>> _hasCommand = (CommandNode<TS> input) =>
 		{
-		return input != null && (input.Command != null || input.Children.Any(hasCommand));
+		return input != null && (input.Command != null || input.Children.Any(_hasCommand));
 		};
-		private ResultConsumer<S> consumer = (c, s, r) =>
+		private ResultConsumer<TS> _consumer = (c, s, r) =>
 		{
 		};
 
@@ -60,15 +60,15 @@ namespace NBrigadier
 		// / <para>This is often useful to copy existing or pre-defined command trees.</para>
 		// / </summary>
 		// / <param name="root"> the existing <seealso cref="RootCommandNode"/> to use as the basis for this tree </param>
-		public CommandDispatcher(RootCommandNode<S> root)
+		public CommandDispatcher(RootCommandNode<TS> root)
 		{
-			this.root = root;
+			this._root = root;
 		}
 
 		// / <summary>
 		// / Creates a new <seealso cref="CommandDispatcher"/> with an empty command tree.
 		// / </summary>
-		public CommandDispatcher() : this(new RootCommandNode<S>())
+		public CommandDispatcher() : this(new RootCommandNode<TS>())
 		{
 		}
 
@@ -81,10 +81,10 @@ namespace NBrigadier
 		// / </summary>
 		// / <param name="command"> a literal argument builder to add to this command tree </param>
 		// / <returns> the node added to this tree </returns>
-		public virtual LiteralCommandNode<S> register(LiteralArgumentBuilder<S> command)
+		public virtual LiteralCommandNode<TS> Register(LiteralArgumentBuilder<TS> command)
 		{
-			 LiteralCommandNode<S> build = command.build();
-			root.addChild(build);
+			 LiteralCommandNode<TS> build = command.Build();
+			_root.AddChild(build);
 			return build;
 		}
 
@@ -92,11 +92,11 @@ namespace NBrigadier
 		// / Sets a callback to be informed of the result of every command.
 		// / </summary>
 		// / <param name="consumer"> the new result consumer to be called </param>
-		public virtual ResultConsumer<S> Consumer
+		public virtual ResultConsumer<TS> Consumer
 		{
 			set
 			{
-				this.consumer = value;
+				this._consumer = value;
 			}
 		}
 
@@ -131,9 +131,9 @@ namespace NBrigadier
 		// / <seealso cref= #execute(StringReader, Object) </seealso>
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public int execute(String input, S source) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual int execute(string input, S source)
+		public virtual int Execute(string input, TS source)
 		{
-			return execute(new StringReader(input), source);
+			return Execute(new StringReader(input), source);
 		}
 
 		// / <summary>
@@ -167,10 +167,10 @@ namespace NBrigadier
 		// / <seealso cref= #execute(String, Object) </seealso>
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public int execute(StringReader input, S source) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual int execute(StringReader input, S source)
+		public virtual int Execute(StringReader input, TS source)
 		{
-			 ParseResults<S> parse = this.parse(input, source);
-			return execute(parse);
+			 ParseResults<TS> parse = this.Parse(input, source);
+			return Execute(parse);
 		}
 
 		// / <summary>
@@ -200,9 +200,9 @@ namespace NBrigadier
 		// / <seealso cref= #execute(StringReader, Object) </seealso>
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public int execute(ParseResults<S> parse) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual int execute(ParseResults<S> parse)
+		public virtual int Execute(ParseResults<TS> parse)
 		{
-			if (parse.Reader.canRead())
+			if (parse.Reader.CanRead())
 			{
 				if (parse.Exceptions.Count == 1)
 				{
@@ -210,11 +210,11 @@ namespace NBrigadier
 				}
 				else if (parse.Context.Range.Empty)
 				{
-					throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownCommand().createWithContext(parse.Reader);
+					throw CommandSyntaxException.builtInExceptions.DispatcherUnknownCommand().CreateWithContext(parse.Reader);
 				}
 				else
 				{
-					throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownArgument().createWithContext(parse.Reader);
+					throw CommandSyntaxException.builtInExceptions.DispatcherUnknownArgument().CreateWithContext(parse.Reader);
 				}
 			}
 
@@ -223,52 +223,52 @@ namespace NBrigadier
 			bool forked = false;
 			bool foundCommand = false;
 			 string command = parse.Reader.String;
-			 CommandContext<S> original = parse.Context.build(command);
-			IList<CommandContext<S>> contexts = CollectionsHelper.SingletonList(original);
-			List<CommandContext<S>> next = null;
+			 CommandContext<TS> original = parse.Context.Build(command);
+			IList<CommandContext<TS>> contexts = CollectionsHelper.SingletonList(original);
+			List<CommandContext<TS>> next = null;
 
 			while (contexts != null)
 			{
 				 int size = contexts.Count;
 				for (int i = 0; i < size; i++)
 				{
-					 CommandContext<S> context = contexts[i];
-					 CommandContext<S> child = context.Child;
+					 CommandContext<TS> context = contexts[i];
+					 CommandContext<TS> child = context.Child;
 					if (child != null)
 					{
 						forked |= context.Forked;
-						if (child.hasNodes())
+						if (child.HasNodes())
 						{
 							foundCommand = true;
-							 RedirectModifier<S> modifier = context.RedirectModifier;
+							 RedirectModifier<TS> modifier = context.RedirectModifier;
 							if (modifier == null)
 							{
 								if (next == null)
 								{
-									next = new List<CommandContext<S>>(1);
+									next = new List<CommandContext<TS>>(1);
 								}
-								next.Add(child.copyFor(context.Source));
+								next.Add(child.CopyFor(context.Source));
 							}
 							else
 							{
 								try
 								{
-									 ICollection<S> results = modifier(context);
+									 ICollection<TS> results = modifier(context);
 									if (results.Count > 0)
 									{
 										if (next == null)
 										{
-											next = new List<CommandContext<S>>(results.Count);
+											next = new List<CommandContext<TS>>(results.Count);
 										}
-										foreach (S source in results)
+										foreach (TS source in results)
 										{
-											next.Add(child.copyFor(source));
+											next.Add(child.CopyFor(source));
 										}
 									}
 								}
 								catch (CommandSyntaxException ex)
 								{
-									consumer(context, false, 0);
+									_consumer(context, false, 0);
 									if (!forked)
 									{
 										throw ex;
@@ -284,12 +284,12 @@ namespace NBrigadier
 						{
 							 int value = context.Command(context);
 							result += value;
-							consumer(context, true, value);
+							_consumer(context, true, value);
 							successfulForks++;
 						}
 						catch (CommandSyntaxException ex)
 						{
-							consumer(context, false, 0);
+							_consumer(context, false, 0);
 							if (!forked)
 							{
 								throw ex;
@@ -304,8 +304,8 @@ namespace NBrigadier
 
 			if (!foundCommand)
 			{
-				consumer(original, false, 0);
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherUnknownCommand().createWithContext(parse.Reader);
+				_consumer(original, false, 0);
+				throw CommandSyntaxException.builtInExceptions.DispatcherUnknownCommand().CreateWithContext(parse.Reader);
 			}
 
 			return forked ? successfulForks : result;
@@ -337,9 +337,9 @@ namespace NBrigadier
 		// / <seealso cref= #parse(StringReader, Object) </seealso>
 		// / <seealso cref= #execute(ParseResults) </seealso>
 		// / <seealso cref= #execute(String, Object) </seealso>
-		public virtual ParseResults<S> parse(string command, S source)
+		public virtual ParseResults<TS> Parse(string command, TS source)
 		{
-			return parse(new StringReader(command), source);
+			return Parse(new StringReader(command), source);
 		}
 
 		// / <summary>
@@ -368,42 +368,42 @@ namespace NBrigadier
 		// / <seealso cref= #parse(String, Object) </seealso>
 		// / <seealso cref= #execute(ParseResults) </seealso>
 		// / <seealso cref= #execute(String, Object) </seealso>
-		public virtual ParseResults<S> parse(StringReader command, S source)
+		public virtual ParseResults<TS> Parse(StringReader command, TS source)
 		{
-			 CommandContextBuilder<S> context = new CommandContextBuilder<S>(this, source, root, command.Cursor);
-			return parseNodes(root, command, context);
+			 CommandContextBuilder<TS> context = new CommandContextBuilder<TS>(this, source, _root, command.Cursor);
+			return ParseNodes(_root, command, context);
 		}
 
-		private ParseResults<S> parseNodes(CommandNode<S> node, StringReader originalReader, CommandContextBuilder<S> contextSoFar)
+		private ParseResults<TS> ParseNodes(CommandNode<TS> node, StringReader originalReader, CommandContextBuilder<TS> contextSoFar)
 		{
-			 S source = contextSoFar.Source;
-			IDictionary<CommandNode<S>, CommandSyntaxException> errors = null;
-			IList<ParseResults<S>> potentials = null;
+			 TS source = contextSoFar.Source;
+			IDictionary<CommandNode<TS>, CommandSyntaxException> errors = null;
+			IList<ParseResults<TS>> potentials = null;
 			 int cursor = originalReader.Cursor;
 
-			foreach (CommandNode<S> child in node.getRelevantNodes(originalReader))
+			foreach (CommandNode<TS> child in node.GetRelevantNodes(originalReader))
 			{
-				if (!child.canUse(source))
+				if (!child.CanUse(source))
 				{
 					continue;
 				}
-				 CommandContextBuilder<S> context = contextSoFar.copy();
+				 CommandContextBuilder<TS> context = contextSoFar.Copy();
 				 StringReader reader = new StringReader(originalReader);
 				try
 				{
 					try
 					{
-						child.parse(reader, context);
+						child.Parse(reader, context);
 					}
 					catch (Exception ex)
 					{
-						throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherParseException().createWithContext(reader, ex.Message);
+						throw CommandSyntaxException.builtInExceptions.DispatcherParseException().CreateWithContext(reader, ex.Message);
 					}
-					if (reader.canRead())
+					if (reader.CanRead())
 					{
-						if (reader.peek() != ARGUMENT_SEPARATOR_CHAR)
+						if (reader.Peek() != argumentSeparatorChar)
 						{
-							throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.dispatcherExpectedArgumentSeparator().createWithContext(reader);
+							throw CommandSyntaxException.builtInExceptions.DispatcherExpectedArgumentSeparator().CreateWithContext(reader);
 						}
 					}
 				}
@@ -411,30 +411,30 @@ namespace NBrigadier
 				{
 					if (errors == null)
 					{
-						errors = new Dictionary<CommandNode<S>, CommandSyntaxException>();
+						errors = new Dictionary<CommandNode<TS>, CommandSyntaxException>();
 					}
 					errors[child] = ex;
 					reader.Cursor = cursor;
 					continue;
 				}
 
-				context.withCommand(child.Command);
-				if (reader.canRead(child.Redirect == null ? 2 : 1))
+				context.WithCommand(child.Command);
+				if (reader.CanRead(child.Redirect == null ? 2 : 1))
 				{
-					reader.skip();
+					reader.Skip();
 					if (child.Redirect != null)
 					{
-						 CommandContextBuilder<S> childContext = new CommandContextBuilder<S>(this, source, child.Redirect, reader.Cursor);
-						 ParseResults<S> parse = parseNodes(child.Redirect, reader, childContext);
-						context.withChild(parse.Context);
-						return new ParseResults<S>(context, parse.Reader, parse.Exceptions);
+						 CommandContextBuilder<TS> childContext = new CommandContextBuilder<TS>(this, source, child.Redirect, reader.Cursor);
+						 ParseResults<TS> parse = ParseNodes(child.Redirect, reader, childContext);
+						context.WithChild(parse.Context);
+						return new ParseResults<TS>(context, parse.Reader, parse.Exceptions);
 					}
 					else
 					{
-						 ParseResults<S> parse = parseNodes(child, reader, context);
+						 ParseResults<TS> parse = ParseNodes(child, reader, context);
 						if (potentials == null)
 						{
-							potentials = new List<ParseResults<S>>(1);
+							potentials = new List<ParseResults<TS>>(1);
 						}
 						potentials.Add(parse);
 					}
@@ -443,9 +443,9 @@ namespace NBrigadier
 				{
 					if (potentials == null)
 					{
-						potentials = new List<ParseResults<S>>(1);
+						potentials = new List<ParseResults<TS>>(1);
 					}
-					potentials.Add(new ParseResults<S>(context, reader, CollectionsHelper.EmptyMap<CommandNode<S>, CommandSyntaxException>()));
+					potentials.Add(new ParseResults<TS>(context, reader, CollectionsHelper.EmptyMap<CommandNode<TS>, CommandSyntaxException>()));
 				}
 			}
 
@@ -455,11 +455,11 @@ namespace NBrigadier
 				{
 					potentials.Sort((a, b) =>
 					{
-					if (!a.Reader.canRead() && b.Reader.canRead())
+					if (!a.Reader.CanRead() && b.Reader.CanRead())
 					{
 						return -1;
 					}
-					if (a.Reader.canRead() && !b.Reader.canRead())
+					if (a.Reader.CanRead() && !b.Reader.CanRead())
 					{
 						return 1;
 					}
@@ -477,7 +477,7 @@ namespace NBrigadier
 				return potentials[0];
 			}
 
-			return new ParseResults<S>(contextSoFar, originalReader, errors == null ? CollectionsHelper.EmptyMap<CommandNode<S>, CommandSyntaxException>() : errors);
+			return new ParseResults<TS>(contextSoFar, originalReader, errors == null ? CollectionsHelper.EmptyMap<CommandNode<TS>, CommandSyntaxException>() : errors);
 		}
 
 		// / <summary>
@@ -500,16 +500,16 @@ namespace NBrigadier
 		// / <param name="source"> a custom "source" object, usually representing the originator of this command </param>
 		// / <param name="restricted"> if true, commands that the {@code source} cannot access will not be mentioned </param>
 		// / <returns> array of full usage strings under the target node </returns>
-		public virtual string[] getAllUsage(CommandNode<S> node, S source, bool restricted)
+		public virtual string[] GetAllUsage(CommandNode<TS> node, TS source, bool restricted)
 		{
 			 List<string> result = new List<string>();
-			getAllUsage(node, source, result, "", restricted);
+			GetAllUsage(node, source, result, "", restricted);
 			return result.ToArray();
 		}
 
-		private void getAllUsage(CommandNode<S> node, S source, List<string> result, string prefix, bool restricted)
+		private void GetAllUsage(CommandNode<TS> node, TS source, List<string> result, string prefix, bool restricted)
 		{
-			if (restricted && !node.canUse(source))
+			if (restricted && !node.CanUse(source))
 			{
 				return;
 			}
@@ -521,14 +521,14 @@ namespace NBrigadier
 
 			if (node.Redirect != null)
 			{
-				 string redirect = node.Redirect == root ? "..." : "-> " + node.Redirect.UsageText;
-				result.Add(prefix.Length == 0 ? node.UsageText + ARGUMENT_SEPARATOR + redirect : prefix + ARGUMENT_SEPARATOR + redirect);
+				 string redirect = node.Redirect == _root ? "..." : "-> " + node.Redirect.UsageText;
+				result.Add(prefix.Length == 0 ? node.UsageText + argumentSeparator + redirect : prefix + argumentSeparator + redirect);
 			}
 			else if (node.Children.Count > 0)
 			{
-				foreach (CommandNode<S> child in node.Children)
+				foreach (CommandNode<TS> child in node.Children)
 				{
-					getAllUsage(child, source, result, prefix.Length == 0 ? child.UsageText : prefix + ARGUMENT_SEPARATOR + child.UsageText, restricted);
+					GetAllUsage(child, source, result, prefix.Length == 0 ? child.UsageText : prefix + argumentSeparator + child.UsageText, restricted);
 				}
 			}
 		}
@@ -553,14 +553,14 @@ namespace NBrigadier
 		// / <param name="node"> target node to get child usage strings for </param>
 		// / <param name="source"> a custom "source" object, usually representing the originator of this command </param>
 		// / <returns> array of full usage strings under the target node </returns>
-		public virtual IDictionary<CommandNode<S>, string> getSmartUsage(CommandNode<S> node, S source)
+		public virtual IDictionary<CommandNode<TS>, string> GetSmartUsage(CommandNode<TS> node, TS source)
 		{
-			 IDictionary<CommandNode<S>, string> result = new Dictionary<CommandNode<S>, string>();
+			 IDictionary<CommandNode<TS>, string> result = new Dictionary<CommandNode<TS>, string>();
 
 			 bool optional = node.Command != null;
-			foreach (CommandNode<S> child in node.Children)
+			foreach (CommandNode<TS> child in node.Children)
 			{
-				 string usage = getSmartUsage(child, source, optional, false);
+				 string usage = GetSmartUsage(child, source, optional, false);
 				if (!string.ReferenceEquals(usage, null))
 				{
 					result[child] = usage;
@@ -569,42 +569,42 @@ namespace NBrigadier
 			return result;
 		}
 
-		private string getSmartUsage(CommandNode<S> node, S source, bool optional, bool deep)
+		private string GetSmartUsage(CommandNode<TS> node, TS source, bool optional, bool deep)
 		{
-			if (!node.canUse(source))
+			if (!node.CanUse(source))
 			{
 				return null;
 			}
 
-			 string self = optional ? USAGE_OPTIONAL_OPEN + node.UsageText + USAGE_OPTIONAL_CLOSE : node.UsageText;
+			 string self = optional ? _usageOptionalOpen + node.UsageText + _usageOptionalClose : node.UsageText;
 			 bool childOptional = node.Command != null;
-			 string open = childOptional ? USAGE_OPTIONAL_OPEN : USAGE_REQUIRED_OPEN;
-			 string close = childOptional ? USAGE_OPTIONAL_CLOSE : USAGE_REQUIRED_CLOSE;
+			 string open = childOptional ? _usageOptionalOpen : _usageRequiredOpen;
+			 string close = childOptional ? _usageOptionalClose : _usageRequiredClose;
 
 			if (!deep)
 			{
 				if (node.Redirect != null)
 				{
-					 string redirect = node.Redirect == root ? "..." : "-> " + node.Redirect.UsageText;
-					return self + ARGUMENT_SEPARATOR + redirect;
+					 string redirect = node.Redirect == _root ? "..." : "-> " + node.Redirect.UsageText;
+					return self + argumentSeparator + redirect;
 				}
 				else
 				{
-					 ICollection<CommandNode<S>> children = node.Children.Where(c => c.canUse(source)).ToList();
+					 ICollection<CommandNode<TS>> children = node.Children.Where(c => c.CanUse(source)).ToList();
 					if (children.Count == 1)
 					{
-						 string usage = getSmartUsage(children.First(), source, childOptional, childOptional);
+						 string usage = GetSmartUsage(children.First(), source, childOptional, childOptional);
 						if (!string.ReferenceEquals(usage, null))
 						{
-							return self + ARGUMENT_SEPARATOR + usage;
+							return self + argumentSeparator + usage;
 						}
 					}
 					else if (children.Count > 1)
 					{
 						 ISet<string> childUsage = new HashSet<string>();
-						foreach (CommandNode<S> child in children)
+						foreach (CommandNode<TS> child in children)
 						{
-							 string usage = getSmartUsage(child, source, childOptional, true);
+							 string usage = GetSmartUsage(child, source, childOptional, true);
 							if (!string.ReferenceEquals(usage, null))
 							{
 								childUsage.Add(usage);
@@ -613,17 +613,17 @@ namespace NBrigadier
 						if (childUsage.Count == 1)
 						{
 							 string usage = childUsage.First();
-							return self + ARGUMENT_SEPARATOR + (childOptional ? USAGE_OPTIONAL_OPEN + usage + USAGE_OPTIONAL_CLOSE : usage);
+							return self + argumentSeparator + (childOptional ? _usageOptionalOpen + usage + _usageOptionalClose : usage);
 						}
 						else if (childUsage.Count > 1)
 						{
 							 StringBuilder builder = new StringBuilder(open);
 							int count = 0;
-							foreach (CommandNode<S> child in children)
+							foreach (CommandNode<TS> child in children)
 							{
 								if (count > 0)
 								{
-									builder.Append(USAGE_OR);
+									builder.Append(_usageOr);
 								}
 								builder.Append(child.UsageText);
 								count++;
@@ -631,7 +631,7 @@ namespace NBrigadier
 							if (count > 0)
 							{
 								builder.Append(close);
-								return self + ARGUMENT_SEPARATOR + builder.ToString();
+								return self + argumentSeparator + builder.ToString();
 							}
 						}
 					}
@@ -655,17 +655,17 @@ namespace NBrigadier
 		// / </summary>
 		// / <param name="parse"> the result of a <seealso cref="parse(StringReader, object)"/> </param>
 		// / <returns> a future that will eventually resolve into a <seealso cref="Suggestions"/> object </returns>
-		public virtual System.Func<Suggestions> getCompletionSuggestions(ParseResults<S> parse)
+		public virtual System.Func<Suggestions> GetCompletionSuggestions(ParseResults<TS> parse)
 		{
-			return getCompletionSuggestions(parse, parse.Reader.TotalLength);
+			return GetCompletionSuggestions(parse, parse.Reader.TotalLength);
 		}
 
-		public virtual System.Func<Suggestions> getCompletionSuggestions(ParseResults<S> parse, int cursor)
+		public virtual System.Func<Suggestions> GetCompletionSuggestions(ParseResults<TS> parse, int cursor)
 		{
-			 CommandContextBuilder<S> context = parse.Context;
+			 CommandContextBuilder<TS> context = parse.Context;
 
-			 SuggestionContext<S> nodeBeforeCursor = context.findSuggestionContext(cursor);
-			 CommandNode<S> parent = nodeBeforeCursor.parent;
+			 SuggestionContext<TS> nodeBeforeCursor = context.FindSuggestionContext(cursor);
+			 CommandNode<TS> parent = nodeBeforeCursor.parent;
 			 int start = Math.Min(nodeBeforeCursor.startPos, cursor);
 
 			 string fullInput = parse.Reader.String;
@@ -676,10 +676,10 @@ namespace NBrigadier
             var i = 0;
             foreach (var node in parent.Children)
             {
-                var future = Suggestions.empty();
+                var future = Suggestions.Empty();
                 try
                 {
-                    future = node.listSuggestions(context.build(truncatedInput),
+                    future = node.ListSuggestions(context.Build(truncatedInput),
                         new SuggestionsBuilder(truncatedInput, start));
                 }
                 catch (CommandSyntaxException)
@@ -696,7 +696,7 @@ namespace NBrigadier
             Parallel.Invoke(futures.Select(c => new Action(() => { suggestions.Add(c()); })).ToArray());
 
 
-            return () => Suggestions.merge(fullInput, suggestions);
+            return () => Suggestions.Merge(fullInput, suggestions);
 		}
 
 		// / <summary>
@@ -707,11 +707,11 @@ namespace NBrigadier
 		// / You may also use it to clone the command tree via <seealso cref="CommandDispatcher(RootCommandNode)"/>.</para>
 		// / </summary>
 		// / <returns> root of the command tree </returns>
-		public virtual RootCommandNode<S> Root
+		public virtual RootCommandNode<TS> Root
 		{
 			get
 			{
-				return root;
+				return _root;
 			}
 		}
 
@@ -728,19 +728,19 @@ namespace NBrigadier
 		// / </summary>
 		// / <param name="target"> the target node you are finding a path for </param>
 		// / <returns> a path to the resulting node, or an empty list if it was not found </returns>
-		public virtual ICollection<string> getPath(CommandNode<S> target)
+		public virtual ICollection<string> GetPath(CommandNode<TS> target)
 		{
-			 IList<IList<CommandNode<S>>> nodes = new List<IList<CommandNode<S>>>();
-			addPaths(root, nodes, new List<CommandNode<S>>());
+			 IList<IList<CommandNode<TS>>> nodes = new List<IList<CommandNode<TS>>>();
+			AddPaths(_root, nodes, new List<CommandNode<TS>>());
 
-			foreach (IList<CommandNode<S>> list in nodes)
+			foreach (IList<CommandNode<TS>> list in nodes)
 			{
 				if (list[list.Count - 1] == target)
 				{
 					 IList<string> result = new List<string>(list.Count);
-					foreach (CommandNode<S> node in list)
+					foreach (CommandNode<TS> node in list)
 					{
-						if (node != root)
+						if (node != _root)
 						{
 							result.Add(node.Name);
 						}
@@ -762,12 +762,12 @@ namespace NBrigadier
 		// / </summary>
 		// / <param name="path"> a generated path to a node </param>
 		// / <returns> the node at the given path, or null if not found </returns>
-		public virtual CommandNode<S> findNode(ICollection<string> path)
+		public virtual CommandNode<TS> FindNode(ICollection<string> path)
 		{
-			CommandNode<S> node = root;
+			CommandNode<TS> node = _root;
 			foreach (string name in path)
 			{
-				node = node.getChild(name);
+				node = node.GetChild(name);
 				if (node == null)
 				{
 					return null;
@@ -785,20 +785,20 @@ namespace NBrigadier
 		// / node. This is not fool proof, and relies a lot on the providers of the used argument types to give good examples.</para>
 		// / </summary>
 		// / <param name="consumer"> a callback to be notified of potential ambiguities </param>
-		public virtual void findAmbiguities(AmbiguityConsumer<S> consumer)
+		public virtual void FindAmbiguities(AmbiguityConsumer<TS> consumer)
 		{
-			root.findAmbiguities(consumer);
+			_root.FindAmbiguities(consumer);
 		}
 
-		private void addPaths(CommandNode<S> node, IList<IList<CommandNode<S>>> result, IList<CommandNode<S>> parents)
+		private void AddPaths(CommandNode<TS> node, IList<IList<CommandNode<TS>>> result, IList<CommandNode<TS>> parents)
 		{
-			 IList<CommandNode<S>> current = new List<CommandNode<S>>(parents);
+			 IList<CommandNode<TS>> current = new List<CommandNode<TS>>(parents);
 			current.Add(node);
 			result.Add(current);
 
-			foreach (CommandNode<S> child in node.Children)
+			foreach (CommandNode<TS> child in node.Children)
 			{
-				addPaths(child, result, current);
+				AddPaths(child, result, current);
 			}
 		}
 	}

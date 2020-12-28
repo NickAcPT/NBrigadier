@@ -6,7 +6,7 @@
         {
             return thizz.Equals(other);
         }
-        public new static int hash(params object[] objects)
+        public new static int Hash(params object[] objects)
         {
             return objects.GetHashCode();
         }

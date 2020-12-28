@@ -7,175 +7,175 @@ namespace NBrigadier.Exceptions
 {
 	using LiteralMessage = LiteralMessage;
 
-	public class BuiltInExceptions : BuiltInExceptionProvider
+	public class BuiltInExceptions : IBuiltInExceptionProvider
 	{
-		private static Dynamic2CommandExceptionType DOUBLE_TOO_SMALL = new Dynamic2CommandExceptionType((found, min) => new LiteralMessage("Double must not be less than " + min + ", found " + found));
-		private static Dynamic2CommandExceptionType DOUBLE_TOO_BIG = new Dynamic2CommandExceptionType((found, max) => new LiteralMessage("Double must not be more than " + max + ", found " + found));
+		private static Dynamic2CommandExceptionType _doubleTooSmall = new Dynamic2CommandExceptionType((found, min) => new LiteralMessage("Double must not be less than " + min + ", found " + found));
+		private static Dynamic2CommandExceptionType _doubleTooBig = new Dynamic2CommandExceptionType((found, max) => new LiteralMessage("Double must not be more than " + max + ", found " + found));
 
-		private static Dynamic2CommandExceptionType FLOAT_TOO_SMALL = new Dynamic2CommandExceptionType((found, min) => new LiteralMessage("Float must not be less than " + min + ", found " + found));
-		private static Dynamic2CommandExceptionType FLOAT_TOO_BIG = new Dynamic2CommandExceptionType((found, max) => new LiteralMessage("Float must not be more than " + max + ", found " + found));
+		private static Dynamic2CommandExceptionType _floatTooSmall = new Dynamic2CommandExceptionType((found, min) => new LiteralMessage("Float must not be less than " + min + ", found " + found));
+		private static Dynamic2CommandExceptionType _floatTooBig = new Dynamic2CommandExceptionType((found, max) => new LiteralMessage("Float must not be more than " + max + ", found " + found));
 
-		private static Dynamic2CommandExceptionType INTEGER_TOO_SMALL = new Dynamic2CommandExceptionType((found, min) => new LiteralMessage("Integer must not be less than " + min + ", found " + found));
-		private static Dynamic2CommandExceptionType INTEGER_TOO_BIG = new Dynamic2CommandExceptionType((found, max) => new LiteralMessage("Integer must not be more than " + max + ", found " + found));
+		private static Dynamic2CommandExceptionType _integerTooSmall = new Dynamic2CommandExceptionType((found, min) => new LiteralMessage("Integer must not be less than " + min + ", found " + found));
+		private static Dynamic2CommandExceptionType _integerTooBig = new Dynamic2CommandExceptionType((found, max) => new LiteralMessage("Integer must not be more than " + max + ", found " + found));
 
-		private static Dynamic2CommandExceptionType LONG_TOO_SMALL = new Dynamic2CommandExceptionType((found, min) => new LiteralMessage("Long must not be less than " + min + ", found " + found));
-		private static Dynamic2CommandExceptionType LONG_TOO_BIG = new Dynamic2CommandExceptionType((found, max) => new LiteralMessage("Long must not be more than " + max + ", found " + found));
+		private static Dynamic2CommandExceptionType _longTooSmall = new Dynamic2CommandExceptionType((found, min) => new LiteralMessage("Long must not be less than " + min + ", found " + found));
+		private static Dynamic2CommandExceptionType _longTooBig = new Dynamic2CommandExceptionType((found, max) => new LiteralMessage("Long must not be more than " + max + ", found " + found));
 
-		private static DynamicCommandExceptionType LITERAL_INCORRECT = new DynamicCommandExceptionType(expected => new LiteralMessage("Expected literal " + expected));
+		private static DynamicCommandExceptionType _literalIncorrect = new DynamicCommandExceptionType(expected => new LiteralMessage("Expected literal " + expected));
 
-		private static SimpleCommandExceptionType READER_EXPECTED_START_OF_QUOTE = new SimpleCommandExceptionType(new LiteralMessage("Expected quote to start a string"));
-		private static SimpleCommandExceptionType READER_EXPECTED_END_OF_QUOTE = new SimpleCommandExceptionType(new LiteralMessage("Unclosed quoted string"));
-		private static DynamicCommandExceptionType READER_INVALID_ESCAPE = new DynamicCommandExceptionType(character => new LiteralMessage("Invalid escape sequence '" + character + "' in quoted string"));
-		private static DynamicCommandExceptionType READER_INVALID_BOOL = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid bool, expected true or false but found '" + value + "'"));
-		private static DynamicCommandExceptionType READER_INVALID_INT = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid integer '" + value + "'"));
-		private static SimpleCommandExceptionType READER_EXPECTED_INT = new SimpleCommandExceptionType(new LiteralMessage("Expected integer"));
-		private static DynamicCommandExceptionType READER_INVALID_LONG = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid long '" + value + "'"));
-		private static SimpleCommandExceptionType READER_EXPECTED_LONG = new SimpleCommandExceptionType((new LiteralMessage("Expected long")));
-		private static DynamicCommandExceptionType READER_INVALID_DOUBLE = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid double '" + value + "'"));
-		private static SimpleCommandExceptionType READER_EXPECTED_DOUBLE = new SimpleCommandExceptionType(new LiteralMessage("Expected double"));
-		private static DynamicCommandExceptionType READER_INVALID_FLOAT = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid float '" + value + "'"));
-		private static SimpleCommandExceptionType READER_EXPECTED_FLOAT = new SimpleCommandExceptionType(new LiteralMessage("Expected float"));
-		private static SimpleCommandExceptionType READER_EXPECTED_BOOL = new SimpleCommandExceptionType(new LiteralMessage("Expected bool"));
-		private static DynamicCommandExceptionType READER_EXPECTED_SYMBOL = new DynamicCommandExceptionType(symbol => new LiteralMessage("Expected '" + symbol + "'"));
+		private static SimpleCommandExceptionType _expectedStartOfQuote = new SimpleCommandExceptionType(new LiteralMessage("Expected quote to start a string"));
+		private static SimpleCommandExceptionType _expectedEndOfQuote = new SimpleCommandExceptionType(new LiteralMessage("Unclosed quoted string"));
+		private static DynamicCommandExceptionType _invalidEscape = new DynamicCommandExceptionType(character => new LiteralMessage("Invalid escape sequence '" + character + "' in quoted string"));
+		private static DynamicCommandExceptionType _invalidBool = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid bool, expected true or false but found '" + value + "'"));
+		private static DynamicCommandExceptionType _invalidInt = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid integer '" + value + "'"));
+		private static SimpleCommandExceptionType _expectedInt = new SimpleCommandExceptionType(new LiteralMessage("Expected integer"));
+		private static DynamicCommandExceptionType _invalidLong = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid long '" + value + "'"));
+		private static SimpleCommandExceptionType _expectedLong = new SimpleCommandExceptionType((new LiteralMessage("Expected long")));
+		private static DynamicCommandExceptionType _invalidDouble = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid double '" + value + "'"));
+		private static SimpleCommandExceptionType _expectedDouble = new SimpleCommandExceptionType(new LiteralMessage("Expected double"));
+		private static DynamicCommandExceptionType _invalidFloat = new DynamicCommandExceptionType(value => new LiteralMessage("Invalid float '" + value + "'"));
+		private static SimpleCommandExceptionType _expectedFloat = new SimpleCommandExceptionType(new LiteralMessage("Expected float"));
+		private static SimpleCommandExceptionType _expectedBool = new SimpleCommandExceptionType(new LiteralMessage("Expected bool"));
+		private static DynamicCommandExceptionType _expectedSymbol = new DynamicCommandExceptionType(symbol => new LiteralMessage("Expected '" + symbol + "'"));
 
-		private static SimpleCommandExceptionType DISPATCHER_UNKNOWN_COMMAND = new SimpleCommandExceptionType(new LiteralMessage("Unknown command"));
-		private static SimpleCommandExceptionType DISPATCHER_UNKNOWN_ARGUMENT = new SimpleCommandExceptionType(new LiteralMessage("Incorrect argument for command"));
-		private static SimpleCommandExceptionType DISPATCHER_EXPECTED_ARGUMENT_SEPARATOR = new SimpleCommandExceptionType(new LiteralMessage("Expected whitespace to end one argument, but found trailing data"));
-		private static DynamicCommandExceptionType DISPATCHER_PARSE_EXCEPTION = new DynamicCommandExceptionType(message => new LiteralMessage("Could not parse command: " + message));
+		private static SimpleCommandExceptionType _dispatcherUnknownCommand = new SimpleCommandExceptionType(new LiteralMessage("Unknown command"));
+		private static SimpleCommandExceptionType _dispatcherUnknownArgument = new SimpleCommandExceptionType(new LiteralMessage("Incorrect argument for command"));
+		private static SimpleCommandExceptionType _dispatcherExpectedArgumentSeparator = new SimpleCommandExceptionType(new LiteralMessage("Expected whitespace to end one argument, but found trailing data"));
+		private static DynamicCommandExceptionType _dispatcherParseException = new DynamicCommandExceptionType(message => new LiteralMessage("Could not parse command: " + message));
 
-		public virtual Dynamic2CommandExceptionType doubleTooLow()
+		public virtual Dynamic2CommandExceptionType DoubleTooLow()
 		{
-			return DOUBLE_TOO_SMALL;
+			return _doubleTooSmall;
 		}
 
-		public virtual Dynamic2CommandExceptionType doubleTooHigh()
+		public virtual Dynamic2CommandExceptionType DoubleTooHigh()
 		{
-			return DOUBLE_TOO_BIG;
+			return _doubleTooBig;
 		}
 
-		public virtual Dynamic2CommandExceptionType floatTooLow()
+		public virtual Dynamic2CommandExceptionType FloatTooLow()
 		{
-			return FLOAT_TOO_SMALL;
+			return _floatTooSmall;
 		}
 
-		public virtual Dynamic2CommandExceptionType floatTooHigh()
+		public virtual Dynamic2CommandExceptionType FloatTooHigh()
 		{
-			return FLOAT_TOO_BIG;
+			return _floatTooBig;
 		}
 
-		public virtual Dynamic2CommandExceptionType integerTooLow()
+		public virtual Dynamic2CommandExceptionType IntegerTooLow()
 		{
-			return INTEGER_TOO_SMALL;
+			return _integerTooSmall;
 		}
 
-		public virtual Dynamic2CommandExceptionType integerTooHigh()
+		public virtual Dynamic2CommandExceptionType IntegerTooHigh()
 		{
-			return INTEGER_TOO_BIG;
+			return _integerTooBig;
 		}
 
-		public virtual Dynamic2CommandExceptionType longTooLow()
+		public virtual Dynamic2CommandExceptionType LongTooLow()
 		{
-			return LONG_TOO_SMALL;
+			return _longTooSmall;
 		}
 
-		public virtual Dynamic2CommandExceptionType longTooHigh()
+		public virtual Dynamic2CommandExceptionType LongTooHigh()
 		{
-			return LONG_TOO_BIG;
+			return _longTooBig;
 		}
 
-		public virtual DynamicCommandExceptionType literalIncorrect()
+		public virtual DynamicCommandExceptionType LiteralIncorrect()
 		{
-			return LITERAL_INCORRECT;
+			return _literalIncorrect;
 		}
 
-		public virtual SimpleCommandExceptionType readerExpectedStartOfQuote()
+		public virtual SimpleCommandExceptionType ReaderExpectedStartOfQuote()
 		{
-			return READER_EXPECTED_START_OF_QUOTE;
+			return _expectedStartOfQuote;
 		}
 
-		public virtual SimpleCommandExceptionType readerExpectedEndOfQuote()
+		public virtual SimpleCommandExceptionType ReaderExpectedEndOfQuote()
 		{
-			return READER_EXPECTED_END_OF_QUOTE;
+			return _expectedEndOfQuote;
 		}
 
-		public virtual DynamicCommandExceptionType readerInvalidEscape()
+		public virtual DynamicCommandExceptionType ReaderInvalidEscape()
 		{
-			return READER_INVALID_ESCAPE;
+			return _invalidEscape;
 		}
 
-		public virtual DynamicCommandExceptionType readerInvalidBool()
+		public virtual DynamicCommandExceptionType ReaderInvalidBool()
 		{
-			return READER_INVALID_BOOL;
+			return _invalidBool;
 		}
 
-		public virtual DynamicCommandExceptionType readerInvalidInt()
+		public virtual DynamicCommandExceptionType ReaderInvalidInt()
 		{
-			return READER_INVALID_INT;
+			return _invalidInt;
 		}
 
-		public virtual SimpleCommandExceptionType readerExpectedInt()
+		public virtual SimpleCommandExceptionType ReaderExpectedInt()
 		{
-			return READER_EXPECTED_INT;
+			return _expectedInt;
 		}
 
-		public virtual DynamicCommandExceptionType readerInvalidLong()
+		public virtual DynamicCommandExceptionType ReaderInvalidLong()
 		{
-			return READER_INVALID_LONG;
+			return _invalidLong;
 		}
 
-		public virtual SimpleCommandExceptionType readerExpectedLong()
+		public virtual SimpleCommandExceptionType ReaderExpectedLong()
 		{
-			return READER_EXPECTED_LONG;
+			return _expectedLong;
 		}
 
-		public virtual DynamicCommandExceptionType readerInvalidDouble()
+		public virtual DynamicCommandExceptionType ReaderInvalidDouble()
 		{
-			return READER_INVALID_DOUBLE;
+			return _invalidDouble;
 		}
 
-		public virtual SimpleCommandExceptionType readerExpectedDouble()
+		public virtual SimpleCommandExceptionType ReaderExpectedDouble()
 		{
-			return READER_EXPECTED_DOUBLE;
+			return _expectedDouble;
 		}
 
-		public virtual DynamicCommandExceptionType readerInvalidFloat()
+		public virtual DynamicCommandExceptionType ReaderInvalidFloat()
 		{
-			return READER_INVALID_FLOAT;
+			return _invalidFloat;
 		}
 
-		public virtual SimpleCommandExceptionType readerExpectedFloat()
+		public virtual SimpleCommandExceptionType ReaderExpectedFloat()
 		{
-			return READER_EXPECTED_FLOAT;
+			return _expectedFloat;
 		}
 
-		public virtual SimpleCommandExceptionType readerExpectedBool()
+		public virtual SimpleCommandExceptionType ReaderExpectedBool()
 		{
-			return READER_EXPECTED_BOOL;
+			return _expectedBool;
 		}
 
-		public virtual DynamicCommandExceptionType readerExpectedSymbol()
+		public virtual DynamicCommandExceptionType ReaderExpectedSymbol()
 		{
-			return READER_EXPECTED_SYMBOL;
+			return _expectedSymbol;
 		}
 
-		public virtual SimpleCommandExceptionType dispatcherUnknownCommand()
+		public virtual SimpleCommandExceptionType DispatcherUnknownCommand()
 		{
-			return DISPATCHER_UNKNOWN_COMMAND;
+			return _dispatcherUnknownCommand;
 		}
 
-		public virtual SimpleCommandExceptionType dispatcherUnknownArgument()
+		public virtual SimpleCommandExceptionType DispatcherUnknownArgument()
 		{
-			return DISPATCHER_UNKNOWN_ARGUMENT;
+			return _dispatcherUnknownArgument;
 		}
 
-		public virtual SimpleCommandExceptionType dispatcherExpectedArgumentSeparator()
+		public virtual SimpleCommandExceptionType DispatcherExpectedArgumentSeparator()
 		{
-			return DISPATCHER_EXPECTED_ARGUMENT_SEPARATOR;
+			return _dispatcherExpectedArgumentSeparator;
 		}
 
-		public virtual DynamicCommandExceptionType dispatcherParseException()
+		public virtual DynamicCommandExceptionType DispatcherParseException()
 		{
-			return DISPATCHER_PARSE_EXCEPTION;
+			return _dispatcherParseException;
 		}
 	}
 

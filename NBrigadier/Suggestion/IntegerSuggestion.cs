@@ -6,27 +6,26 @@ using NBrigadier.Context;
 
 namespace NBrigadier.Suggestion
 {
-	using Message = Message;
-	using StringRange = StringRange;
+    using StringRange = StringRange;
 
 	public class IntegerSuggestion : Suggestion
 	{
-		private int value;
+		private int _value;
 
 		public IntegerSuggestion(StringRange range, int value) : this(range, value, null)
 		{
 		}
 
-		public IntegerSuggestion(StringRange range, int value, Message tooltip) : base(range, Convert.ToString(value), tooltip)
+		public IntegerSuggestion(StringRange range, int value, IMessage tooltip) : base(range, Convert.ToString(value), tooltip)
 		{
-			this.value = value;
+			this._value = value;
 		}
 
 		public virtual int Value
 		{
 			get
 			{
-				return value;
+				return _value;
 			}
 		}
 
@@ -41,29 +40,29 @@ namespace NBrigadier.Suggestion
 				return false;
 			}
 			 IntegerSuggestion that = (IntegerSuggestion) o;
-			return value == that.value && base.Equals(o);
+			return _value == that._value && base.Equals(o);
 		}
 
 		public override int GetHashCode()
 		{
-			return NBrigadier.Helpers.ObjectsHelper.hash(base.GetHashCode(), value);
+			return NBrigadier.Helpers.ObjectsHelper.Hash(base.GetHashCode(), _value);
 		}
 
 		public override string ToString()
 		{
-			return "IntegerSuggestion{" + "value=" + value + ", range=" + Range + ", text='" + Text + '\'' + ", tooltip='" + Tooltip + '\'' + '}';
+			return "IntegerSuggestion{" + "value=" + _value + ", range=" + Range + ", text='" + Text + '\'' + ", tooltip='" + Tooltip + '\'' + '}';
 		}
 
 		public override int CompareTo(Suggestion o)
 		{
 			if (o is IntegerSuggestion)
 			{
-				return (value).CompareTo(((IntegerSuggestion) o).value);
+				return (_value).CompareTo(((IntegerSuggestion) o)._value);
 			}
 			return base.CompareTo(o);
 		}
 
-		public override int compareToIgnoreCase(Suggestion b)
+		public override int CompareToIgnoreCase(Suggestion b)
 		{
 			return CompareTo(b);
 		}

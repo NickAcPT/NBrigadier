@@ -11,44 +11,44 @@ namespace NBrigadier.Arguments
 	using StringReader = StringReader;
 	using CommandSyntaxException = CommandSyntaxException;
 
-	public class DoubleArgumentType : ArgumentType<double>
+	public class DoubleArgumentType : IArgumentType<double>
 	{
-		private static ICollection<string> EXAMPLES = CollectionsHelper.AsList("0", "1.2", ".5", "-1", "-.5", "-1234.56");
+		private static ICollection<string> _examples = CollectionsHelper.AsList("0", "1.2", ".5", "-1", "-.5", "-1234.56");
 
-		private double minimum;
-		private double maximum;
+		private double _minimum;
+		private double _maximum;
 
 		private DoubleArgumentType(double minimum, double maximum)
 		{
-			this.minimum = minimum;
-			this.maximum = maximum;
+			this._minimum = minimum;
+			this._maximum = maximum;
 		}
 
-		public static DoubleArgumentType doubleArg()
+		public static DoubleArgumentType DoubleArg()
 		{
-			return doubleArg(-double.MaxValue);
+			return DoubleArg(-double.MaxValue);
 		}
 
-		public static DoubleArgumentType doubleArg(double min)
+		public static DoubleArgumentType DoubleArg(double min)
 		{
-			return doubleArg(min, double.MaxValue);
+			return DoubleArg(min, double.MaxValue);
 		}
 
-		public static DoubleArgumentType doubleArg(double min, double max)
+		public static DoubleArgumentType DoubleArg(double min, double max)
 		{
 			return new DoubleArgumentType(min, max);
 		}
 
-		public static double getDouble<T1>(CommandContext<T1> context, string name)
+		public static double GetDouble<T1>(CommandContext<T1> context, string name)
 		{
-			return context.getArgument<double>(name, typeof(double));
+			return context.GetArgument<double>(name, typeof(double));
 		}
 
 		public virtual double Minimum
 		{
 			get
 			{
-				return minimum;
+				return _minimum;
 			}
 		}
 
@@ -56,25 +56,25 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return maximum;
+				return _maximum;
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public System.Nullable<double> parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual double parse(StringReader reader)
+		public virtual double Parse(StringReader reader)
 		{
 			 int start = reader.Cursor;
-			 double result = reader.readDouble();
-			if (result < minimum)
+			 double result = reader.ReadDouble();
+			if (result < _minimum)
 			{
 				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.doubleTooLow().createWithContext(reader, result, minimum);
+				throw CommandSyntaxException.builtInExceptions.DoubleTooLow().CreateWithContext(reader, result, _minimum);
 			}
-			if (result > maximum)
+			if (result > _maximum)
 			{
 				reader.Cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.doubleTooHigh().createWithContext(reader, result, maximum);
+				throw CommandSyntaxException.builtInExceptions.DoubleTooHigh().CreateWithContext(reader, result, _maximum);
 			}
 			return result;
 		}
@@ -91,27 +91,27 @@ namespace NBrigadier.Arguments
 			}
 
 			 DoubleArgumentType that = (DoubleArgumentType) o;
-			return maximum == that.maximum && minimum == that.minimum;
+			return _maximum == that._maximum && _minimum == that._minimum;
 		}
 
 		public override int GetHashCode()
 		{
-			return (int)(31 * minimum + maximum);
+			return (int)(31 * _minimum + _maximum);
 		}
 
 		public override string ToString()
 		{
-			if (minimum == -double.MaxValue && maximum == double.MaxValue)
+			if (_minimum == -double.MaxValue && _maximum == double.MaxValue)
 			{
 				return "double()";
 			}
-			else if (maximum == double.MaxValue)
+			else if (_maximum == double.MaxValue)
 			{
-				return "double(" + minimum + ")";
+				return "double(" + _minimum + ")";
 			}
 			else
 			{
-				return "double(" + minimum + ", " + maximum + ")";
+				return "double(" + _minimum + ", " + _maximum + ")";
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return EXAMPLES;
+				return _examples;
 			}
 		}
 	}

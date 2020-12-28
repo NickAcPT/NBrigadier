@@ -5,31 +5,28 @@
 
 namespace NBrigadier.Exceptions
 {
-	using ImmutableStringReader = ImmutableStringReader;
-	using Message = Message;
-
-	public class SimpleCommandExceptionType : CommandExceptionType
+    public class SimpleCommandExceptionType : ICommandExceptionType
 	{
-		private Message message;
+		private IMessage _message;
 
-		public SimpleCommandExceptionType(Message message)
+		public SimpleCommandExceptionType(IMessage message)
 		{
-			this.message = message;
+			this._message = message;
 		}
 
-		public virtual CommandSyntaxException create()
+		public virtual CommandSyntaxException Create()
 		{
-			return new CommandSyntaxException(this, message);
+			return new CommandSyntaxException(this, _message);
 		}
 
-		public virtual CommandSyntaxException createWithContext(ImmutableStringReader reader)
+		public virtual CommandSyntaxException CreateWithContext(IMmutableStringReader reader)
 		{
-			return new CommandSyntaxException(this, message, reader.String, reader.Cursor);
+			return new CommandSyntaxException(this, _message, reader.String, reader.Cursor);
 		}
 
 		public override string ToString()
 		{
-			return message.String;
+			return _message.String;
 		}
 	}
 

@@ -15,7 +15,7 @@ namespace NBrigadier.Tree
 	using SuggestionsBuilder = SuggestionsBuilder;
 
 
-	public class RootCommandNode<S> : CommandNode<S>, IRootCommandNode
+	public class RootCommandNode<TS> : CommandNode<TS>, IRootCommandNode
 	{
 		public RootCommandNode() : base(null, c => true, null, s => CollectionsHelper.SingletonList(s.Source), false)
 		{
@@ -39,16 +39,16 @@ namespace NBrigadier.Tree
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public void parse(com.mojang.brigadier.StringReader reader, com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public override void parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
+		public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
 		{
 		}
 
-		public override System.Func<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
+		public override System.Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder)
 		{
-			return Suggestions.empty();
+			return Suggestions.Empty();
 		}
 
-        protected internal override bool isValidInput(string input)
+        protected internal override bool IsValidInput(string input)
 		{
 			return false;
 		}
@@ -68,7 +68,7 @@ namespace NBrigadier.Tree
 
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: @Override public com.mojang.brigadier.builder.ArgumentBuilder<S, ?> createBuilder()
-		public override IArgumentBuilder<S> createBuilder()
+		public override IArgumentBuilder<TS> CreateBuilder()
 		{
 			throw new System.InvalidOperationException("Cannot convert root into a builder");
 		}

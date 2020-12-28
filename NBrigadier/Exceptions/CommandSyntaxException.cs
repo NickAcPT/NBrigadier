@@ -7,54 +7,52 @@ using NBrigadier.Helpers;
 
 namespace NBrigadier.Exceptions
 {
-	using Message = Message;
-
-	public class CommandSyntaxException : Exception
+    public class CommandSyntaxException : Exception
 	{
-		public static int CONTEXT_AMOUNT = 10;
-		public static bool ENABLE_COMMAND_STACK_TRACES = true;
-		public static BuiltInExceptionProvider BUILT_IN_EXCEPTIONS = new BuiltInExceptions();
+		public static int contextAmount = 10;
+		public static bool enableCommandStackTraces = true;
+		public static IBuiltInExceptionProvider builtInExceptions = new BuiltInExceptions();
 
-		private CommandExceptionType type;
-		private Message message;
-		private string input;
-		private int cursor;
+		private ICommandExceptionType _type;
+		private IMessage _message;
+		private string _input;
+		private int _cursor;
 
-		public CommandSyntaxException(CommandExceptionType type, Message message) : base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
+		public CommandSyntaxException(ICommandExceptionType type, IMessage message) : base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
 		{
-			this.type = type;
-			this.message = message;
-			this.input = null;
-			this.cursor = -1;
+			this._type = type;
+			this._message = message;
+			this._input = null;
+			this._cursor = -1;
 		}
 
-		public CommandSyntaxException(CommandExceptionType type, Message message, string input, int cursor) : base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
+		public CommandSyntaxException(ICommandExceptionType type, IMessage message, string input, int cursor) : base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
 		{
-			this.type = type;
-			this.message = message;
-			this.input = input;
-			this.cursor = cursor;
+			this._type = type;
+			this._message = message;
+			this._input = input;
+			this._cursor = cursor;
 		}
 
 		public override string Message
 		{
 			get
 			{
-				string message = this.message.String;
+				string message = this._message.String;
 				 string context = Context;
 				if (!string.ReferenceEquals(context, null))
 				{
-					message += " at position " + cursor + ": " + context;
+					message += " at position " + _cursor + ": " + context;
 				}
 				return message;
 			}
 		}
 
-		public virtual Message RawMessage
+		public virtual IMessage RawMessage
 		{
 			get
 			{
-				return message;
+				return _message;
 			}
 		}
 
@@ -62,30 +60,30 @@ namespace NBrigadier.Exceptions
 		{
 			get
 			{
-				if (string.ReferenceEquals(input, null) || this.cursor < 0)
+				if (string.ReferenceEquals(_input, null) || this._cursor < 0)
 				{
 					return null;
 				}
 				 StringBuilder builder = new StringBuilder();
-				 int cursor = Math.Min(input.Length, this.cursor);
+				 int cursor = Math.Min(_input.Length, this._cursor);
     
-				if (cursor > CONTEXT_AMOUNT)
+				if (cursor > contextAmount)
 				{
 					builder.Append("...");
 				}
     
-				builder.Append(StringHelper.SubstringSpecial(input, Math.Max(0, cursor - CONTEXT_AMOUNT), cursor));
+				builder.Append(StringHelper.SubstringSpecial(_input, Math.Max(0, cursor - contextAmount), cursor));
 				builder.Append("<--[HERE]");
     
 				return builder.ToString();
 			}
 		}
 
-		public virtual CommandExceptionType Type
+		public virtual ICommandExceptionType Type
 		{
 			get
 			{
-				return type;
+				return _type;
 			}
 		}
 
@@ -93,7 +91,7 @@ namespace NBrigadier.Exceptions
 		{
 			get
 			{
-				return input;
+				return _input;
 			}
 		}
 
@@ -101,7 +99,7 @@ namespace NBrigadier.Exceptions
 		{
 			get
 			{
-				return cursor;
+				return _cursor;
 			}
 		}
 	}

@@ -5,30 +5,28 @@
 
 namespace NBrigadier.Context
 {
-	using ImmutableStringReader = ImmutableStringReader;
-
-	public class StringRange
+    public class StringRange
 	{
-		private int start;
-		private int end;
+		private int _start;
+		private int _end;
 
 		public StringRange(int start, int end)
 		{
-			this.start = start;
-			this.end = end;
+			this._start = start;
+			this._end = end;
 		}
 
-		public static StringRange at(int pos)
+		public static StringRange At(int pos)
 		{
 			return new StringRange(pos, pos);
 		}
 
-		public static StringRange between(int start, int end)
+		public static StringRange Between(int start, int end)
 		{
 			return new StringRange(start, end);
 		}
 
-		public static StringRange encompassing(StringRange a, StringRange b)
+		public static StringRange Encompassing(StringRange a, StringRange b)
 		{
 			return new StringRange(Math.Min(a.Start, b.Start), Math.Max(a.End, b.End));
 		}
@@ -37,7 +35,7 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return start;
+				return _start;
 			}
 		}
 
@@ -45,25 +43,25 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return end;
+				return _end;
 			}
 		}
 
-		public virtual string get(ImmutableStringReader reader)
+		public virtual string Get(IMmutableStringReader reader)
 		{
-			return reader.String.Substring(start, end - start);
+			return reader.String.Substring(_start, _end - _start);
 		}
 
-		public virtual string get(string @string)
+		public virtual string Get(string @string)
 		{
-			return @string.Substring(start, end - start);
+			return @string.Substring(_start, _end - _start);
 		}
 
 		public virtual bool Empty
 		{
 			get
 			{
-				return start == end;
+				return _start == _end;
 			}
 		}
 
@@ -71,7 +69,7 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return end - start;
+				return _end - _start;
 			}
 		}
 
@@ -86,17 +84,17 @@ namespace NBrigadier.Context
 				return false;
 			}
 			 StringRange that = (StringRange) o;
-			return start == that.start && end == that.end;
+			return _start == that._start && _end == that._end;
 		}
 
 		public override int GetHashCode()
 		{
-			return NBrigadier.Helpers.ObjectsHelper.hash(start, end);
+			return NBrigadier.Helpers.ObjectsHelper.Hash(_start, _end);
 		}
 
 		public override string ToString()
 		{
-			return "StringRange{" + "start=" + start + ", end=" + end + '}';
+			return "StringRange{" + "start=" + _start + ", end=" + _end + '}';
 		}
 	}
 

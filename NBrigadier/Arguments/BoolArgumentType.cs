@@ -15,49 +15,49 @@ namespace NBrigadier.Arguments
 	using SuggestionsBuilder = SuggestionsBuilder;
 
 
-	public class BoolArgumentType : ArgumentType<bool>
+	public class BoolArgumentType : IArgumentType<bool>
 	{
-		private static ICollection<string> EXAMPLES = CollectionsHelper.AsList("true", "false");
+		private static ICollection<string> _examples = CollectionsHelper.AsList("true", "false");
 
 		private BoolArgumentType()
 		{
 		}
 
-		public static BoolArgumentType @bool()
+		public static BoolArgumentType Bool()
 		{
 			return new BoolArgumentType();
 		}
 
-		public static bool getBool<T1>(CommandContext<T1> context, string name)
+		public static bool GetBool<T1>(CommandContext<T1> context, string name)
 		{
-			return context.getArgument<bool>(name, typeof(Boolean));
+			return context.GetArgument<bool>(name, typeof(Boolean));
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public System.Nullable<bool> parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual bool parse(StringReader reader)
+		public virtual bool Parse(StringReader reader)
 		{
-			return reader.readBoolean();
+			return reader.ReadBoolean();
 		}
 
-		public virtual System.Func<Suggestions> listSuggestions<S>(CommandContext<S> context, SuggestionsBuilder builder)
+		public virtual System.Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
 		{
 			if ("true".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
 			{
-				builder.suggest("true");
+				builder.Suggest("true");
 			}
 			if ("false".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
 			{
-				builder.suggest("false");
+				builder.Suggest("false");
 			}
-			return builder.buildFuture();
+			return builder.BuildFuture();
 		}
 
 		public virtual ICollection<string> Examples
 		{
 			get
 			{
-				return EXAMPLES;
+				return _examples;
 			}
 		}
 	}

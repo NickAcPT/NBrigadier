@@ -6,6 +6,6 @@ using NBrigadier.Exceptions;
 
 namespace NBrigadier.Suggestion
 {
-    public delegate System.Func<Suggestions> SuggestionProvider<S>(CommandContext<S> context, SuggestionsBuilder builder);
+    public delegate System.Func<Suggestions> SuggestionProvider<TS>(CommandContext<TS> context, SuggestionsBuilder builder);
 
 }

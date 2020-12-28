@@ -7,6 +7,6 @@ namespace NBrigadier.Generics
         StringRange Range { get; }
         string Input { get; }
         bool Forked { get; }
-        bool hasNodes();
+        bool HasNodes();
     }
 }

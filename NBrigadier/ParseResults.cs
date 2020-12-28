@@ -12,44 +12,44 @@ namespace NBrigadier
     using CommandSyntaxException = CommandSyntaxException;
 
 
-    public class ParseResults<S>
+    public class ParseResults<TS>
 	{
-		private CommandContextBuilder<S> context;
-		private IDictionary<CommandNode<S>, CommandSyntaxException> exceptions;
-		private ImmutableStringReader reader;
+		private CommandContextBuilder<TS> _context;
+		private IDictionary<CommandNode<TS>, CommandSyntaxException> _exceptions;
+		private IMmutableStringReader _reader;
 
-		public ParseResults(CommandContextBuilder<S> context, ImmutableStringReader reader, IDictionary<CommandNode<S>, CommandSyntaxException> exceptions)
+		public ParseResults(CommandContextBuilder<TS> context, IMmutableStringReader reader, IDictionary<CommandNode<TS>, CommandSyntaxException> exceptions)
 		{
-			this.context = context;
-			this.reader = reader;
-			this.exceptions = exceptions;
+			this._context = context;
+			this._reader = reader;
+			this._exceptions = exceptions;
 		}
 
-		public ParseResults(CommandContextBuilder<S> context) : this(context, new StringReader(""), CollectionsHelper.EmptyMap<CommandNode<S>, CommandSyntaxException>())
+		public ParseResults(CommandContextBuilder<TS> context) : this(context, new StringReader(""), CollectionsHelper.EmptyMap<CommandNode<TS>, CommandSyntaxException>())
 		{
 		}
 
-		public virtual CommandContextBuilder<S> Context
+		public virtual CommandContextBuilder<TS> Context
 		{
 			get
 			{
-				return context;
+				return _context;
 			}
 		}
 
-		public virtual ImmutableStringReader Reader
+		public virtual IMmutableStringReader Reader
 		{
 			get
 			{
-				return reader;
+				return _reader;
 			}
 		}
 
-		public virtual IDictionary<CommandNode<S>, CommandSyntaxException> Exceptions
+		public virtual IDictionary<CommandNode<TS>, CommandSyntaxException> Exceptions
 		{
 			get
 			{
-				return exceptions;
+				return _exceptions;
 			}
 		}
 	}

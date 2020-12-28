@@ -5,7 +5,7 @@
 
 namespace NBrigadier
 {
-	public interface Message
+	public interface IMessage
 	{
 		string String { get; }
 	}

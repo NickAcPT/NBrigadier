@@ -5,22 +5,22 @@
 
 namespace NBrigadier.Builder
 {
-    public class LiteralArgumentBuilder<S> : ArgumentBuilder<S, LiteralArgumentBuilder<S>>
+    public class LiteralArgumentBuilder<TS> : ArgumentBuilder<TS, LiteralArgumentBuilder<TS>>
 	{
 // NOTE: Fields cannot have the same name as methods of the current type:
-		private string literal_Conflict;
+		private string _literalConflict;
 
 		protected internal LiteralArgumentBuilder(string literal)
 		{
-			this.literal_Conflict = literal;
+			this._literalConflict = literal;
 		}
 
-		public static LiteralArgumentBuilder<S> literal(string name)
+		public static LiteralArgumentBuilder<TS> Literal(string name)
 		{
-			return new LiteralArgumentBuilder<S>(name);
+			return new LiteralArgumentBuilder<TS>(name);
 		}
 
-		protected internal override LiteralArgumentBuilder<S> This
+		protected internal override LiteralArgumentBuilder<TS> This
 		{
 			get
 			{
@@ -28,21 +28,21 @@ namespace NBrigadier.Builder
 			}
 		}
 
-		public virtual string Literal
+		public virtual string LiteralValue
 		{
 			get
 			{
-				return literal_Conflict;
+				return _literalConflict;
 			}
 		}
 
-		public override LiteralCommandNode<S> build()
+		public override LiteralCommandNode<TS> Build()
 		{
-			 LiteralCommandNode<S> result = new LiteralCommandNode<S>(Literal, Command, Requirement, Redirect, RedirectModifier, Fork);
+			 LiteralCommandNode<TS> result = new LiteralCommandNode<TS>(LiteralValue, Command, Requirement, RedirectTarget, RedirectModifier, HasFork);
 
-			foreach (CommandNode<S> argument in Arguments)
+			foreach (CommandNode<TS> argument in Arguments)
 			{
-				result.addChild(argument);
+				result.AddChild(argument);
 			}
 
 			return result;

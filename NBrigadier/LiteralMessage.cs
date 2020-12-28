@@ -5,26 +5,26 @@
 
 namespace NBrigadier
 {
-	public class LiteralMessage : Message
+	public class LiteralMessage : IMessage
 	{
-		private string @string;
+		private string _string;
 
 		public LiteralMessage(string @string)
 		{
-			this.@string = @string;
+			this._string = @string;
 		}
 
 		public virtual string String
 		{
 			get
 			{
-				return @string;
+				return _string;
 			}
 		}
 
 		public override string ToString()
 		{
-			return @string;
+			return _string;
 		}
 	}
 

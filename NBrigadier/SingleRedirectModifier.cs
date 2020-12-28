@@ -6,6 +6,6 @@ using NBrigadier.Exceptions;
 
 namespace NBrigadier
 {
-    public delegate S SingleRedirectModifier<S>(CommandContext<S> context);
+    public delegate TS SingleRedirectModifier<TS>(CommandContext<TS> context);
 
 }

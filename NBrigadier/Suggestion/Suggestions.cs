@@ -14,22 +14,22 @@ namespace NBrigadier.Suggestion
 
 	public class Suggestions
 	{
-		private static Suggestions EMPTY = new Suggestions(StringRange.at(0), new List<Suggestion>());
+		private static Suggestions _empty = new Suggestions(StringRange.At(0), new List<Suggestion>());
 
-		private StringRange range;
-		private IList<Suggestion> suggestions;
+		private StringRange _range;
+		private IList<Suggestion> _suggestions;
 
 		public Suggestions(StringRange range, IList<Suggestion> suggestions)
 		{
-			this.range = range;
-			this.suggestions = suggestions;
+			this._range = range;
+			this._suggestions = suggestions;
 		}
 
 		public virtual StringRange Range
 		{
 			get
 			{
-				return range;
+				return _range;
 			}
 		}
 
@@ -37,15 +37,15 @@ namespace NBrigadier.Suggestion
 		{
 			get
 			{
-				return suggestions;
+				return _suggestions;
 			}
 		}
 
-		public virtual bool Empty
+		public virtual bool IsEmpty
 		{
 			get
 			{
-				return suggestions.Count == 0;
+				return _suggestions.Count == 0;
 			}
 		}
 
@@ -60,29 +60,29 @@ namespace NBrigadier.Suggestion
 				return false;
 			}
 			 Suggestions that = (Suggestions) o;
-			return ObjectsHelper.Equals(range, that.range) && ObjectsHelper.Equals(suggestions, that.suggestions);
+			return ObjectsHelper.Equals(_range, that._range) && ObjectsHelper.Equals(_suggestions, that._suggestions);
 		}
 
 		public override int GetHashCode()
 		{
-			return NBrigadier.Helpers.ObjectsHelper.hash(range, suggestions);
+			return NBrigadier.Helpers.ObjectsHelper.Hash(_range, _suggestions);
 		}
 
 		public override string ToString()
 		{
-			return "Suggestions{" + "range=" + range + ", suggestions=" + suggestions + '}';
+			return "Suggestions{" + "range=" + _range + ", suggestions=" + _suggestions + '}';
 		}
 
-		public static System.Func<Suggestions> empty()
+		public static System.Func<Suggestions> Empty()
 		{
-			return () => (EMPTY);
+			return () => (_empty);
 		}
 
-		public static Suggestions merge(string command, ICollection<Suggestions> input)
+		public static Suggestions Merge(string command, ICollection<Suggestions> input)
 		{
 			if (input.Count == 0)
 			{
-				return EMPTY;
+				return _empty;
 			}
 			else if (input.Count == 1)
 			{
@@ -95,14 +95,14 @@ namespace NBrigadier.Suggestion
 // ORIGINAL LINE: texts.addAll(suggestions.getList());
 				CollectionsHelper.AddAll(texts, suggestions.List);
 			}
-			return create(command, texts);
+			return Create(command, texts);
 		}
 
-		public static Suggestions create(string command, ICollection<Suggestion> suggestions)
+		public static Suggestions Create(string command, ICollection<Suggestion> suggestions)
 		{
 			if (suggestions.Count == 0)
 			{
-				return EMPTY;
+				return _empty;
 			}
 			int start = int.MaxValue;
 			int end = int.MinValue;
@@ -115,10 +115,10 @@ namespace NBrigadier.Suggestion
 			 ISet<Suggestion> texts = new HashSet<Suggestion>();
 			foreach (Suggestion suggestion in suggestions)
 			{
-				texts.Add(suggestion.expand(command, range));
+				texts.Add(suggestion.Expand(command, range));
 			}
 			 IList<Suggestion> sorted = new List<Suggestion>(texts);
-			sorted.Sort((a, b) => a.compareToIgnoreCase(b));
+			sorted.Sort((a, b) => a.CompareToIgnoreCase(b));
 			return new Suggestions(range, sorted);
 		}
 	}

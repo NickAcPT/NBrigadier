@@ -8,31 +8,31 @@ namespace NBrigadier
 {
 	using CommandSyntaxException = CommandSyntaxException;
 
-	public class StringReader : ImmutableStringReader
+	public class StringReader : IMmutableStringReader
 	{
-		private static char SYNTAX_ESCAPE = '\\';
-		private static char SYNTAX_DOUBLE_QUOTE = '"';
-		private static char SYNTAX_SINGLE_QUOTE = '\'';
+		private static char _syntaxEscape = '\\';
+		private static char _syntaxDoubleQuote = '"';
+		private static char _syntaxSingleQuote = '\'';
 
-		private string @string;
-		private int cursor;
+		private string _string;
+		private int _cursor;
 
 		public StringReader(StringReader other)
 		{
-			this.@string = other.@string;
-			this.cursor = other.cursor;
+			this._string = other._string;
+			this._cursor = other._cursor;
 		}
 
 		public StringReader(string @string)
 		{
-			this.@string = @string;
+			this._string = @string;
 		}
 
 		public virtual string String
 		{
 			get
 			{
-				return @string;
+				return _string;
 			}
 		}
 
@@ -40,11 +40,11 @@ namespace NBrigadier
 		{
 			set
 			{
-				this.cursor = value;
+				this._cursor = value;
 			}
 			get
 			{
-				return cursor;
+				return _cursor;
 			}
 		}
 
@@ -52,7 +52,7 @@ namespace NBrigadier
 		{
 			get
 			{
-				return @string.Length - cursor;
+				return _string.Length - _cursor;
 			}
 		}
 
@@ -60,16 +60,16 @@ namespace NBrigadier
 		{
 			get
 			{
-				return @string.Length;
+				return _string.Length;
 			}
 		}
 
 
-		public virtual string Read
+		public virtual string PreviouslyReadString
 		{
 			get
 			{
-				return @string.Substring(0, cursor);
+				return _string.Substring(0, _cursor);
 			}
 		}
 
@@ -77,71 +77,71 @@ namespace NBrigadier
 		{
 			get
 			{
-				return @string.Substring(cursor);
+				return _string.Substring(_cursor);
 			}
 		}
 
-		public virtual bool canRead(int length)
+		public virtual bool CanRead(int length)
 		{
-			return cursor + length <= @string.Length;
+			return _cursor + length <= _string.Length;
 		}
 
-		public virtual bool canRead()
+		public virtual bool CanRead()
 		{
-			return canRead(1);
+			return CanRead(1);
 		}
 
-		public virtual char peek()
+		public virtual char Peek()
 		{
-			return @string[cursor];
+			return _string[_cursor];
 		}
 
-		public virtual char peek(int offset)
+		public virtual char Peek(int offset)
 		{
-			return @string[cursor + offset];
+			return _string[_cursor + offset];
 		}
 
-		public virtual char read()
+		public virtual char Read()
 		{
-			return @string[cursor++];
+			return _string[_cursor++];
 		}
 
-		public virtual void skip()
+		public virtual void Skip()
 		{
-			cursor++;
+			_cursor++;
 		}
 
-		public static bool isAllowedNumber(char c)
+		public static bool IsAllowedNumber(char c)
 		{
 			return c >= '0' && c <= '9' || c == '.' || c == '-';
 		}
 
-		public static bool isQuotedStringStart(char c)
+		public static bool IsQuotedStringStart(char c)
 		{
-			return c == SYNTAX_DOUBLE_QUOTE || c == SYNTAX_SINGLE_QUOTE;
+			return c == _syntaxDoubleQuote || c == _syntaxSingleQuote;
 		}
 
-		public virtual void skipWhitespace()
+		public virtual void SkipWhitespace()
 		{
-			while (canRead() && char.IsWhiteSpace(peek()))
+			while (CanRead() && char.IsWhiteSpace(Peek()))
 			{
-				skip();
+				Skip();
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public int readInt() throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual int readInt()
+		public virtual int ReadInt()
 		{
-			 int start = cursor;
-			while (canRead() && isAllowedNumber(peek()))
+			 int start = _cursor;
+			while (CanRead() && IsAllowedNumber(Peek()))
 			{
-				skip();
+				Skip();
 			}
-			 string number = @string.Substring(start, cursor - start);
+			 string number = _string.Substring(start, _cursor - start);
 			if (number.Length == 0)
 			{
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedInt().createWithContext(this);
+				throw CommandSyntaxException.builtInExceptions.ReaderExpectedInt().CreateWithContext(this);
 			}
 			try
 			{
@@ -149,24 +149,24 @@ namespace NBrigadier
 			}
 			catch (System.FormatException)
 			{
-				cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerInvalidInt().createWithContext(this, number);
+				_cursor = start;
+				throw CommandSyntaxException.builtInExceptions.ReaderInvalidInt().CreateWithContext(this, number);
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public long readLong() throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual long readLong()
+		public virtual long ReadLong()
 		{
-			 int start = cursor;
-			while (canRead() && isAllowedNumber(peek()))
+			 int start = _cursor;
+			while (CanRead() && IsAllowedNumber(Peek()))
 			{
-				skip();
+				Skip();
 			}
-			 string number = @string.Substring(start, cursor - start);
+			 string number = _string.Substring(start, _cursor - start);
 			if (number.Length == 0)
 			{
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedLong().createWithContext(this);
+				throw CommandSyntaxException.builtInExceptions.ReaderExpectedLong().CreateWithContext(this);
 			}
 			try
 			{
@@ -174,24 +174,24 @@ namespace NBrigadier
 			}
 			catch (System.FormatException)
 			{
-				cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerInvalidLong().createWithContext(this, number);
+				_cursor = start;
+				throw CommandSyntaxException.builtInExceptions.ReaderInvalidLong().CreateWithContext(this, number);
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public double readDouble() throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual double readDouble()
+		public virtual double ReadDouble()
 		{
-			 int start = cursor;
-			while (canRead() && isAllowedNumber(peek()))
+			 int start = _cursor;
+			while (CanRead() && IsAllowedNumber(Peek()))
 			{
-				skip();
+				Skip();
 			}
-			 string number = @string.Substring(start, cursor - start);
+			 string number = _string.Substring(start, _cursor - start);
 			if (number.Length == 0)
 			{
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedDouble().createWithContext(this);
+				throw CommandSyntaxException.builtInExceptions.ReaderExpectedDouble().CreateWithContext(this);
 			}
 			try
 			{
@@ -199,24 +199,24 @@ namespace NBrigadier
 			}
 			catch (System.FormatException)
 			{
-				cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerInvalidDouble().createWithContext(this, number);
+				_cursor = start;
+				throw CommandSyntaxException.builtInExceptions.ReaderInvalidDouble().CreateWithContext(this, number);
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public float readFloat() throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual float readFloat()
+		public virtual float ReadFloat()
 		{
-			 int start = cursor;
-			while (canRead() && isAllowedNumber(peek()))
+			 int start = _cursor;
+			while (CanRead() && IsAllowedNumber(Peek()))
 			{
-				skip();
+				Skip();
 			}
-			 string number = @string.Substring(start, cursor - start);
+			 string number = _string.Substring(start, _cursor - start);
 			if (number.Length == 0)
 			{
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedFloat().createWithContext(this);
+				throw CommandSyntaxException.builtInExceptions.ReaderExpectedFloat().CreateWithContext(this);
 			}
 			try
 			{
@@ -224,55 +224,55 @@ namespace NBrigadier
 			}
 			catch (System.FormatException)
 			{
-				cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerInvalidFloat().createWithContext(this, number);
+				_cursor = start;
+				throw CommandSyntaxException.builtInExceptions.ReaderInvalidFloat().CreateWithContext(this, number);
 			}
 		}
 
-		public static bool isAllowedInUnquotedString(char c)
+		public static bool IsAllowedInUnquotedString(char c)
 		{
 			return c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z' || c == '_' || c == '-' || c == '.' || c == '+';
 		}
 
-		public virtual string readUnquotedString()
+		public virtual string ReadUnquotedString()
 		{
-			 int start = cursor;
-			while (canRead() && isAllowedInUnquotedString(peek()))
+			 int start = _cursor;
+			while (CanRead() && IsAllowedInUnquotedString(Peek()))
 			{
-				skip();
+				Skip();
 			}
-			return @string.Substring(start, cursor - start);
+			return _string.Substring(start, _cursor - start);
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public String readQuotedString() throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual string readQuotedString()
+		public virtual string ReadQuotedString()
 		{
-			if (!canRead())
+			if (!CanRead())
 			{
 				return "";
 			}
-			 char next = peek();
-			if (!isQuotedStringStart(next))
+			 char next = Peek();
+			if (!IsQuotedStringStart(next))
 			{
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedStartOfQuote().createWithContext(this);
+				throw CommandSyntaxException.builtInExceptions.ReaderExpectedStartOfQuote().CreateWithContext(this);
 			}
-			skip();
-			return readStringUntil(next);
+			Skip();
+			return ReadStringUntil(next);
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public String readStringUntil(char terminator) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual string readStringUntil(char terminator)
+		public virtual string ReadStringUntil(char terminator)
 		{
 			 StringBuilder result = new StringBuilder();
 			bool escaped = false;
-			while (canRead())
+			while (CanRead())
 			{
-				 char c = read();
+				 char c = Read();
 				if (escaped)
 				{
-					if (c == terminator || c == SYNTAX_ESCAPE)
+					if (c == terminator || c == _syntaxEscape)
 					{
 						result.Append(c);
 						escaped = false;
@@ -280,10 +280,10 @@ namespace NBrigadier
 					else
 					{
 						Cursor = Cursor - 1;
-						throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerInvalidEscape().createWithContext(this, c.ToString());
+						throw CommandSyntaxException.builtInExceptions.ReaderInvalidEscape().CreateWithContext(this, c.ToString());
 					}
 				}
-				else if (c == SYNTAX_ESCAPE)
+				else if (c == _syntaxEscape)
 				{
 					escaped = true;
 				}
@@ -297,35 +297,35 @@ namespace NBrigadier
 				}
 			}
 
-			throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedEndOfQuote().createWithContext(this);
+			throw CommandSyntaxException.builtInExceptions.ReaderExpectedEndOfQuote().CreateWithContext(this);
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public String readString() throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual string readString()
+		public virtual string ReadString()
 		{
-			if (!canRead())
+			if (!CanRead())
 			{
 				return "";
 			}
-			 char next = peek();
-			if (isQuotedStringStart(next))
+			 char next = Peek();
+			if (IsQuotedStringStart(next))
 			{
-				skip();
-				return readStringUntil(next);
+				Skip();
+				return ReadStringUntil(next);
 			}
-			return readUnquotedString();
+			return ReadUnquotedString();
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public boolean readBoolean() throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual bool readBoolean()
+		public virtual bool ReadBoolean()
 		{
-			 int start = cursor;
-			 string value = readString();
+			 int start = _cursor;
+			 string value = ReadString();
 			if (value.Length == 0)
 			{
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedBool().createWithContext(this);
+				throw CommandSyntaxException.builtInExceptions.ReaderExpectedBool().CreateWithContext(this);
 			}
 
 			if (value.Equals("true"))
@@ -338,20 +338,20 @@ namespace NBrigadier
 			}
 			else
 			{
-				cursor = start;
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerInvalidBool().createWithContext(this, value);
+				_cursor = start;
+				throw CommandSyntaxException.builtInExceptions.ReaderInvalidBool().CreateWithContext(this, value);
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public void expect(char c) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual void expect(char c)
+		public virtual void Expect(char c)
 		{
-			if (!canRead() || peek() != c)
+			if (!CanRead() || Peek() != c)
 			{
-				throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.readerExpectedSymbol().createWithContext(this, c.ToString());
+				throw CommandSyntaxException.builtInExceptions.ReaderExpectedSymbol().CreateWithContext(this, c.ToString());
 			}
-			skip();
+			Skip();
 		}
 	}
 

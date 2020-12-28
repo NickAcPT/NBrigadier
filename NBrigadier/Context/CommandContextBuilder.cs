@@ -8,54 +8,54 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
-    public class CommandContextBuilder<S>
+    public class CommandContextBuilder<TS>
 	{
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: private java.util.Map<String, ParsedArgument<S, ?>> arguments = new java.util.LinkedHashMap<>();
-		private IDictionary<string, IParsedArgument> arguments = new Dictionary<string, IParsedArgument>();
-		private CommandNode<S> rootNode;
-		private IList<ParsedCommandNode<S>> nodes = new List<ParsedCommandNode<S>>();
-		private CommandDispatcher<S> dispatcher;
-		private S source;
-		private Command<S> command;
-		private CommandContextBuilder<S> child;
-		private StringRange range;
-		private RedirectModifier<S> modifier = null;
-		private bool forks;
+		private IDictionary<string, IParsedArgument> _arguments = new Dictionary<string, IParsedArgument>();
+		private CommandNode<TS> _rootNode;
+		private IList<ParsedCommandNode<TS>> _nodes = new List<ParsedCommandNode<TS>>();
+		private CommandDispatcher<TS> _dispatcher;
+		private TS _source;
+		private Command<TS> _command;
+		private CommandContextBuilder<TS> _child;
+		private StringRange _range;
+		private RedirectModifier<TS> _modifier = null;
+		private bool _forks;
 
-		public CommandContextBuilder(CommandDispatcher<S> dispatcher, S source, CommandNode<S> rootNode, int start)
+		public CommandContextBuilder(CommandDispatcher<TS> dispatcher, TS source, CommandNode<TS> rootNode, int start)
 		{
-			this.rootNode = rootNode;
-			this.dispatcher = dispatcher;
-			this.source = source;
-			this.range = StringRange.at(start);
+			this._rootNode = rootNode;
+			this._dispatcher = dispatcher;
+			this._source = source;
+			this._range = StringRange.At(start);
 		}
 
-		public virtual CommandContextBuilder<S> withSource(S source)
+		public virtual CommandContextBuilder<TS> WithSource(TS source)
 		{
-			this.source = source;
+			this._source = source;
 			return this;
 		}
 
-		public virtual S Source
+		public virtual TS Source
 		{
 			get
 			{
-				return source;
+				return _source;
 			}
 		}
 
-		public virtual CommandNode<S> RootNode
+		public virtual CommandNode<TS> RootNode
 		{
 			get
 			{
-				return rootNode;
+				return _rootNode;
 			}
 		}
 
-		public virtual CommandContextBuilder<S> withArgument<T1>(string name, IParsedArgument argument)
+		public virtual CommandContextBuilder<TS> WithArgument<T1>(string name, IParsedArgument argument)
 		{
-			this.arguments[name] = argument;
+			this._arguments[name] = argument;
 			return this;
 		}
 
@@ -65,56 +65,56 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return arguments;
+				return _arguments;
 			}
 		}
 
-		public virtual CommandContextBuilder<S> withCommand(Command<S> command)
+		public virtual CommandContextBuilder<TS> WithCommand(Command<TS> command)
 		{
-			this.command = command;
+			this._command = command;
 			return this;
 		}
 
-		public virtual CommandContextBuilder<S> withNode(CommandNode<S> node, StringRange range)
+		public virtual CommandContextBuilder<TS> WithNode(CommandNode<TS> node, StringRange range)
 		{
-			nodes.Add(new ParsedCommandNode<S>(node, range));
-			this.range = StringRange.encompassing(this.range, range);
-			this.modifier = node.RedirectModifier;
-			this.forks = node.Fork;
+			_nodes.Add(new ParsedCommandNode<TS>(node, range));
+			this._range = StringRange.Encompassing(this._range, range);
+			this._modifier = node.RedirectModifier;
+			this._forks = node.Fork;
 			return this;
 		}
 
-		public virtual CommandContextBuilder<S> copy()
+		public virtual CommandContextBuilder<TS> Copy()
 		{
-			 CommandContextBuilder<S> copy = new CommandContextBuilder<S>(dispatcher, source, rootNode, range.Start);
-			copy.command = command;
-			copy.arguments.PutAll(arguments);
-			((List<ParsedCommandNode<S>>)copy.nodes).AddRange(nodes);
-			copy.child = child;
-			copy.range = range;
-			copy.forks = forks;
+			 CommandContextBuilder<TS> copy = new CommandContextBuilder<TS>(_dispatcher, _source, _rootNode, _range.Start);
+			copy._command = _command;
+			copy._arguments.PutAll(_arguments);
+			((List<ParsedCommandNode<TS>>)copy._nodes).AddRange(_nodes);
+			copy._child = _child;
+			copy._range = _range;
+			copy._forks = _forks;
 			return copy;
 		}
 
-		public virtual CommandContextBuilder<S> withChild(CommandContextBuilder<S> child)
+		public virtual CommandContextBuilder<TS> WithChild(CommandContextBuilder<TS> child)
 		{
-			this.child = child;
+			this._child = child;
 			return this;
 		}
 
-		public virtual CommandContextBuilder<S> Child
+		public virtual CommandContextBuilder<TS> Child
 		{
 			get
 			{
-				return child;
+				return _child;
 			}
 		}
 
-		public virtual CommandContextBuilder<S> LastChild
+		public virtual CommandContextBuilder<TS> LastChild
 		{
 			get
 			{
-				CommandContextBuilder<S> result = this;
+				CommandContextBuilder<TS> result = this;
 				while (result.Child != null)
 				{
 					result = result.Child;
@@ -123,32 +123,32 @@ namespace NBrigadier.Context
 			}
 		}
 
-		public virtual Command<S> Command
+		public virtual Command<TS> Command
 		{
 			get
 			{
-				return command;
+				return _command;
 			}
 		}
 
-		public virtual IList<ParsedCommandNode<S>> Nodes
+		public virtual IList<ParsedCommandNode<TS>> Nodes
 		{
 			get
 			{
-				return nodes;
+				return _nodes;
 			}
 		}
 
-		public virtual CommandContext<S> build(string input)
+		public virtual CommandContext<TS> Build(string input)
 		{
-			return new CommandContext<S>(source, input, arguments, command, rootNode, nodes, range, child == null ? null : child.build(input), modifier, forks);
+			return new CommandContext<TS>(_source, input, _arguments, _command, _rootNode, _nodes, _range, _child == null ? null : _child.Build(input), _modifier, _forks);
 		}
 
-		public virtual CommandDispatcher<S> Dispatcher
+		public virtual CommandDispatcher<TS> Dispatcher
 		{
 			get
 			{
-				return dispatcher;
+				return _dispatcher;
 			}
 		}
 
@@ -156,39 +156,39 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return range;
+				return _range;
 			}
 		}
 
-		public virtual SuggestionContext<S> findSuggestionContext(int cursor)
+		public virtual SuggestionContext<TS> FindSuggestionContext(int cursor)
 		{
-			if (range.Start <= cursor)
+			if (_range.Start <= cursor)
 			{
-				if (range.End < cursor)
+				if (_range.End < cursor)
 				{
-					if (child != null)
+					if (_child != null)
 					{
-						return child.findSuggestionContext(cursor);
+						return _child.FindSuggestionContext(cursor);
 					}
-					else if (nodes.Count > 0)
+					else if (_nodes.Count > 0)
 					{
-						 ParsedCommandNode<S> last = nodes[nodes.Count - 1];
-						return new SuggestionContext<S>(last.Node, last.Range.End + 1);
+						 ParsedCommandNode<TS> last = _nodes[_nodes.Count - 1];
+						return new SuggestionContext<TS>(last.Node, last.Range.End + 1);
 					}
 					else
 					{
-						return new SuggestionContext<S>(rootNode, range.Start);
+						return new SuggestionContext<TS>(_rootNode, _range.Start);
 					}
 				}
 				else
 				{
-					CommandNode<S> prev = rootNode;
-					foreach (ParsedCommandNode<S> node in nodes)
+					CommandNode<TS> prev = _rootNode;
+					foreach (ParsedCommandNode<TS> node in _nodes)
 					{
 						 StringRange nodeRange = node.Range;
 						if (nodeRange.Start <= cursor && cursor <= nodeRange.End)
 						{
-							return new SuggestionContext<S>(prev, nodeRange.Start);
+							return new SuggestionContext<TS>(prev, nodeRange.Start);
 						}
 						prev = node.Node;
 					}
@@ -196,7 +196,7 @@ namespace NBrigadier.Context
 					{
 						throw new System.InvalidOperationException("Can't find node before cursor");
 					}
-					return new SuggestionContext<S>(prev, range.Start);
+					return new SuggestionContext<TS>(prev, _range.Start);
 				}
 			}
 			throw new System.InvalidOperationException("Can't find node before cursor");

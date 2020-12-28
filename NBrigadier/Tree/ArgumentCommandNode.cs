@@ -17,27 +17,27 @@ namespace NBrigadier.Tree
 	using SuggestionsBuilder = SuggestionsBuilder;
 
 
-	public class ArgumentCommandNode<S, T> : CommandNode<S>, IArgumentCommandNode<S>
+	public class ArgumentCommandNode<TS, T> : CommandNode<TS>, IArgumentCommandNode<TS>
 	{
-		private static string USAGE_ARGUMENT_OPEN = "<";
-		private static string USAGE_ARGUMENT_CLOSE = ">";
+		private static string _usageArgumentOpen = "<";
+		private static string _usageArgumentClose = ">";
 
-		private string name;
-		private ArgumentType<T> type;
-		private SuggestionProvider<S> customSuggestions;
+		private string _name;
+		private IArgumentType<T> _type;
+		private SuggestionProvider<TS> _customSuggestions;
 
-		public ArgumentCommandNode(string name, ArgumentType<T> type, Command<S> command, System.Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, bool forks, SuggestionProvider<S> customSuggestions) : base(command, requirement, redirect, modifier, forks)
+		public ArgumentCommandNode(string name, IArgumentType<T> type, Command<TS> command, System.Predicate<TS> requirement, CommandNode<TS> redirect, RedirectModifier<TS> modifier, bool forks, SuggestionProvider<TS> customSuggestions) : base(command, requirement, redirect, modifier, forks)
 		{
-			this.name = name;
-			this.type = type;
-			this.customSuggestions = customSuggestions;
+			this._name = name;
+			this._type = type;
+			this._customSuggestions = customSuggestions;
 		}
 
-		public virtual ArgumentType<T> Type
+		public virtual IArgumentType<T> Type
 		{
 			get
 			{
-				return type;
+				return _type;
 			}
 		}
 
@@ -45,7 +45,7 @@ namespace NBrigadier.Tree
 		{
 			get
 			{
-				return name;
+				return _name;
 			}
 		}
 
@@ -53,64 +53,64 @@ namespace NBrigadier.Tree
 		{
 			get
 			{
-				return USAGE_ARGUMENT_OPEN + name + USAGE_ARGUMENT_CLOSE;
+				return _usageArgumentOpen + _name + _usageArgumentClose;
 			}
 		}
 
-		public virtual SuggestionProvider<S> CustomSuggestions
+		public virtual SuggestionProvider<TS> CustomSuggestions
 		{
 			get
 			{
-				return customSuggestions;
+				return _customSuggestions;
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public void parse(com.mojang.brigadier.StringReader reader, com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public override void parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
+		public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
 		{
 			 int start = reader.Cursor;
-			 T result = type.parse(reader);
-			 ParsedArgument<S, T> parsed = new ParsedArgument<S, T>(start, reader.Cursor, result);
+			 T result = _type.Parse(reader);
+			 ParsedArgument<TS, T> parsed = new ParsedArgument<TS, T>(start, reader.Cursor, result);
 
-			contextBuilder.withArgument<T>(name, parsed);
-			contextBuilder.withNode(this, parsed.Range);
+			contextBuilder.WithArgument<T>(_name, parsed);
+			contextBuilder.WithNode(this, parsed.Range);
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public java.util.concurrent.CompletableFuture<com.mojang.brigadier.suggestion.Suggestions> listSuggestions(com.mojang.brigadier.context.CommandContext<S> context, com.mojang.brigadier.suggestion.SuggestionsBuilder builder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public override System.Func<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
+		public override System.Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder)
 		{
-			if (customSuggestions == null)
+			if (_customSuggestions == null)
 			{
-				return type.listSuggestions(context, builder);
+				return _type.ListSuggestions(context, builder);
 			}
 			else
 			{
-				return customSuggestions(context, builder);
+				return _customSuggestions(context, builder);
 			}
 		}
 
-		public override IArgumentBuilder<S> createBuilder()
+		public override IArgumentBuilder<TS> CreateBuilder()
 		{
-			 RequiredArgumentBuilder<S, T> builder = RequiredArgumentBuilder<S, T>.argument(name, type);
-			builder.requires(Requirement);
-			builder.forward(Redirect, RedirectModifier, Fork);
-			builder.suggests(customSuggestions);
+			 RequiredArgumentBuilder<TS, T> builder = RequiredArgumentBuilder<TS, T>.Argument(_name, _type);
+			builder.Requires(Requirement);
+			builder.Forward(Redirect, RedirectModifier, Fork);
+			builder.Suggests(_customSuggestions);
 			if (Command != null)
 			{
-				builder.executes(Command);
+				builder.Executes(Command);
 			}
 			return builder;
 		}
 
-        protected internal override bool isValidInput(string input)
+        protected internal override bool IsValidInput(string input)
 		{
 			try
 			{
 				 StringReader reader = new StringReader(input);
-				type.parse(reader);
-				return !reader.canRead() || reader.peek() == ' ';
+				_type.Parse(reader);
+				return !reader.CanRead() || reader.Peek() == ' ';
 			}
 			catch (CommandSyntaxException)
 			{
@@ -124,18 +124,18 @@ namespace NBrigadier.Tree
 			{
 				return true;
 			}
-			if (!(o is ArgumentCommandNode<S, T>))
+			if (!(o is ArgumentCommandNode<TS, T>))
 			{
 				return false;
 			}
 
-			 ArgumentCommandNode<S, T> that = (ArgumentCommandNode<S, T>) o;
+			 ArgumentCommandNode<TS, T> that = (ArgumentCommandNode<TS, T>) o;
 
-			if (!name.Equals(that.name))
+			if (!_name.Equals(that._name))
 			{
 				return false;
 			}
-			if (!type.Equals(that.type))
+			if (!_type.Equals(that._type))
 			{
 				return false;
 			}
@@ -144,8 +144,8 @@ namespace NBrigadier.Tree
 
 		public override int GetHashCode()
 		{
-			int result = name.GetHashCode();
-			result = 31 * result + type.GetHashCode();
+			int result = _name.GetHashCode();
+			result = 31 * result + _type.GetHashCode();
 			return result;
 		}
 
@@ -153,7 +153,7 @@ namespace NBrigadier.Tree
 		{
 			get
 			{
-				return name;
+				return _name;
 			}
 		}
 
@@ -161,13 +161,13 @@ namespace NBrigadier.Tree
 		{
 			get
 			{
-				return type.Examples;
+				return _type.Examples;
 			}
 		}
 
 		public override string ToString()
 		{
-			return "<argument " + name + ":" + type + ">";
+			return "<argument " + _name + ":" + _type + ">";
 		}
 	}
 

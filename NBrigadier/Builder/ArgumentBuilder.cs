@@ -8,125 +8,125 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Builder
 {
-    public abstract class ArgumentBuilder<S, T> : IArgumentBuilder<S> where T : ArgumentBuilder<S, T>
+    public abstract class ArgumentBuilder<TS, T> : IArgumentBuilder<TS> where T : ArgumentBuilder<TS, T>
 	{
-		private RootCommandNode<S> arguments = new RootCommandNode<S>();
-		private Command<S> command;
-		private System.Predicate<S> requirement = s => true;
-		private CommandNode<S> target;
-		private RedirectModifier<S> modifier = null;
-		private bool forks;
+		private RootCommandNode<TS> _arguments = new RootCommandNode<TS>();
+		private Command<TS> _command;
+		private System.Predicate<TS> _requirement = s => true;
+		private CommandNode<TS> _target;
+		private RedirectModifier<TS> _modifier = null;
+		private bool _forks;
 
 		protected internal abstract T This { get; }
 
-		public virtual T then<T1>(IArgumentBuilder<S> argument)
+		public virtual T Then<T1>(IArgumentBuilder<TS> argument)
 		{
-			if (target != null)
+			if (_target != null)
 			{
 				throw new System.InvalidOperationException("Cannot add children to a redirected node");
 			}
-			arguments.addChild(argument.build());
+			_arguments.AddChild(argument.Build());
 			return This;
 		}
 
-		public virtual T then(CommandNode<S> argument)
+		public virtual T Then(CommandNode<TS> argument)
 		{
-			if (target != null)
+			if (_target != null)
 			{
 				throw new System.InvalidOperationException("Cannot add children to a redirected node");
 			}
-			arguments.addChild(argument);
+			_arguments.AddChild(argument);
 			return This;
 		}
 
-		public virtual ICollection<CommandNode<S>> Arguments
+		public virtual ICollection<CommandNode<TS>> Arguments
 		{
 			get
 			{
-				return arguments.Children;
+				return _arguments.Children;
 			}
 		}
 
-		public virtual T executes(Command<S> command)
+		public virtual T Executes(Command<TS> command)
 		{
-			this.command = command;
+			this._command = command;
 			return This;
 		}
 
-		public virtual Command<S> Command
+		public virtual Command<TS> Command
 		{
 			get
 			{
-				return command;
+				return _command;
 			}
 		}
 
-		public virtual T requires(System.Predicate<S> requirement)
+		public virtual T Requires(System.Predicate<TS> requirement)
 		{
-			this.requirement = requirement;
+			this._requirement = requirement;
 			return This;
 		}
 
-		public virtual System.Predicate<S> Requirement
+		public virtual System.Predicate<TS> Requirement
 		{
 			get
 			{
-				return requirement;
+				return _requirement;
 			}
 		}
 
-		public virtual T redirect(CommandNode<S> target)
+		public virtual T Redirect(CommandNode<TS> target)
 		{
-			return forward(target, null, false);
+			return Forward(target, null, false);
 		}
 
-		public virtual T redirect(CommandNode<S> target, SingleRedirectModifier<S> modifier)
+		public virtual T Redirect(CommandNode<TS> target, SingleRedirectModifier<TS> modifier)
 		{
-			return forward(target, modifier == null ? null : o => CollectionsHelper.SingletonList(modifier(o)), false);
+			return Forward(target, modifier == null ? null : o => CollectionsHelper.SingletonList(modifier(o)), false);
 		}
 
-		public virtual T fork(CommandNode<S> target, RedirectModifier<S> modifier)
+		public virtual T Fork(CommandNode<TS> target, RedirectModifier<TS> modifier)
 		{
-			return forward(target, modifier, true);
+			return Forward(target, modifier, true);
 		}
 
-		public virtual T forward(CommandNode<S> target, RedirectModifier<S> modifier, bool fork)
+		public virtual T Forward(CommandNode<TS> target, RedirectModifier<TS> modifier, bool fork)
 		{
-			if (arguments.Children.Count > 0)
+			if (_arguments.Children.Count > 0)
 			{
 				throw new System.InvalidOperationException("Cannot forward a node with children");
 			}
-			this.target = target;
-			this.modifier = modifier;
-			this.forks = fork;
+			this._target = target;
+			this._modifier = modifier;
+			this._forks = fork;
 			return This;
 		}
 
-		public virtual CommandNode<S> Redirect
+		public virtual CommandNode<TS> RedirectTarget
 		{
 			get
 			{
-				return target;
+				return _target;
 			}
 		}
 
-		public virtual RedirectModifier<S> RedirectModifier
+		public virtual RedirectModifier<TS> RedirectModifier
 		{
 			get
 			{
-				return modifier;
+				return _modifier;
 			}
 		}
 
-		public virtual bool Fork
+		public virtual bool HasFork
 		{
 			get
 			{
-				return forks;
+				return _forks;
 			}
 		}
 
-		public abstract CommandNode<S> build();
+		public abstract CommandNode<TS> Build();
 	}
 
 }

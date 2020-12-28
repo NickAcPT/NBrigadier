@@ -5,61 +5,61 @@
 
 namespace NBrigadier.Exceptions
 {
-	public interface BuiltInExceptionProvider
+	public interface IBuiltInExceptionProvider
 	{
-		Dynamic2CommandExceptionType doubleTooLow();
+		Dynamic2CommandExceptionType DoubleTooLow();
 
-		Dynamic2CommandExceptionType doubleTooHigh();
+		Dynamic2CommandExceptionType DoubleTooHigh();
 
-		Dynamic2CommandExceptionType floatTooLow();
+		Dynamic2CommandExceptionType FloatTooLow();
 
-		Dynamic2CommandExceptionType floatTooHigh();
+		Dynamic2CommandExceptionType FloatTooHigh();
 
-		Dynamic2CommandExceptionType integerTooLow();
+		Dynamic2CommandExceptionType IntegerTooLow();
 
-		Dynamic2CommandExceptionType integerTooHigh();
+		Dynamic2CommandExceptionType IntegerTooHigh();
 
-		Dynamic2CommandExceptionType longTooLow();
+		Dynamic2CommandExceptionType LongTooLow();
 
-		Dynamic2CommandExceptionType longTooHigh();
+		Dynamic2CommandExceptionType LongTooHigh();
 
-		DynamicCommandExceptionType literalIncorrect();
+		DynamicCommandExceptionType LiteralIncorrect();
 
-		SimpleCommandExceptionType readerExpectedStartOfQuote();
+		SimpleCommandExceptionType ReaderExpectedStartOfQuote();
 
-		SimpleCommandExceptionType readerExpectedEndOfQuote();
+		SimpleCommandExceptionType ReaderExpectedEndOfQuote();
 
-		DynamicCommandExceptionType readerInvalidEscape();
+		DynamicCommandExceptionType ReaderInvalidEscape();
 
-		DynamicCommandExceptionType readerInvalidBool();
+		DynamicCommandExceptionType ReaderInvalidBool();
 
-		DynamicCommandExceptionType readerInvalidInt();
+		DynamicCommandExceptionType ReaderInvalidInt();
 
-		SimpleCommandExceptionType readerExpectedInt();
+		SimpleCommandExceptionType ReaderExpectedInt();
 
-		DynamicCommandExceptionType readerInvalidLong();
+		DynamicCommandExceptionType ReaderInvalidLong();
 
-		SimpleCommandExceptionType readerExpectedLong();
+		SimpleCommandExceptionType ReaderExpectedLong();
 
-		DynamicCommandExceptionType readerInvalidDouble();
+		DynamicCommandExceptionType ReaderInvalidDouble();
 
-		SimpleCommandExceptionType readerExpectedDouble();
+		SimpleCommandExceptionType ReaderExpectedDouble();
 
-		DynamicCommandExceptionType readerInvalidFloat();
+		DynamicCommandExceptionType ReaderInvalidFloat();
 
-		SimpleCommandExceptionType readerExpectedFloat();
+		SimpleCommandExceptionType ReaderExpectedFloat();
 
-		SimpleCommandExceptionType readerExpectedBool();
+		SimpleCommandExceptionType ReaderExpectedBool();
 
-		DynamicCommandExceptionType readerExpectedSymbol();
+		DynamicCommandExceptionType ReaderExpectedSymbol();
 
-		SimpleCommandExceptionType dispatcherUnknownCommand();
+		SimpleCommandExceptionType DispatcherUnknownCommand();
 
-		SimpleCommandExceptionType dispatcherUnknownArgument();
+		SimpleCommandExceptionType DispatcherUnknownArgument();
 
-		SimpleCommandExceptionType dispatcherExpectedArgumentSeparator();
+		SimpleCommandExceptionType DispatcherExpectedArgumentSeparator();
 
-		DynamicCommandExceptionType dispatcherParseException();
+		DynamicCommandExceptionType DispatcherParseException();
 	}
 
 }

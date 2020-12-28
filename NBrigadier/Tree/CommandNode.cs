@@ -17,116 +17,116 @@ namespace NBrigadier.Tree
 	using SuggestionsBuilder = SuggestionsBuilder;
 
 
-	public abstract class CommandNode<S> : IComparable<CommandNode<S>>
+	public abstract class CommandNode<TS> : IComparable<CommandNode<TS>>
 	{
-		private IDictionary<string, CommandNode<S>> children = new Dictionary<string, CommandNode<S>>();
-		private IDictionary<string, LiteralCommandNode<S>> literals = new Dictionary<string, LiteralCommandNode<S>>();
+		private IDictionary<string, CommandNode<TS>> _children = new Dictionary<string, CommandNode<TS>>();
+		private IDictionary<string, LiteralCommandNode<TS>> _literals = new Dictionary<string, LiteralCommandNode<TS>>();
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: private java.util.Map<String, ArgumentCommandNode<S, ?>> arguments = new java.util.LinkedHashMap<>();
-		private IDictionary<string, IArgumentCommandNode<S>> arguments = new Dictionary<string, IArgumentCommandNode<S>>();
-		private System.Predicate<S> requirement;
-		private CommandNode<S> redirect;
-		private RedirectModifier<S> modifier;
-		private bool forks;
-		private Command<S> command;
+		private IDictionary<string, IArgumentCommandNode<TS>> _arguments = new Dictionary<string, IArgumentCommandNode<TS>>();
+		private System.Predicate<TS> _requirement;
+		private CommandNode<TS> _redirect;
+		private RedirectModifier<TS> _modifier;
+		private bool _forks;
+		private Command<TS> _command;
 
-		protected internal CommandNode(Command<S> command, System.Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, bool forks)
+		protected internal CommandNode(Command<TS> command, System.Predicate<TS> requirement, CommandNode<TS> redirect, RedirectModifier<TS> modifier, bool forks)
 		{
-			this.command = command;
-			this.requirement = requirement;
-			this.redirect = redirect;
-			this.modifier = modifier;
-			this.forks = forks;
+			this._command = command;
+			this._requirement = requirement;
+			this._redirect = redirect;
+			this._modifier = modifier;
+			this._forks = forks;
 		}
 
-		public virtual Command<S> Command
-		{
-			get
-			{
-				return command;
-			}
-		}
-
-		public virtual ICollection<CommandNode<S>> Children
+		public virtual Command<TS> Command
 		{
 			get
 			{
-				return children.Values;
+				return _command;
 			}
 		}
 
-		public virtual CommandNode<S> getChild(string name)
-		{
-			return children.GetValueOrNull(name);
-		}
-
-		public virtual CommandNode<S> Redirect
+		public virtual ICollection<CommandNode<TS>> Children
 		{
 			get
 			{
-				return redirect;
+				return _children.Values;
 			}
 		}
 
-		public virtual RedirectModifier<S> RedirectModifier
+		public virtual CommandNode<TS> GetChild(string name)
+		{
+			return _children.GetValueOrNull(name);
+		}
+
+		public virtual CommandNode<TS> Redirect
 		{
 			get
 			{
-				return modifier;
+				return _redirect;
 			}
 		}
 
-		public virtual bool canUse(S source)
+		public virtual RedirectModifier<TS> RedirectModifier
 		{
-			return requirement(source);
+			get
+			{
+				return _modifier;
+			}
 		}
 
-		public virtual void addChild(CommandNode<S> node)
+		public virtual bool CanUse(TS source)
+		{
+			return _requirement(source);
+		}
+
+		public virtual void AddChild(CommandNode<TS> node)
 		{
 			if (node is IRootCommandNode)
 			{
 				throw new System.NotSupportedException("Cannot add a RootCommandNode as a child to any other CommandNode");
 			}
 
-			 CommandNode<S> child = children.GetValueOrNull(node.Name);
+			 CommandNode<TS> child = _children.GetValueOrNull(node.Name);
 			if (child != null)
 			{
 				// We've found something to merge onto
 				if (node.Command != null)
 				{
-					child.command = node.Command;
+					child._command = node.Command;
 				}
-				foreach (CommandNode<S> grandchild in node.Children)
+				foreach (CommandNode<TS> grandchild in node.Children)
 				{
-					child.addChild(grandchild);
+					child.AddChild(grandchild);
 				}
 			}
 			else
 			{
-				children[node.Name] = node;
+				_children[node.Name] = node;
 				if (node is ILiteralCommandNode)
 				{
-					literals[node.Name] = (LiteralCommandNode<S>) node;
+					_literals[node.Name] = (LiteralCommandNode<TS>) node;
 				}
-				else if (node is IArgumentCommandNode<S>)
+				else if (node is IArgumentCommandNode<TS>)
 				{
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: arguments.put(node.getName(), (ArgumentCommandNode<S, ?>) node);
-					arguments[node.Name] = (IArgumentCommandNode<S>) node;
+					_arguments[node.Name] = (IArgumentCommandNode<TS>) node;
 				}
 			}
 
 // TODO TASK: Method reference constructor syntax is not converted by Java to C# Converter:
-			children = children.SetOfKeyValuePairs().OrderBy(d => d.Value).ToDictionary(e => e.Key, e => e.Value);
+			_children = _children.SetOfKeyValuePairs().OrderBy(d => d.Value).ToDictionary(e => e.Key, e => e.Value);
 		}
 
-		public virtual void findAmbiguities(AmbiguityConsumer<S> consumer)
+		public virtual void FindAmbiguities(AmbiguityConsumer<TS> consumer)
 		{
 			ISet<string> matches = new HashSet<string>();
 
-			foreach (CommandNode<S> child in children.Values)
+			foreach (CommandNode<TS> child in _children.Values)
 			{
-				foreach (CommandNode<S> sibling in children.Values)
+				foreach (CommandNode<TS> sibling in _children.Values)
 				{
 					if (child == sibling)
 					{
@@ -135,7 +135,7 @@ namespace NBrigadier.Tree
 
 					foreach (string input in child.Examples)
 					{
-						if (sibling.isValidInput(input))
+						if (sibling.IsValidInput(input))
 						{
 							matches.Add(input);
 						}
@@ -148,11 +148,11 @@ namespace NBrigadier.Tree
 					}
 				}
 
-				child.findAmbiguities(consumer);
+				child.FindAmbiguities(consumer);
 			}
 		}
 
-		protected internal abstract bool isValidInput(string input);
+		protected internal abstract bool IsValidInput(string input);
 
 		public override bool Equals(object o)
 		{
@@ -160,18 +160,18 @@ namespace NBrigadier.Tree
 			{
 				return true;
 			}
-			if (!(o is CommandNode<S>))
+			if (!(o is CommandNode<TS>))
 			{
 				return false;
 			}
 
-			 CommandNode<S> that = (CommandNode<S>) o;
+			 CommandNode<TS> that = (CommandNode<TS>) o;
 
-			if (!children.Equals(that.children))
+			if (!_children.Equals(that._children))
 			{
 				return false;
 			}
-			if (command != null ?!command.Equals(that.command) : that.command != null)
+			if (_command != null ?!_command.Equals(that._command) : that._command != null)
 			{
 				return false;
 			}
@@ -181,14 +181,14 @@ namespace NBrigadier.Tree
 
 		public override int GetHashCode()
 		{
-			return 31 * children.GetHashCode() + (command != null ? command.GetHashCode() : 0);
+			return 31 * _children.GetHashCode() + (_command != null ? _command.GetHashCode() : 0);
 		}
 
-		public virtual System.Predicate<S> Requirement
+		public virtual System.Predicate<TS> Requirement
 		{
 			get
 			{
-				return requirement;
+				return _requirement;
 			}
 		}
 
@@ -198,50 +198,50 @@ namespace NBrigadier.Tree
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public abstract void parse(com.mojang.brigadier.StringReader reader, com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException;
-		public abstract void parse(StringReader reader, CommandContextBuilder<S> contextBuilder);
+		public abstract void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder);
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: public abstract java.util.concurrent.CompletableFuture<com.mojang.brigadier.suggestion.Suggestions> listSuggestions(com.mojang.brigadier.context.CommandContext<S> context, com.mojang.brigadier.suggestion.SuggestionsBuilder builder) throws com.mojang.brigadier.exceptions.CommandSyntaxException;
-		public abstract System.Func<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder);
+		public abstract System.Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder);
 
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: public abstract com.mojang.brigadier.builder.ArgumentBuilder<S, ?> createBuilder();
-		public abstract IArgumentBuilder<S> createBuilder();
+		public abstract IArgumentBuilder<TS> CreateBuilder();
 
 		protected internal abstract string SortedKey { get; }
 
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: public java.util.Collection<? extends CommandNode<S>> getRelevantNodes(com.mojang.brigadier.StringReader input)
-		public virtual ICollection<CommandNode<S>> getRelevantNodes(StringReader input)
+		public virtual ICollection<CommandNode<TS>> GetRelevantNodes(StringReader input)
 		{
-			if (literals.Count > 0)
+			if (_literals.Count > 0)
 			{
 				 int cursor = input.Cursor;
-				while (input.canRead() && input.peek() != ' ')
+				while (input.CanRead() && input.Peek() != ' ')
 				{
-					input.skip();
+					input.Skip();
 				}
 				 string text = input.String.Substring(cursor, input.Cursor - cursor);
 				input.Cursor = cursor;
-				 LiteralCommandNode<S> literal = literals.GetValueOrNull(text);
+				 LiteralCommandNode<TS> literal = _literals.GetValueOrNull(text);
 				if (literal != null)
 				{
-					return CollectionsHelper.SingletonList(literal).Cast<CommandNode<S>>().ToList();
+					return CollectionsHelper.SingletonList(literal).Cast<CommandNode<TS>>().ToList();
 				}
 				else
 				{
-					return arguments.Values.Cast<CommandNode<S>>().ToList();
+					return _arguments.Values.Cast<CommandNode<TS>>().ToList();
 				}
 			}
 			else
 			{
-				return arguments.Values.Cast<CommandNode<S>>().ToList();
+				return _arguments.Values.Cast<CommandNode<TS>>().ToList();
 			}
 		}
 
-		public virtual int CompareTo(CommandNode<S> o)
+		public virtual int CompareTo(CommandNode<TS> o)
 		{
-			if (this is LiteralCommandNode<S> == o is ILiteralCommandNode)
+			if (this is LiteralCommandNode<TS> == o is ILiteralCommandNode)
 			{
 				return SortedKey.CompareTo(o.SortedKey);
 			}
@@ -253,7 +253,7 @@ namespace NBrigadier.Tree
 		{
 			get
 			{
-				return forks;
+				return _forks;
 			}
 		}
 

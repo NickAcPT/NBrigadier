@@ -7,22 +7,22 @@ using NBrigadier.Helpers;
 namespace NBrigadier.Context
 {
 
-	public class ParsedArgument<S, T> : IParsedArgument
+	public class ParsedArgument<TS, T> : IParsedArgument
 	{
-		private StringRange range;
-		private T result;
+		private StringRange _range;
+		private T _result;
 
 		public ParsedArgument(int start, int end, T result)
 		{
-			this.range = StringRange.between(start, end);
-			this.result = result;
+			this._range = StringRange.Between(start, end);
+			this._result = result;
 		}
 
 		public virtual StringRange Range
 		{
 			get
 			{
-				return range;
+				return _range;
 			}
 		}
 
@@ -32,7 +32,7 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return result;
+				return _result;
 			}
 		}
 
@@ -49,12 +49,12 @@ namespace NBrigadier.Context
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: ParsedArgument<?, ?> that = (ParsedArgument<?, ?>) o;
 			 ParsedArgument<object, object> that = (ParsedArgument<object, object>) o;
-			return ObjectsHelper.Equals(range, that.range) && ObjectsHelper.Equals(result, that.result);
+			return ObjectsHelper.Equals(_range, that._range) && ObjectsHelper.Equals(_result, that._result);
 		}
 
 		public override int GetHashCode()
 		{
-			return NBrigadier.Helpers.ObjectsHelper.hash(range, result);
+			return NBrigadier.Helpers.ObjectsHelper.Hash(_range, _result);
 		}
 	}
 

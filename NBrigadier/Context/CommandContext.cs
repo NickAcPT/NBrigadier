@@ -10,74 +10,74 @@ using NBrigadier.Tree;
 
 namespace NBrigadier.Context
 {
-    public class CommandContext<S> : ICommandContext
+    public class CommandContext<TS> : ICommandContext
 	{
 
-		private static IDictionary<Type, Type> PRIMITIVE_TO_WRAPPER = new Dictionary<Type, Type>();
+		private static IDictionary<Type, Type> _primitiveToWrapper = new Dictionary<Type, Type>();
 
 		static CommandContext()
 		{
-			PRIMITIVE_TO_WRAPPER[typeof(bool)] = typeof(Boolean);
-			PRIMITIVE_TO_WRAPPER[typeof(sbyte)] = typeof(Byte);
-			PRIMITIVE_TO_WRAPPER[typeof(short)] = typeof(short);
-			PRIMITIVE_TO_WRAPPER[typeof(char)] = typeof(char);
-			PRIMITIVE_TO_WRAPPER[typeof(int)] = typeof(int);
-			PRIMITIVE_TO_WRAPPER[typeof(long)] = typeof(long);
-			PRIMITIVE_TO_WRAPPER[typeof(float)] = typeof(float);
-			PRIMITIVE_TO_WRAPPER[typeof(double)] = typeof(double);
+			_primitiveToWrapper[typeof(bool)] = typeof(Boolean);
+			_primitiveToWrapper[typeof(sbyte)] = typeof(Byte);
+			_primitiveToWrapper[typeof(short)] = typeof(short);
+			_primitiveToWrapper[typeof(char)] = typeof(char);
+			_primitiveToWrapper[typeof(int)] = typeof(int);
+			_primitiveToWrapper[typeof(long)] = typeof(long);
+			_primitiveToWrapper[typeof(float)] = typeof(float);
+			_primitiveToWrapper[typeof(double)] = typeof(double);
 		}
 
-		private S source;
-		private string input;
-		private Command<S> command;
+		private TS _source;
+		private string _input;
+		private Command<TS> _command;
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: private java.util.Map<String, ParsedArgument<S, ?>> arguments;
-		private IDictionary<string, IParsedArgument> arguments;
-		private CommandNode<S> rootNode;
-		private IList<ParsedCommandNode<S>> nodes;
-		private StringRange range;
-		private CommandContext<S> child;
-		private RedirectModifier<S> modifier;
-		private bool forks;
+		private IDictionary<string, IParsedArgument> _arguments;
+		private CommandNode<TS> _rootNode;
+		private IList<ParsedCommandNode<TS>> _nodes;
+		private StringRange _range;
+		private CommandContext<TS> _child;
+		private RedirectModifier<TS> _modifier;
+		private bool _forks;
 
 // TODO TASK: Wildcard generics in constructor parameters are not converted. Move the generic type parameter and constraint to the class header:
 // ORIGINAL LINE: public CommandContext(S source, String input, java.util.Map<String, ParsedArgument<S, ?>> arguments, com.mojang.brigadier.Command<S> command, com.mojang.brigadier.tree.CommandNode<S> rootNode, java.util.List<ParsedCommandNode<S>> nodes, StringRange range, CommandContext<S> child, com.mojang.brigadier.RedirectModifier<S> modifier, boolean forks)
-		public CommandContext(S source, string input, IDictionary<string, IParsedArgument> arguments, Command<S> command, CommandNode<S> rootNode, IList<ParsedCommandNode<S>> nodes, StringRange range, CommandContext<S> child, RedirectModifier<S> modifier, bool forks)
+		public CommandContext(TS source, string input, IDictionary<string, IParsedArgument> arguments, Command<TS> command, CommandNode<TS> rootNode, IList<ParsedCommandNode<TS>> nodes, StringRange range, CommandContext<TS> child, RedirectModifier<TS> modifier, bool forks)
 		{
-			this.source = source;
-			this.input = input;
-			this.arguments = arguments;
-			this.command = command;
-			this.rootNode = rootNode;
-			this.nodes = nodes;
-			this.range = range;
-			this.child = child;
-			this.modifier = modifier;
-			this.forks = forks;
+			this._source = source;
+			this._input = input;
+			this._arguments = arguments;
+			this._command = command;
+			this._rootNode = rootNode;
+			this._nodes = nodes;
+			this._range = range;
+			this._child = child;
+			this._modifier = modifier;
+			this._forks = forks;
 		}
 
-		public virtual CommandContext<S> copyFor(S source)
+		public virtual CommandContext<TS> CopyFor(TS source)
 		{
-			if (this.source.Equals(source))
+			if (this._source.Equals(source))
 			{
 				return this;
 			}
-			return new CommandContext<S>(source, input, arguments, command, rootNode, nodes, range, child, modifier, forks);
+			return new CommandContext<TS>(source, _input, _arguments, _command, _rootNode, _nodes, _range, _child, _modifier, _forks);
 		}
 
-		public virtual CommandContext<S> Child
+		public virtual CommandContext<TS> Child
 		{
 			get
 			{
-				return child;
+				return _child;
 			}
 		}
 
-		public virtual CommandContext<S> LastChild
+		public virtual CommandContext<TS> LastChild
 		{
 			get
 			{
-				CommandContext<S> result = this;
+				CommandContext<TS> result = this;
 				while (result.Child != null)
 				{
 					result = result.Child;
@@ -86,29 +86,29 @@ namespace NBrigadier.Context
 			}
 		}
 
-		public virtual Command<S> Command
+		public virtual Command<TS> Command
 		{
 			get
 			{
-				return command;
+				return _command;
 			}
 		}
 
-		public virtual S Source
+		public virtual TS Source
 		{
 			get
 			{
-				return source;
+				return _source;
 			}
 		}
 
 // TODO TASK: Most Java annotations will not have direct .NET equivalent attributes:
 // ORIGINAL LINE: @SuppressWarnings("unchecked") public <V> V getArgument(String name, Class<V> clazz)
-		public virtual V getArgument<V>(string name, Type clazz)
+		public virtual TV GetArgument<TV>(string name, Type clazz)
 		{
 // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: ParsedArgument<S, ?> argument = arguments.get(name);
-			 IParsedArgument argument = arguments.GetValueOrNull(name);
+			 IParsedArgument argument = _arguments.GetValueOrNull(name);
 
 			if (argument == null)
 			{
@@ -117,9 +117,9 @@ namespace NBrigadier.Context
 
 			 object result = argument.ResultObject;
 // ORIGINAL LINE: if (PRIMITIVE_TO_WRAPPER.getOrDefault(clazz, clazz).isAssignableFrom(result.getClass()))
-			if (MapHelper.GetOrDefault(PRIMITIVE_TO_WRAPPER, clazz, clazz).IsAssignableFrom(result.GetType()))
+			if (MapHelper.GetOrDefault(_primitiveToWrapper, clazz, clazz).IsAssignableFrom(result.GetType()))
 			{
-				return (V) result;
+				return (TV) result;
 			}
 			else
 			{
@@ -138,31 +138,31 @@ namespace NBrigadier.Context
 				return false;
 			}
 
-			 CommandContext<S> that = (CommandContext<S>) o;
+			 CommandContext<TS> that = (CommandContext<TS>) o;
 
-			if (!arguments.Equals(that.arguments))
+			if (!_arguments.Equals(that._arguments))
 			{
 				return false;
 			}
-			if (!rootNode.Equals(that.rootNode))
+			if (!_rootNode.Equals(that._rootNode))
 			{
 				return false;
 			}
 // WARNING: LINQ 'SequenceEqual' is not always identical to Java AbstractList 'equals':
 // ORIGINAL LINE: if (nodes.size() != that.nodes.size() || !nodes.equals(that.nodes))
-			if (nodes.Count != that.nodes.Count || !nodes.SequenceEqual(that.nodes))
+			if (_nodes.Count != that._nodes.Count || !_nodes.SequenceEqual(that._nodes))
 			{
 				return false;
 			}
-			if (command != null ?!command.Equals(that.command) : that.command != null)
+			if (_command != null ?!_command.Equals(that._command) : that._command != null)
 			{
 				return false;
 			}
-			if (!source.Equals(that.source))
+			if (!_source.Equals(that._source))
 			{
 				return false;
 			}
-			if (child != null ?!child.Equals(that.child) : that.child != null)
+			if (_child != null ?!_child.Equals(that._child) : that._child != null)
 			{
 				return false;
 			}
@@ -172,20 +172,20 @@ namespace NBrigadier.Context
 
 		public override int GetHashCode()
 		{
-			int result = source.GetHashCode();
-			result = 31 * result + arguments.GetHashCode();
-			result = 31 * result + (command != null ? command.GetHashCode() : 0);
-			result = 31 * result + rootNode.GetHashCode();
-			result = 31 * result + nodes.GetHashCode();
-			result = 31 * result + (child != null ? child.GetHashCode() : 0);
+			int result = _source.GetHashCode();
+			result = 31 * result + _arguments.GetHashCode();
+			result = 31 * result + (_command != null ? _command.GetHashCode() : 0);
+			result = 31 * result + _rootNode.GetHashCode();
+			result = 31 * result + _nodes.GetHashCode();
+			result = 31 * result + (_child != null ? _child.GetHashCode() : 0);
 			return result;
 		}
 
-		public virtual RedirectModifier<S> RedirectModifier
+		public virtual RedirectModifier<TS> RedirectModifier
 		{
 			get
 			{
-				return modifier;
+				return _modifier;
 			}
 		}
 
@@ -193,7 +193,7 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return range;
+				return _range;
 			}
 		}
 
@@ -201,36 +201,36 @@ namespace NBrigadier.Context
 		{
 			get
 			{
-				return input;
+				return _input;
 			}
 		}
 
-		public virtual CommandNode<S> RootNode
+		public virtual CommandNode<TS> RootNode
 		{
 			get
 			{
-				return rootNode;
+				return _rootNode;
 			}
 		}
 
-		public virtual IList<ParsedCommandNode<S>> Nodes
+		public virtual IList<ParsedCommandNode<TS>> Nodes
 		{
 			get
 			{
-				return nodes;
+				return _nodes;
 			}
 		}
 
-		public virtual bool hasNodes()
+		public virtual bool HasNodes()
 		{
-			return nodes.Count > 0;
+			return _nodes.Count > 0;
 		}
 
 		public virtual bool Forked
 		{
 			get
 			{
-				return forks;
+				return _forks;
 			}
 		}
 	}

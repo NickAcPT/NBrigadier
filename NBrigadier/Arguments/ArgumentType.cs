@@ -14,15 +14,15 @@ namespace NBrigadier.Arguments
 	using SuggestionsBuilder = SuggestionsBuilder;
 
 
-	public interface ArgumentType<T>
+	public interface IArgumentType<T>
 	{
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: T parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException;
-		T parse(StringReader reader);
+		T Parse(StringReader reader);
 
-		virtual System.Func<Suggestions> listSuggestions<S>(CommandContext<S> context, SuggestionsBuilder builder)
+		virtual System.Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
 		{
-			return Suggestions.empty();
+			return Suggestions.Empty();
 		}
 
 		virtual ICollection<string> Examples

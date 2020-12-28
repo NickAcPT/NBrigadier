@@ -11,60 +11,60 @@ namespace NBrigadier.Arguments
 {
 	using StringReader = StringReader;
 
-    public class StringArgumentType : ArgumentType<string>
+    public class StringArgumentType : IArgumentType<string>
 	{
-		private StringType type;
+		private StringType _type;
 
 		private StringArgumentType(StringType type)
 		{
-			this.type = type;
+			this._type = type;
 		}
 
-		public static StringArgumentType word()
+		public static StringArgumentType Word()
 		{
-			return new StringArgumentType(StringType.SINGLE_WORD);
+			return new StringArgumentType(StringType.SingleWord);
 		}
 
-		public static StringArgumentType @string()
+		public static StringArgumentType String()
 		{
-			return new StringArgumentType(StringType.QUOTABLE_PHRASE);
+			return new StringArgumentType(StringType.QuotablePhrase);
 		}
 
-		public static StringArgumentType greedyString()
+		public static StringArgumentType GreedyString()
 		{
-			return new StringArgumentType(StringType.GREEDY_PHRASE);
+			return new StringArgumentType(StringType.GreedyPhrase);
 		}
 
-		public static string getString<T1>(CommandContext<T1> context, string name)
+		public static string GetString<T1>(CommandContext<T1> context, string name)
 		{
-			return context.getArgument<string>(name, typeof(string));
+			return context.GetArgument<string>(name, typeof(string));
 		}
 
 		public virtual StringType Type
 		{
 			get
 			{
-				return type;
+				return _type;
 			}
 		}
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public String parse(com.mojang.brigadier.StringReader reader) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public virtual string parse(StringReader reader)
+		public virtual string Parse(StringReader reader)
 		{
-			if (type == StringType.GREEDY_PHRASE)
+			if (_type == StringType.GreedyPhrase)
 			{
 				 string text = reader.Remaining;
 				reader.Cursor = reader.TotalLength;
 				return text;
 			}
-			else if (type == StringType.SINGLE_WORD)
+			else if (_type == StringType.SingleWord)
 			{
-				return reader.readUnquotedString();
+				return reader.ReadUnquotedString();
 			}
 			else
 			{
-				return reader.readString();
+				return reader.ReadString();
 			}
 		}
 
@@ -77,23 +77,23 @@ namespace NBrigadier.Arguments
 		{
 			get
 			{
-				return type.Examples;
+				return _type.Examples;
 			}
 		}
 
-		public static string escapeIfRequired(string input)
+		public static string EscapeIfRequired(string input)
 		{
 			foreach (char c in input.ToCharArray())
 			{
-				if (!StringReader.isAllowedInUnquotedString(c))
+				if (!StringReader.IsAllowedInUnquotedString(c))
 				{
-					return escape(input);
+					return Escape(input);
 				}
 			}
 			return input;
 		}
 
-		private static string escape(string input)
+		private static string Escape(string input)
 		{
 			 StringBuilder result = new StringBuilder("\"");
 
@@ -113,30 +113,30 @@ namespace NBrigadier.Arguments
 
 		public sealed class StringType
 		{
-			public static readonly StringType SINGLE_WORD = new StringType("SINGLE_WORD", InnerEnum.SINGLE_WORD, "word", "words_with_underscores");
-			public static readonly StringType QUOTABLE_PHRASE = new StringType("QUOTABLE_PHRASE", InnerEnum.QUOTABLE_PHRASE, "\"quoted phrase\"", "word", "\"\"");
-			public static readonly StringType GREEDY_PHRASE = new StringType("GREEDY_PHRASE", InnerEnum.GREEDY_PHRASE, "word", "words with spaces", "\"and symbols\"");
+			public static readonly StringType SingleWord = new StringType("SINGLE_WORD", InnerEnum.SingleWord, "word", "words_with_underscores");
+			public static readonly StringType QuotablePhrase = new StringType("QUOTABLE_PHRASE", InnerEnum.QuotablePhrase, "\"quoted phrase\"", "word", "\"\"");
+			public static readonly StringType GreedyPhrase = new StringType("GREEDY_PHRASE", InnerEnum.GreedyPhrase, "word", "words with spaces", "\"and symbols\"");
 
-			private static readonly List<StringType> valueList = new List<StringType>();
+			private static readonly List<StringType> VALUE_LIST = new List<StringType>();
 
 			static StringType()
 			{
-				valueList.Add(SINGLE_WORD);
-				valueList.Add(QUOTABLE_PHRASE);
-				valueList.Add(GREEDY_PHRASE);
+				VALUE_LIST.Add(SingleWord);
+				VALUE_LIST.Add(QuotablePhrase);
+				VALUE_LIST.Add(GreedyPhrase);
 			}
 
 			public enum InnerEnum
 			{
-				SINGLE_WORD,
-				QUOTABLE_PHRASE,
-				GREEDY_PHRASE
+				SingleWord,
+				QuotablePhrase,
+				GreedyPhrase
 			}
 
 			public readonly InnerEnum innerEnumValue;
-			private readonly string nameValue;
-			private readonly int ordinalValue;
-			private static int nextOrdinal = 0;
+			private readonly string _nameValue;
+			private readonly int _ordinalValue;
+			private static int _nextOrdinal = 0;
 
 			internal ICollection<string> examples;
 
@@ -144,8 +144,8 @@ namespace NBrigadier.Arguments
 			{
 				this.examples = CollectionsHelper.AsList(examples);
 
-				nameValue = name;
-				ordinalValue = nextOrdinal++;
+				_nameValue = name;
+				_ordinalValue = _nextOrdinal++;
 				innerEnumValue = innerEnum;
 			}
 
@@ -157,26 +157,26 @@ namespace NBrigadier.Arguments
 				}
 			}
 
-			public static StringType[] values()
+			public static StringType[] Values()
 			{
-				return valueList.ToArray();
+				return VALUE_LIST.ToArray();
 			}
 
-			public int ordinal()
+			public int Ordinal()
 			{
-				return ordinalValue;
+				return _ordinalValue;
 			}
 
 			public override string ToString()
 			{
-				return nameValue;
+				return _nameValue;
 			}
 
-			public static StringType valueOf(string name)
+			public static StringType ValueOf(string name)
 			{
-				foreach (StringType enumInstance in StringType.valueList)
+				foreach (StringType enumInstance in StringType.VALUE_LIST)
 				{
-					if (enumInstance.nameValue == name)
+					if (enumInstance._nameValue == name)
 					{
 						return enumInstance;
 					}

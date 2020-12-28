@@ -19,13 +19,13 @@ namespace NBrigadier.Tree
 	using SuggestionsBuilder = SuggestionsBuilder;
 
 
-	public class LiteralCommandNode<S> : CommandNode<S>, ILiteralCommandNode
+	public class LiteralCommandNode<TS> : CommandNode<TS>, ILiteralCommandNode
 	{
-		private string literal;
+		private string _literal;
 
-		public LiteralCommandNode(string literal, Command<S> command, System.Predicate<S> requirement, CommandNode<S> redirect, RedirectModifier<S> modifier, bool forks) : base(command, requirement, redirect, modifier, forks)
+		public LiteralCommandNode(string literal, Command<TS> command, System.Predicate<TS> requirement, CommandNode<TS> redirect, RedirectModifier<TS> modifier, bool forks) : base(command, requirement, redirect, modifier, forks)
 		{
-			this.literal = literal;
+			this._literal = literal;
 		}
 
 		public virtual string Literal
@@ -46,29 +46,29 @@ namespace NBrigadier.Tree
 
 // WARNING: Method 'throws' clauses are not available in C#:
 // ORIGINAL LINE: @Override public void parse(com.mojang.brigadier.StringReader reader, com.mojang.brigadier.context.CommandContextBuilder<S> contextBuilder) throws com.mojang.brigadier.exceptions.CommandSyntaxException
-		public override void parse(StringReader reader, CommandContextBuilder<S> contextBuilder)
+		public override void Parse(StringReader reader, CommandContextBuilder<TS> contextBuilder)
 		{
 			 int start = reader.Cursor;
-			 int end = parse(reader);
+			 int end = Parse(reader);
 			if (end > -1)
 			{
-				contextBuilder.withNode(this, StringRange.between(start, end));
+				contextBuilder.WithNode(this, StringRange.Between(start, end));
 				return;
 			}
 
-			throw CommandSyntaxException.BUILT_IN_EXCEPTIONS.literalIncorrect().createWithContext(reader, Literal);
+			throw CommandSyntaxException.builtInExceptions.LiteralIncorrect().CreateWithContext(reader, Literal);
 		}
 
-		private int parse(StringReader reader)
+		private int Parse(StringReader reader)
 		{
 			 int start = reader.Cursor;
-			if (reader.canRead(Literal.Length))
+			if (reader.CanRead(Literal.Length))
 			{
 				 int end = start + Literal.Length;
 				if (reader.String.Substring(start, end - start).Equals(Literal))
 				{
 					reader.Cursor = end;
-					if (!reader.canRead() || reader.peek() == ' ')
+					if (!reader.CanRead() || reader.Peek() == ' ')
 					{
 						return end;
 					}
@@ -81,21 +81,21 @@ namespace NBrigadier.Tree
 			return -1;
 		}
 
-		public override System.Func<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder)
+		public override System.Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder)
 		{
 			if (Literal.ToLower().StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
 			{
-				return builder.suggest(Literal).buildFuture();
+				return builder.Suggest(Literal).BuildFuture();
 			}
 			else
 			{
-				return Suggestions.empty();
+				return Suggestions.Empty();
 			}
 		}
 
-        protected internal override bool isValidInput(string input)
+        protected internal override bool IsValidInput(string input)
 		{
-			return parse(new StringReader(input)) > -1;
+			return Parse(new StringReader(input)) > -1;
 		}
 
 		public override bool Equals(object o)
@@ -133,14 +133,14 @@ namespace NBrigadier.Tree
 			return result;
 		}
 
-		public override IArgumentBuilder<S> createBuilder()
+		public override IArgumentBuilder<TS> CreateBuilder()
 		{
-			 LiteralArgumentBuilder<S> builder = LiteralArgumentBuilder<S>.literal(this.Literal);
-			builder.requires(Requirement);
-			builder.forward(Redirect, RedirectModifier, Fork);
+			 LiteralArgumentBuilder<TS> builder = LiteralArgumentBuilder<TS>.Literal(this.Literal);
+			builder.Requires(Requirement);
+			builder.Forward(Redirect, RedirectModifier, Fork);
 			if (Command != null)
 			{
-				builder.executes(Command);
+				builder.Executes(Command);
 			}
 			return builder;
 		}
