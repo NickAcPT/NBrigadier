@@ -19,7 +19,7 @@ namespace NBrigadier.Builder
 
 		protected internal abstract T This { get; }
 
-		public virtual T Then<T1>(IArgumentBuilder<TS> argument)
+		public virtual T Then(IArgumentBuilder<TS> argument)
 		{
 			if (_target != null)
 			{
@@ -29,8 +29,8 @@ namespace NBrigadier.Builder
 			return This;
 		}
 
-		public virtual T Then(CommandNode<TS> argument)
-		{
+        public virtual T Then(CommandNode<TS> argument)
+        {
 			if (_target != null)
 			{
 				throw new System.InvalidOperationException("Cannot add children to a redirected node");
@@ -92,7 +92,7 @@ namespace NBrigadier.Builder
 
 		public virtual T Forward(CommandNode<TS> target, RedirectModifier<TS> modifier, bool fork)
 		{
-			if (_arguments.Children.Count > 0)
+			if (Arguments.Count > 0)
 			{
 				throw new System.InvalidOperationException("Cannot forward a node with children");
 			}
