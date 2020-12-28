@@ -8,71 +8,42 @@ using NBrigadier.Tree;
 namespace NBrigadier.Builder
 {
     public class RequiredArgumentBuilder<TS, T> : ArgumentBuilder<TS, RequiredArgumentBuilder<TS, T>>
-	{
-		private string _name;
-		private IArgumentType<T> _type;
-		private SuggestionProvider<TS> _suggestionsProvider = null;
+    {
+        private SuggestionProvider<TS> _suggestionsProvider;
 
-		private RequiredArgumentBuilder(string name, IArgumentType<T> type)
-		{
-			this._name = name;
-			this._type = type;
-		}
+        private RequiredArgumentBuilder(string name, IArgumentType<T> type)
+        {
+            Name = name;
+            Type = type;
+        }
 
-		public static RequiredArgumentBuilder<TS, T> Argument(string name, IArgumentType<T> type)
-		{
-			return new RequiredArgumentBuilder<TS, T>(name, type);
-		}
+        public virtual SuggestionProvider<TS> SuggestionsProvider => _suggestionsProvider;
 
-		public virtual RequiredArgumentBuilder<TS, T> Suggests(SuggestionProvider<TS> provider)
-		{
-			this._suggestionsProvider = provider;
-			return This;
-		}
+        protected internal override RequiredArgumentBuilder<TS, T> This => this;
 
-		public virtual SuggestionProvider<TS> SuggestionsProvider
-		{
-			get
-			{
-				return _suggestionsProvider;
-			}
-		}
+        public virtual IArgumentType<T> Type { get; }
 
-		protected internal override RequiredArgumentBuilder<TS, T> This
-		{
-			get
-			{
-				return this;
-			}
-		}
+        public virtual string Name { get; }
 
-		public virtual IArgumentType<T> Type
-		{
-			get
-			{
-				return _type;
-			}
-		}
+        public static RequiredArgumentBuilder<TS, T> Argument(string name, IArgumentType<T> type)
+        {
+            return new(name, type);
+        }
 
-		public virtual string Name
-		{
-			get
-			{
-				return _name;
-			}
-		}
+        public virtual RequiredArgumentBuilder<TS, T> Suggests(SuggestionProvider<TS> provider)
+        {
+            _suggestionsProvider = provider;
+            return This;
+        }
 
-		public override CommandNode<TS> Build()
-		{
-			 ArgumentCommandNode<TS, T> result = new ArgumentCommandNode<TS, T>(Name, Type, Command, Requirement, RedirectTarget, RedirectModifier, HasFork, SuggestionsProvider);
+        public override CommandNode<TS> Build()
+        {
+            var result = new ArgumentCommandNode<TS, T>(Name, Type, Command, Requirement, RedirectTarget,
+                RedirectModifier, HasFork, SuggestionsProvider);
 
-			foreach (CommandNode<TS> argument in Arguments)
-			{
-				result.AddChild(argument);
-			}
+            foreach (var argument in Arguments) result.AddChild(argument);
 
-			return result;
-		}
-	}
-
+            return result;
+        }
+    }
 }

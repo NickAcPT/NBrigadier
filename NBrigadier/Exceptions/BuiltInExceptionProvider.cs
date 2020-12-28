@@ -1,65 +1,62 @@
-﻿
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 namespace NBrigadier.Exceptions
 {
-	public interface IBuiltInExceptionProvider
-	{
-		Dynamic2CommandExceptionType DoubleTooLow();
+    public interface IBuiltInExceptionProvider
+    {
+        Dynamic2CommandExceptionType DoubleTooLow();
 
-		Dynamic2CommandExceptionType DoubleTooHigh();
+        Dynamic2CommandExceptionType DoubleTooHigh();
 
-		Dynamic2CommandExceptionType FloatTooLow();
+        Dynamic2CommandExceptionType FloatTooLow();
 
-		Dynamic2CommandExceptionType FloatTooHigh();
+        Dynamic2CommandExceptionType FloatTooHigh();
 
-		Dynamic2CommandExceptionType IntegerTooLow();
+        Dynamic2CommandExceptionType IntegerTooLow();
 
-		Dynamic2CommandExceptionType IntegerTooHigh();
+        Dynamic2CommandExceptionType IntegerTooHigh();
 
-		Dynamic2CommandExceptionType LongTooLow();
+        Dynamic2CommandExceptionType LongTooLow();
 
-		Dynamic2CommandExceptionType LongTooHigh();
+        Dynamic2CommandExceptionType LongTooHigh();
 
-		DynamicCommandExceptionType LiteralIncorrect();
+        DynamicCommandExceptionType LiteralIncorrect();
 
-		SimpleCommandExceptionType ReaderExpectedStartOfQuote();
+        SimpleCommandExceptionType ReaderExpectedStartOfQuote();
 
-		SimpleCommandExceptionType ReaderExpectedEndOfQuote();
+        SimpleCommandExceptionType ReaderExpectedEndOfQuote();
 
-		DynamicCommandExceptionType ReaderInvalidEscape();
+        DynamicCommandExceptionType ReaderInvalidEscape();
 
-		DynamicCommandExceptionType ReaderInvalidBool();
+        DynamicCommandExceptionType ReaderInvalidBool();
 
-		DynamicCommandExceptionType ReaderInvalidInt();
+        DynamicCommandExceptionType ReaderInvalidInt();
 
-		SimpleCommandExceptionType ReaderExpectedInt();
+        SimpleCommandExceptionType ReaderExpectedInt();
 
-		DynamicCommandExceptionType ReaderInvalidLong();
+        DynamicCommandExceptionType ReaderInvalidLong();
 
-		SimpleCommandExceptionType ReaderExpectedLong();
+        SimpleCommandExceptionType ReaderExpectedLong();
 
-		DynamicCommandExceptionType ReaderInvalidDouble();
+        DynamicCommandExceptionType ReaderInvalidDouble();
 
-		SimpleCommandExceptionType ReaderExpectedDouble();
+        SimpleCommandExceptionType ReaderExpectedDouble();
 
-		DynamicCommandExceptionType ReaderInvalidFloat();
+        DynamicCommandExceptionType ReaderInvalidFloat();
 
-		SimpleCommandExceptionType ReaderExpectedFloat();
+        SimpleCommandExceptionType ReaderExpectedFloat();
 
-		SimpleCommandExceptionType ReaderExpectedBool();
+        SimpleCommandExceptionType ReaderExpectedBool();
 
-		DynamicCommandExceptionType ReaderExpectedSymbol();
+        DynamicCommandExceptionType ReaderExpectedSymbol();
 
-		SimpleCommandExceptionType DispatcherUnknownCommand();
+        SimpleCommandExceptionType DispatcherUnknownCommand();
 
-		SimpleCommandExceptionType DispatcherUnknownArgument();
+        SimpleCommandExceptionType DispatcherUnknownArgument();
 
-		SimpleCommandExceptionType DispatcherExpectedArgumentSeparator();
+        SimpleCommandExceptionType DispatcherExpectedArgumentSeparator();
 
-		DynamicCommandExceptionType DispatcherParseException();
-	}
-
+        DynamicCommandExceptionType DispatcherParseException();
+    }
 }

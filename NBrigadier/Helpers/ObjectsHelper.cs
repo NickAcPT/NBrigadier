@@ -7,6 +7,7 @@
             if (thizz == null && other == null) return true;
             return thizz?.Equals(other) == true;
         }
+
         public static int Hash(params object[] objects)
         {
             return objects?.GetHashCode() ?? 0;

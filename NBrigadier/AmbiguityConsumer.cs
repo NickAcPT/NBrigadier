@@ -6,6 +6,6 @@ using NBrigadier.Tree;
 
 namespace NBrigadier
 {
-    public delegate void AmbiguityConsumer<TS>(CommandNode<TS> parent, CommandNode<TS> child, CommandNode<TS> sibling, ICollection<string> inputs);
-
+    public delegate void AmbiguityConsumer<TS>(CommandNode<TS> parent, CommandNode<TS> child, CommandNode<TS> sibling,
+        ICollection<string> inputs);
 }

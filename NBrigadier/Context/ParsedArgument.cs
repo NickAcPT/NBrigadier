@@ -6,56 +6,36 @@ using NBrigadier.Helpers;
 
 namespace NBrigadier.Context
 {
+    public class ParsedArgument<TS, T> : IParsedArgument
+    {
+        private readonly StringRange _range;
+        private readonly T _result;
 
-	public class ParsedArgument<TS, T> : IParsedArgument
-	{
-		private StringRange _range;
-		private T _result;
+        public ParsedArgument(int start, int end, T result)
+        {
+            _range = StringRange.Between(start, end);
+            _result = result;
+        }
 
-		public ParsedArgument(int start, int end, T result)
-		{
-			this._range = StringRange.Between(start, end);
-			this._result = result;
-		}
+        public virtual T Result => _result;
 
-		public virtual StringRange Range
-		{
-			get
-			{
-				return _range;
-			}
-		}
+        public virtual StringRange Range => _range;
 
         public object ResultObject => Result;
 
-        public virtual T Result
-		{
-			get
-			{
-				return _result;
-			}
-		}
-
-		public override bool Equals(object o)
-		{
-			if (this == o)
-			{
-				return true;
-			}
-			if (!(o is IParsedArgument))
-			{
-				return false;
-			}
-// WARNING: Java wildcard generics have no direct equivalent in C#:
+        public override bool Equals(object o)
+        {
+            if (this == o) return true;
+            if (!(o is IParsedArgument)) return false;
+            // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: ParsedArgument<?, ?> that = (ParsedArgument<?, ?>) o;
-			 ParsedArgument<object, object> that = (ParsedArgument<object, object>) o;
-			return ObjectsHelper.Equals(_range, that._range) && ObjectsHelper.Equals(_result, that._result);
-		}
+            var that = (ParsedArgument<object, object>) o;
+            return ObjectsHelper.Equals(_range, that._range) && ObjectsHelper.Equals(_result, that._result);
+        }
 
-		public override int GetHashCode()
-		{
-			return NBrigadier.Helpers.ObjectsHelper.Hash(_range, _result);
-		}
-	}
-
+        public override int GetHashCode()
+        {
+            return ObjectsHelper.Hash(_range, _result);
+        }
+    }
 }

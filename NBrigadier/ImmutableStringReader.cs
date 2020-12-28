@@ -1,31 +1,28 @@
-﻿
-
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT license.
 
 namespace NBrigadier
 {
-	public interface IMmutableStringReader
-	{
-		string String { get; }
+    public interface IMmutableStringReader
+    {
+        string String { get; }
 
-		int RemainingLength { get; }
+        int RemainingLength { get; }
 
-		int TotalLength { get; }
+        int TotalLength { get; }
 
-		int Cursor { get; }
+        int Cursor { get; }
 
-		string PreviouslyReadString { get; }
+        string PreviouslyReadString { get; }
 
-		string Remaining { get; }
+        string Remaining { get; }
 
-		bool CanRead(int length);
+        bool CanRead(int length);
 
-		bool CanRead();
+        bool CanRead();
 
-		char Peek();
+        char Peek();
 
-		char Peek(int offset);
-	}
-
+        char Peek(int offset);
+    }
 }

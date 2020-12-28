@@ -8,100 +8,66 @@ using NBrigadier.Helpers;
 namespace NBrigadier.Exceptions
 {
     public class CommandSyntaxException : Exception
-	{
-		public static int contextAmount = 10;
-		public static bool enableCommandStackTraces = true;
-		public static IBuiltInExceptionProvider builtInExceptions = new BuiltInExceptions();
+    {
+        public static int contextAmount = 10;
+        public static bool enableCommandStackTraces = true;
+        public static IBuiltInExceptionProvider builtInExceptions = new BuiltInExceptions();
+        private readonly int _cursor;
+        private readonly string _input;
+        private readonly IMessage _message;
 
-		private ICommandExceptionType _type;
-		private IMessage _message;
-		private string _input;
-		private int _cursor;
+        public CommandSyntaxException(ICommandExceptionType type, IMessage message) :
+            base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
+        {
+            Type = type;
+            _message = message;
+            _input = null;
+            _cursor = -1;
+        }
 
-		public CommandSyntaxException(ICommandExceptionType type, IMessage message) : base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
-		{
-			this._type = type;
-			this._message = message;
-			this._input = null;
-			this._cursor = -1;
-		}
+        public CommandSyntaxException(ICommandExceptionType type, IMessage message, string input, int cursor) :
+            base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
+        {
+            Type = type;
+            _message = message;
+            _input = input;
+            _cursor = cursor;
+        }
 
-		public CommandSyntaxException(ICommandExceptionType type, IMessage message, string input, int cursor) : base(message.String) //, null, ENABLE_COMMAND_STACK_TRACES, ENABLE_COMMAND_STACK_TRACES)
-		{
-			this._type = type;
-			this._message = message;
-			this._input = input;
-			this._cursor = cursor;
-		}
+        public override string Message
+        {
+            get
+            {
+                var message = _message.String;
+                var context = Context;
+                if (!ReferenceEquals(context, null)) message += " at position " + _cursor + ": " + context;
+                return message;
+            }
+        }
 
-		public override string Message
-		{
-			get
-			{
-				string message = this._message.String;
-				 string context = Context;
-				if (!string.ReferenceEquals(context, null))
-				{
-					message += " at position " + _cursor + ": " + context;
-				}
-				return message;
-			}
-		}
+        public virtual IMessage RawMessage => _message;
 
-		public virtual IMessage RawMessage
-		{
-			get
-			{
-				return _message;
-			}
-		}
+        public virtual string Context
+        {
+            get
+            {
+                if (ReferenceEquals(_input, null) || _cursor < 0) return null;
+                var builder = new StringBuilder();
+                var cursor = Math.Min(_input.Length, _cursor);
 
-		public virtual string Context
-		{
-			get
-			{
-				if (string.ReferenceEquals(_input, null) || this._cursor < 0)
-				{
-					return null;
-				}
-				 StringBuilder builder = new StringBuilder();
-				 int cursor = Math.Min(_input.Length, this._cursor);
-    
-				if (cursor > contextAmount)
-				{
-					builder.Append("...");
-				}
-    
-				builder.Append(StringHelper.SubstringSpecial(_input, Math.Max(0, cursor - contextAmount), cursor));
-				builder.Append("<--[HERE]");
-    
-				return builder.ToString();
-			}
-		}
+                if (cursor > contextAmount) builder.Append("...");
 
-		public virtual ICommandExceptionType Type
-		{
-			get
-			{
-				return _type;
-			}
-		}
+                builder.Append(_input.SubstringSpecial(Math.Max(0, cursor - contextAmount), cursor));
+                builder.Append("<--[HERE]");
 
-		public virtual string Input
-		{
-			get
-			{
-				return _input;
-			}
-		}
+                return builder.ToString();
+            }
+        }
 
-		public virtual int Cursor
-		{
-			get
-			{
-				return _cursor;
-			}
-		}
-	}
+        public virtual ICommandExceptionType Type { get; }
 
+        public virtual string Input => _input;
+
+        public virtual int Cursor => _cursor;
+    }
 }

@@ -12,13 +12,11 @@ namespace NBrigadier.Helpers
 {
     internal static class HashMapHelper
     {
-        public static HashSet<KeyValuePair<TKey, TValue>> SetOfKeyValuePairs<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
+        public static HashSet<KeyValuePair<TKey, TValue>> SetOfKeyValuePairs<TKey, TValue>(
+            this IDictionary<TKey, TValue> dictionary)
         {
-            HashSet<KeyValuePair<TKey, TValue>> entries = new HashSet<KeyValuePair<TKey, TValue>>();
-            foreach (KeyValuePair<TKey, TValue> keyValuePair in dictionary)
-            {
-                entries.Add(keyValuePair);
-            }
+            var entries = new HashSet<KeyValuePair<TKey, TValue>>();
+            foreach (var keyValuePair in dictionary) entries.Add(keyValuePair);
             return entries;
         }
 
@@ -34,10 +32,7 @@ namespace NBrigadier.Helpers
             if (d2 is null)
                 throw new NullReferenceException();
 
-            foreach (TKey key in d2.Keys)
-            {
-                d1[key] = d2[key];
-            }
+            foreach (var key in d2.Keys) d1[key] = d2[key];
         }
     }
 }

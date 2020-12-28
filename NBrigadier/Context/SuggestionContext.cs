@@ -6,15 +6,14 @@
 namespace NBrigadier.Context
 {
     public class SuggestionContext<TS>
-	{
-		public CommandNode<TS> parent;
-		public int startPos;
+    {
+        public CommandNode<TS> parent;
+        public int startPos;
 
-		public SuggestionContext(CommandNode<TS> parent, int startPos)
-		{
-			this.parent = parent;
-			this.startPos = startPos;
-		}
-	}
-
+        public SuggestionContext(CommandNode<TS> parent, int startPos)
+        {
+            this.parent = parent;
+            this.startPos = startPos;
+        }
+    }
 }

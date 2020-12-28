@@ -7,59 +7,39 @@ using NBrigadier.Tree;
 namespace NBrigadier.Context
 {
     public class ParsedCommandNode<TS>
-	{
+    {
+        private readonly CommandNode<TS> _node;
 
-		private CommandNode<TS> _node;
+        private readonly StringRange _range;
 
-		private StringRange _range;
+        public ParsedCommandNode(CommandNode<TS> node, StringRange range)
+        {
+            _node = node;
+            _range = range;
+        }
 
-		public ParsedCommandNode(CommandNode<TS> node, StringRange range)
-		{
-			this._node = node;
-			this._range = range;
-		}
+        public virtual CommandNode<TS> Node => _node;
 
-		public virtual CommandNode<TS> Node
-		{
-			get
-			{
-				return _node;
-			}
-		}
+        public virtual StringRange Range => _range;
 
-		public virtual StringRange Range
-		{
-			get
-			{
-				return _range;
-			}
-		}
+        public override string ToString()
+        {
+            return _node + "@" + _range;
+        }
 
-		public override string ToString()
-		{
-			return _node + "@" + _range;
-		}
-
-		public override bool Equals(object o)
-		{
-			if (this == o)
-			{
-				return true;
-			}
-			if (o == null || this.GetType() != o.GetType())
-			{
-				return false;
-			}
-// WARNING: Java wildcard generics have no direct equivalent in C#:
+        public override bool Equals(object o)
+        {
+            if (this == o) return true;
+            if (o == null || GetType() != o.GetType()) return false;
+            // WARNING: Java wildcard generics have no direct equivalent in C#:
 // ORIGINAL LINE: ParsedCommandNode<?> that = (ParsedCommandNode<?>) o;
-			ParsedCommandNode<object> that = (ParsedCommandNode<object>) o;
-			return ObjectsHelper.Equals(_node, that._node) && ObjectsHelper.Equals(_range, that._range);
-		}
+            var that = (ParsedCommandNode<object>) o;
+            return ObjectsHelper.Equals(_node, that._node) && ObjectsHelper.Equals(_range, that._range);
+        }
 
-		public override int GetHashCode()
-		{
-			return NBrigadier.Helpers.ObjectsHelper.Hash(_node, _range);
-		}
-	}
-
+        public override int GetHashCode()
+        {
+            return ObjectsHelper.Hash(_node, _range);
+        }
+    }
 }

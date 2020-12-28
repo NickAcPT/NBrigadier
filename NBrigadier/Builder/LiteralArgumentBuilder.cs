@@ -6,52 +6,35 @@
 namespace NBrigadier.Builder
 {
     public class LiteralArgumentBuilder<TS> : ArgumentBuilder<TS, LiteralArgumentBuilder<TS>>
-	{
+    {
 // NOTE: Fields cannot have the same name as methods of the current type:
-		private string _literalConflict;
 
-		protected internal LiteralArgumentBuilder(string literal)
-		{
-			this._literalConflict = literal;
-		}
+        protected internal LiteralArgumentBuilder(string literal)
+        {
+            LiteralValue = literal;
+        }
 
-		public static LiteralArgumentBuilder<TS> Literal(string name)
-		{
-			return new LiteralArgumentBuilder<TS>(name);
-		}
+        protected internal override LiteralArgumentBuilder<TS> This => this;
 
-		protected internal override LiteralArgumentBuilder<TS> This
-		{
-			get
-			{
-				return this;
-			}
-		}
+        public virtual string LiteralValue { get; }
 
-		public virtual string LiteralValue
-		{
-			get
-			{
-				return _literalConflict;
-			}
-		}
+        public static LiteralArgumentBuilder<TS> Literal(string name)
+        {
+            return new(name);
+        }
 
 #if NETSTANDARD
-        
-		public override CommandNode<TS> Build()
+        public override CommandNode<TS> Build()
 #else
-		public override LiteralCommandNode<TS> Build()
+        public override LiteralCommandNode<TS> Build()
 #endif
         {
-			 LiteralCommandNode<TS> result = new LiteralCommandNode<TS>(LiteralValue, Command, Requirement, RedirectTarget, RedirectModifier, HasFork);
+            var result = new LiteralCommandNode<TS>(LiteralValue, Command, Requirement, RedirectTarget,
+                RedirectModifier, HasFork);
 
-			foreach (CommandNode<TS> argument in Arguments)
-			{
-				result.AddChild(argument);
-			}
+            foreach (var argument in Arguments) result.AddChild(argument);
 
-			return result;
-		}
-	}
-
+            return result;
+        }
+    }
 }

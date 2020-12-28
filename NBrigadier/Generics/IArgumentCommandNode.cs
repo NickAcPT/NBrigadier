@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NBrigadier.CommandSuggestion;
 using NBrigadier.Tree;
 
@@ -11,7 +12,7 @@ namespace NBrigadier.Generics
         ICollection<CommandNode<TS>> Children { get; }
         CommandNode<TS> Redirect { get; }
         RedirectModifier<TS> RedirectModifier { get; }
-        System.Predicate<TS> Requirement { get; }
+        Predicate<TS> Requirement { get; }
         bool Fork { get; }
         CommandNode<TS> GetChild(string name);
         bool CanUse(TS source);

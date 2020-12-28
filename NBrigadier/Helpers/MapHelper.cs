@@ -10,8 +10,8 @@ namespace NBrigadier.Helpers
         {
             return source.Any(new Func<TSource, bool>(s => predicate(s)));
         }
-        
-        
+
+
         public static TV GetOrDefault<TK, TV>(this IDictionary<TK, TV> dictionary, TK key, TV value = default)
         {
             return dictionary.TryGetValue(key, out var ret) ? ret : value;

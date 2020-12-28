@@ -5,7 +5,5 @@
 
 namespace NBrigadier
 {
-
-	public delegate void ResultConsumer<TS>(CommandContext<TS> context, bool success, int result);
-
+    public delegate void ResultConsumer<TS>(CommandContext<TS> context, bool success, int result);
 }
