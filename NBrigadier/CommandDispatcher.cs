@@ -693,8 +693,10 @@ namespace NBrigadier
             IList<Suggestions> suggestions = new List<Suggestions>();
 
 
-            Parallel.Invoke(futures.Select(c => new Action(() => { suggestions.Add(c()); })).ToArray());
-
+            foreach (var action in futures.Select(c => new Action(() => { suggestions.Add(c()); })))
+            {
+                action();
+            }
 
             return () => Suggestions.Merge(fullInput, suggestions);
 		}
