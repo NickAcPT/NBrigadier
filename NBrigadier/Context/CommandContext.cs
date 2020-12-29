@@ -12,8 +12,6 @@ namespace NBrigadier.Context
 {
     public class CommandContext<TS> : ICommandContext
     {
-        private static readonly IDictionary<Type, Type> _primitiveToWrapper = new Dictionary<Type, Type>();
-
         private readonly IDictionary<string, IParsedArgument> _arguments;
         private readonly CommandContext<TS> _child;
         private readonly Command<TS> _command;
@@ -28,14 +26,6 @@ namespace NBrigadier.Context
 
         static CommandContext()
         {
-            _primitiveToWrapper[typeof(bool)] = typeof(bool);
-            _primitiveToWrapper[typeof(sbyte)] = typeof(byte);
-            _primitiveToWrapper[typeof(short)] = typeof(short);
-            _primitiveToWrapper[typeof(char)] = typeof(char);
-            _primitiveToWrapper[typeof(int)] = typeof(int);
-            _primitiveToWrapper[typeof(long)] = typeof(long);
-            _primitiveToWrapper[typeof(float)] = typeof(float);
-            _primitiveToWrapper[typeof(double)] = typeof(double);
         }
 
         public CommandContext(TS source, string input, IDictionary<string, IParsedArgument> arguments,
@@ -94,6 +84,12 @@ namespace NBrigadier.Context
                 _modifier, _forks);
         }
 
+        public virtual TV GetArgument<TV>(string name)
+        {
+            return GetArgument<TV>(name, typeof(TV));
+        }
+
+
         public virtual TV GetArgument<TV>(string name, Type clazz)
         {
             var argument = _arguments.GetValueOrNull(name);
@@ -101,7 +97,7 @@ namespace NBrigadier.Context
             if (argument == null) throw new ArgumentException("No such argument '" + name + "' exists on this command");
 
             var result = argument.ResultObject;
-            if (_primitiveToWrapper.GetOrDefault(clazz, clazz).IsAssignableFrom(result.GetType()))
+            if (clazz.IsInstanceOfType(result))
                 return (TV) result;
             throw new ArgumentException("Argument '" + name + "' is defined as " + result.GetType().Name + ", not " +
                                         clazz);

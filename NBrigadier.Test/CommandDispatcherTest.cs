@@ -2,6 +2,7 @@
 using System.Linq;
 using NBrigadier.Arguments;
 using NBrigadier.Builder;
+using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
 using NBrigadier.Exceptions;
 using NBrigadier.Generics;
@@ -12,14 +13,14 @@ namespace NBrigadier.Test
 {
     public class CommandDispatcherTest
     {
-        private CommandDispatcher<object> subject;
+        private CommandDispatcher<object> _subject;
         private Command<object> command;
         private object source;
 
         [SetUp]
         public virtual void SetUp()
         {
-            subject = new CommandDispatcher<object>();
+            _subject = new CommandDispatcher<object>();
             command = context => 42;
             source = new object();
         }
@@ -34,40 +35,40 @@ namespace NBrigadier.Test
         [Test]
         public virtual void TestCreateAndExecuteCommand()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command));
 
-            Assert.AreEqual(subject.Execute("foo", source), (42));
+            Assert.AreEqual(_subject.Execute("foo", source), (42));
         }
 
         [Test]
         public virtual void TestCreateAndExecuteOffsetCommand()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command));
 
-            Assert.AreEqual(subject.Execute(InputWithOffset("/foo", 1), source), (42));
+            Assert.AreEqual(_subject.Execute(InputWithOffset("/foo", 1), source), (42));
         }
 
         [Test]
         public virtual void TestCreateAndMergeCommands()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("base")
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("base")
                 .Then(LiteralArgumentBuilder<object>.Literal("foo").Executes(command)));
-            subject.Register(LiteralArgumentBuilder<object>.Literal("base")
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("base")
                 .Then(LiteralArgumentBuilder<object>.Literal("bar").Executes(command)));
 
-            Assert.AreEqual(subject.Execute("base foo", source), (42));
-            Assert.AreEqual(subject.Execute("base bar", source), (42));
+            Assert.AreEqual(_subject.Execute("base foo", source), (42));
+            Assert.AreEqual(_subject.Execute("base bar", source), (42));
         }
 
         [Test]
         public virtual void TestExecuteUnknownCommand()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("bar"));
-            subject.Register(LiteralArgumentBuilder<object>.Literal("baz"));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("bar"));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("baz"));
 
             try
             {
-                subject.Execute("foo", source);
+                _subject.Execute("foo", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -80,11 +81,11 @@ namespace NBrigadier.Test
         [Test]
         public virtual void TestExecuteImpermissibleCommand()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Requires(s => false));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Requires(s => false));
 
             try
             {
-                subject.Execute("foo", source);
+                _subject.Execute("foo", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -97,11 +98,11 @@ namespace NBrigadier.Test
         [Test]
         public virtual void TestExecuteEmptyCommand()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal(""));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal(""));
 
             try
             {
-                subject.Execute("", source);
+                _subject.Execute("", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -114,11 +115,11 @@ namespace NBrigadier.Test
         [Test]
         public virtual void TestExecuteUnknownSubcommand()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command));
 
             try
             {
-                subject.Execute("foo bar", source);
+                _subject.Execute("foo bar", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -131,12 +132,12 @@ namespace NBrigadier.Test
         [Test]
         public virtual void TestExecuteIncorrectLiteral()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command)
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command)
                 .Then(LiteralArgumentBuilder<object>.Literal("bar")));
 
             try
             {
-                subject.Execute("foo baz", source);
+                _subject.Execute("foo baz", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -149,13 +150,13 @@ namespace NBrigadier.Test
         [Test]
         public virtual void TestExecuteAmbiguousIncorrectArgument()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command)
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Executes(command)
                 .Then(LiteralArgumentBuilder<object>.Literal("bar"))
                 .Then(LiteralArgumentBuilder<object>.Literal("baz")));
 
             try
             {
-                subject.Execute("foo unknown", source);
+                _subject.Execute("foo unknown", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -170,21 +171,21 @@ namespace NBrigadier.Test
         {
             Command<object> subCommand = _ => 100;
 
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo")
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo")
                 .Then(LiteralArgumentBuilder<object>.Literal("a"))
                 .Then(LiteralArgumentBuilder<object>.Literal("=").Executes(subCommand))
                 .Then(LiteralArgumentBuilder<object>.Literal("c")).Executes(command));
 
-            Assert.AreEqual(subject.Execute("foo =", source), (100));
+            Assert.AreEqual(_subject.Execute("foo =", source), (100));
         }
 
         [Test]
         public virtual void TestParseIncompleteLiteral()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo")
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo")
                 .Then(LiteralArgumentBuilder<object>.Literal("bar").Executes(command)));
 
-            ParseResults<object> parse = subject.Parse("foo ", source);
+            ParseResults<object> parse = _subject.Parse("foo ", source);
             Assert.AreEqual(parse.Reader.Remaining, (" "));
             Assert.AreEqual(parse.Context.Nodes.Count, (1));
         }
@@ -192,10 +193,10 @@ namespace NBrigadier.Test
         [Test]
         public virtual void TestParseIncompleteArgument()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Then(RequiredArgumentBuilder<object, int>
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Then(RequiredArgumentBuilder<object, int>
                 .Argument("bar", IntegerArgumentType.Integer()).Executes(command)));
 
-            ParseResults<object> parse = subject.Parse("foo ", source);
+            ParseResults<object> parse = _subject.Parse("foo ", source);
             Assert.AreEqual(parse.Reader.Remaining, (" "));
             Assert.AreEqual(parse.Context.Nodes.Count, (1));
         }
@@ -205,14 +206,14 @@ namespace NBrigadier.Test
         {
             Command<object> subCommand = _ => 100;
 
-            subject.Register(LiteralArgumentBuilder<object>.Literal("test")
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("test")
                 .Then(RequiredArgumentBuilder<object, int>.Argument("incorrect", IntegerArgumentType.Integer())
                     .Executes(command))
                 .Then(RequiredArgumentBuilder<object, int>
                     .Argument("right", IntegerArgumentType.Integer()).Then(RequiredArgumentBuilder<object, int>
                         .Argument("sub", IntegerArgumentType.Integer()).Executes(subCommand))));
 
-            Assert.AreEqual(subject.Execute("test 1 2", source), (100));
+            Assert.AreEqual(_subject.Execute("test 1 2", source), (100));
         }
 
         [Test]
@@ -220,31 +221,31 @@ namespace NBrigadier.Test
         {
             Command<object> subCommand = _ => 100;
 
-            LiteralCommandNode<object> real = subject.Register(LiteralArgumentBuilder<object>.Literal("test")
+            LiteralCommandNode<object> real = _subject.Register(LiteralArgumentBuilder<object>.Literal("test")
                 .Then(RequiredArgumentBuilder<object, int>.Argument("incorrect", IntegerArgumentType.Integer())
                     .Executes(command)).Then(RequiredArgumentBuilder<object, int>
                     .Argument("right", IntegerArgumentType.Integer()).Then(RequiredArgumentBuilder<object, int>
                         .Argument("sub", IntegerArgumentType.Integer()).Executes(subCommand))));
 
-            subject.Register(LiteralArgumentBuilder<object>.Literal("redirect").Redirect(real));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("redirect").Redirect(real));
 
-            Assert.AreEqual(subject.Execute("redirect 1 2", source), (100));
+            Assert.AreEqual(_subject.Execute("redirect 1 2", source), (100));
         }
 
         [Test]
         public virtual void TestExecuteRedirectedMultipleTimes()
         {
             LiteralCommandNode<object> concreteNode =
-                subject.Register(LiteralArgumentBuilder<object>.Literal("actual").Executes(command));
+                _subject.Register(LiteralArgumentBuilder<object>.Literal("actual").Executes(command));
             LiteralCommandNode<object> redirectNode =
-                subject.Register(LiteralArgumentBuilder<object>.Literal("redirected").Redirect(subject.Root));
+                _subject.Register(LiteralArgumentBuilder<object>.Literal("redirected").Redirect(_subject.Root));
 
             string input = "redirected redirected actual";
 
-            ParseResults<object> parse = subject.Parse(input, source);
+            ParseResults<object> parse = _subject.Parse(input, source);
             Assert.AreEqual(parse.Context.Range.Get(input), ("redirected"));
             Assert.AreEqual(parse.Context.Nodes.Count, (1));
-            Assert.AreEqual(parse.Context.RootNode, (subject.Root));
+            Assert.AreEqual(parse.Context.RootNode, (_subject.Root));
             Assert.AreEqual(parse.Context.Nodes.ElementAt(0).Range, (parse.Context.Range));
             Assert.AreEqual(parse.Context.Nodes.ElementAt(0).Node, (redirectNode));
 
@@ -252,7 +253,7 @@ namespace NBrigadier.Test
             Assert.NotNull(child1);
             Assert.AreEqual(child1.Range.Get(input), ("redirected"));
             Assert.AreEqual(child1.Nodes.Count, (1));
-            Assert.AreEqual(child1.RootNode, (subject.Root));
+            Assert.AreEqual(child1.RootNode, (_subject.Root));
             Assert.AreEqual(child1.Nodes.ElementAt(0).Range, (child1.Range));
             Assert.AreEqual(child1.Nodes.ElementAt(0).Node, (redirectNode));
 
@@ -260,11 +261,11 @@ namespace NBrigadier.Test
             Assert.NotNull(child2);
             Assert.AreEqual(child2.Range.Get(input), ("actual"));
             Assert.AreEqual(child2.Nodes.Count, (1));
-            Assert.AreEqual(child2.RootNode, (subject.Root));
+            Assert.AreEqual(child2.RootNode, (_subject.Root));
             Assert.AreEqual(child2.Nodes.ElementAt(0).Range, (child2.Range));
             Assert.AreEqual(child2.Nodes.ElementAt(0).Node, (concreteNode));
 
-            Assert.AreEqual(subject.Execute(parse), (42));
+            Assert.AreEqual(_subject.Execute(parse), (42));
         }
 
         [Test]
@@ -276,15 +277,15 @@ namespace NBrigadier.Test
             RedirectModifier<object> modifier = context => { return NewList(source1, source2); };
 
             LiteralCommandNode<object> concreteNode =
-                subject.Register(LiteralArgumentBuilder<object>.Literal("actual").Executes(command));
+                _subject.Register(LiteralArgumentBuilder<object>.Literal("actual").Executes(command));
             LiteralCommandNode<object> redirectNode =
-                subject.Register(LiteralArgumentBuilder<object>.Literal("redirected").Fork(subject.Root, modifier));
+                _subject.Register(LiteralArgumentBuilder<object>.Literal("redirected").Fork(_subject.Root, modifier));
 
             string input = "redirected actual";
-            ParseResults<object> parse = subject.Parse(input, source);
+            ParseResults<object> parse = _subject.Parse(input, source);
             Assert.AreEqual(parse.Context.Range.Get(input), ("redirected"));
             Assert.AreEqual(parse.Context.Nodes.Count, (1));
-            Assert.AreEqual(parse.Context.RootNode, (subject.Root));
+            Assert.AreEqual(parse.Context.RootNode, (_subject.Root));
             Assert.AreEqual(parse.Context.Nodes.ElementAt(0).Range, (parse.Context.Range));
             Assert.AreEqual(parse.Context.Nodes.ElementAt(0).Node, (redirectNode));
             Assert.AreEqual(parse.Context.Source, (source));
@@ -293,24 +294,24 @@ namespace NBrigadier.Test
             Assert.That(parent, Is.Not.Null);
             Assert.AreEqual(parent.Range.Get(input), ("actual"));
             Assert.AreEqual(parent.Nodes.Count, (1));
-            Assert.AreEqual(parse.Context.RootNode, (subject.Root));
+            Assert.AreEqual(parse.Context.RootNode, (_subject.Root));
             Assert.AreEqual(parent.Nodes.ElementAt(0).Range, (parent.Range));
             Assert.AreEqual(parent.Nodes.ElementAt(0).Node, (concreteNode));
             Assert.AreEqual(parent.Source, (source));
 
-            Assert.AreEqual(subject.Execute(parse), (2));
+            Assert.AreEqual(_subject.Execute(parse), (2));
         }
 
         [Test]
         public virtual void TestExecuteOrphanedSubcommand()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo")
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo")
                 .Then(RequiredArgumentBuilder<object, int>.Argument("bar", IntegerArgumentType.Integer()))
                 .Executes(command));
 
             try
             {
-                subject.Execute("foo 5", source);
+                _subject.Execute("foo 5", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -324,21 +325,21 @@ namespace NBrigadier.Test
         public virtual void TestExecuteInvalidOther()
         {
             Command<object> wrongCommand = _ => 0;
-            subject.Register(LiteralArgumentBuilder<object>.Literal("w").Executes(wrongCommand));
-            subject.Register(LiteralArgumentBuilder<object>.Literal("world").Executes(command));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("w").Executes(wrongCommand));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("world").Executes(command));
 
-            Assert.AreEqual(subject.Execute("world", source), (42));
+            Assert.AreEqual(_subject.Execute("world", source), (42));
         }
 
         [Test]
         public virtual void ParseNoSpaceSeparator()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Then(RequiredArgumentBuilder<object, int>
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Then(RequiredArgumentBuilder<object, int>
                 .Argument("bar", IntegerArgumentType.Integer()).Executes(command)));
 
             try
             {
-                subject.Execute("foo$", source);
+                _subject.Execute("foo$", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -351,13 +352,13 @@ namespace NBrigadier.Test
         [Test]
         public virtual void TestExecuteInvalidSubcommand()
         {
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo")
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo")
                 .Then(RequiredArgumentBuilder<object, int>.Argument("bar", IntegerArgumentType.Integer()))
                 .Executes(command));
 
             try
             {
-                subject.Execute("foo bar", source);
+                _subject.Execute("foo bar", source);
                 Assert.Fail();
             }
             catch (CommandSyntaxException ex)
@@ -370,24 +371,47 @@ namespace NBrigadier.Test
         public virtual void TestGetPath()
         {
             LiteralCommandNode<object> bar = LiteralArgumentBuilder<object>.Literal("bar").Build();
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Then(bar));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Then(bar));
 
-            Assert.AreEqual(subject.GetPath(bar), (NewList("foo", "bar")));
+            Assert.AreEqual(_subject.GetPath(bar), (NewList("foo", "bar")));
         }
 
         [Test]
         public virtual void TestFindNodeExists()
         {
             LiteralCommandNode<object> bar = LiteralArgumentBuilder<object>.Literal("bar").Build();
-            subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Then(bar));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("foo").Then(bar));
 
-            Assert.AreEqual(subject.FindNode(NewList("foo", "bar")), (bar));
+            Assert.AreEqual(_subject.FindNode(NewList("foo", "bar")), (bar));
         }
 
         [Test]
         public virtual void TestFindNodeDoesntExist()
         {
-            Assert.That(subject.FindNode(NewList("foo", "bar")), Is.Null);
+            Assert.That(_subject.FindNode(NewList("foo", "bar")), Is.Null);
+        }
+
+
+
+        [Test]
+        public virtual void ExecuteCommandSimulationTest()
+        {
+            var newSource = new object();
+            
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("hey")
+                .Requires(c => newSource == c)
+                .Executes(_ => 69));
+
+            var execute = _subject.Register(LiteralArgumentBuilder<object>.Literal("execute"));
+            _subject.Register(LiteralArgumentBuilder<object>.Literal("execute")
+                .Then(LiteralArgumentBuilder<object>.Literal("as").Then(RequiredArgumentBuilder<object, string>
+                    .Argument("name", StringArgumentType.Word()).Redirect(execute)))
+                .Then(LiteralArgumentBuilder<object>.Literal("run").Redirect(_subject.Root)));
+
+            var dinnerboneRunHey = "execute as Dinnerbone run hey";
+            Assert.Throws(typeof(CommandSyntaxException),
+                () => _subject.Execute(dinnerboneRunHey, source));
+            Assert.AreEqual(69, _subject.Execute(dinnerboneRunHey, newSource));
         }
 
         private List<T> NewList<T>(params T[] values)
