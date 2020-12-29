@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using NBrigadier.Builder;
@@ -395,7 +396,13 @@ namespace NBrigadier
                     reader.Skip();
                     if (child.Redirect != null)
                     {
-                        var childContext = new CommandContextBuilder<TS>(this, source, child.Redirect, reader.Cursor);
+                        var redirectSource = source;
+                        if (child.RedirectModifier != null)
+                        {
+                            var redirects = child.RedirectModifier.Invoke(context.Build(reader.String));
+                            redirectSource = redirects.FirstOrDefault() ?? redirectSource;
+                        }
+                        var childContext = new CommandContextBuilder<TS>(this, redirectSource, child.Redirect, reader.Cursor);
                         var parse = ParseNodes(child.Redirect, reader, childContext);
                         context.WithChild(parse.Context);
                         return new ParseResults<TS>(context, parse.Reader, parse.Exceptions);

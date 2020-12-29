@@ -70,6 +70,11 @@ namespace NBrigadier.Builder
             return Forward(target, modifier == null ? null : o => CollectionsHelper.SingletonList(modifier(o)), false);
         }
 
+        public virtual T Fork(CommandNode<TS> target, SingleRedirectModifier<TS> modifier)
+        {
+            return Forward(target, o => CollectionsHelper.SingletonList(modifier(o)), true);
+        }
+
         public virtual T Fork(CommandNode<TS> target, RedirectModifier<TS> modifier)
         {
             return Forward(target, modifier, true);

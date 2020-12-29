@@ -405,13 +405,18 @@ namespace NBrigadier.Test
             var execute = _subject.Register(LiteralArgumentBuilder<object>.Literal("execute"));
             _subject.Register(LiteralArgumentBuilder<object>.Literal("execute")
                 .Then(LiteralArgumentBuilder<object>.Literal("as").Then(RequiredArgumentBuilder<object, string>
-                    .Argument("name", StringArgumentType.Word()).Redirect(execute)))
+                    .Argument("name", StringArgumentType.Word()).Redirect(execute, context =>
+                    {
+                        if (context.GetArgument<string>("name") == "Dinnerbone2")
+                            return newSource;
+                        return context.Source;
+                        
+                    })))
                 .Then(LiteralArgumentBuilder<object>.Literal("run").Redirect(_subject.Root)));
 
-            var dinnerboneRunHey = "execute as Dinnerbone run hey";
             Assert.Throws(typeof(CommandSyntaxException),
-                () => _subject.Execute(dinnerboneRunHey, source));
-            Assert.AreEqual(69, _subject.Execute(dinnerboneRunHey, newSource));
+                () => _subject.Execute("execute as Dinnerbone run hey", source));
+            Assert.AreEqual(69, _subject.Execute("execute as Dinnerbone2 run hey", source));
         }
 
         private List<T> NewList<T>(params T[] values)
