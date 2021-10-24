@@ -90,7 +90,7 @@ namespace NBrigadier.Tree
 
             var that = (ArgumentCommandNode<TS, T>) o;
 
-            if (!_name.Equals(that._name)) return false;
+            if (!_name.Equals(that._name, StringComparison.Ordinal)) return false;
             if (!_type.Equals(that._type)) return false;
             return base.Equals(o);
         }

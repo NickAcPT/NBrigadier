@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
 using NBrigadier.Helpers;
@@ -24,8 +25,8 @@ namespace NBrigadier.Arguments
 
         public virtual Func<Suggestions> ListSuggestions<TS>(CommandContext<TS> context, SuggestionsBuilder builder)
         {
-            if ("true".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal)) builder.Suggest("true");
-            if ("false".StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal)) builder.Suggest("false");
+            if ("true".StartsWith(builder.Remaining.ToLower(CultureInfo.InvariantCulture), StringComparison.Ordinal)) builder.Suggest("true");
+            if ("false".StartsWith(builder.Remaining.ToLower(CultureInfo.InvariantCulture), StringComparison.Ordinal)) builder.Suggest("false");
             return builder.BuildFuture();
         }
 

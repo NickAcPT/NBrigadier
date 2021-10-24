@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using NBrigadier.Context;
 using NBrigadier.Helpers;
 
@@ -15,7 +16,7 @@ namespace NBrigadier.CommandSuggestion
         {
         }
 
-        public IntegerSuggestion(StringRange range, int value, IMessage tooltip) : base(range, Convert.ToString(value),
+        public IntegerSuggestion(StringRange range, int value, IMessage tooltip) : base(range, Convert.ToString(value, CultureInfo.InvariantCulture),
             tooltip)
         {
             _value = value;

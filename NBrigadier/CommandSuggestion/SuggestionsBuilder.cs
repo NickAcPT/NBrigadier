@@ -39,14 +39,14 @@ namespace NBrigadier.CommandSuggestion
 
         public virtual SuggestionsBuilder Suggest(string text)
         {
-            if (text.Equals(_remaining)) return this;
+            if (text.Equals(_remaining, StringComparison.Ordinal)) return this;
             _result.Add(new Suggestion(StringRange.Between(_start, _input.Length), text));
             return this;
         }
 
         public virtual SuggestionsBuilder Suggest(string text, IMessage tooltip)
         {
-            if (text.Equals(_remaining)) return this;
+            if (text.Equals(_remaining, StringComparison.Ordinal)) return this;
             _result.Add(new Suggestion(StringRange.Between(_start, _input.Length), text, tooltip));
             return this;
         }
