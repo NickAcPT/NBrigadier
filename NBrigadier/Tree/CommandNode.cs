@@ -56,7 +56,7 @@ namespace NBrigadier.Tree
 
         public virtual int CompareTo(CommandNode<TS> o)
         {
-            if (this is LiteralCommandNode<TS> == o is ILiteralCommandNode) return SortedKey.CompareTo(o.SortedKey);
+            if (this is LiteralCommandNode<TS> == o is ILiteralCommandNode) return string.Compare(SortedKey, o.SortedKey, StringComparison.Ordinal);
 
             return o is ILiteralCommandNode ? 1 : -1;
         }

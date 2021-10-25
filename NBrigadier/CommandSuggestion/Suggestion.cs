@@ -33,7 +33,7 @@ namespace NBrigadier.CommandSuggestion
 
         public virtual int CompareTo(Suggestion o)
         {
-            return _text.CompareTo(o._text);
+            return String.Compare(_text, o._text, StringComparison.Ordinal);
         }
 
         public virtual string Apply(string input)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using NBrigadier.Builder;
 using NBrigadier.CommandSuggestion;
 using NBrigadier.Context;
@@ -50,7 +51,7 @@ namespace NBrigadier.Tree
             if (reader.CanRead(Literal.Length))
             {
                 var end = start + Literal.Length;
-                if (reader.String.Substring(start, end - start).Equals(Literal))
+                if (reader.String.Substring(start, end - start).Equals(Literal, StringComparison.Ordinal))
                 {
                     reader.Cursor = end;
                     if (!reader.CanRead() || reader.Peek() == ' ')
@@ -64,7 +65,7 @@ namespace NBrigadier.Tree
 
         public override Func<Suggestions> ListSuggestions(CommandContext<TS> context, SuggestionsBuilder builder)
         {
-            if (Literal.ToLower().StartsWith(builder.Remaining.ToLower(), StringComparison.Ordinal))
+            if (Literal.ToLower(CultureInfo.InvariantCulture).StartsWith(builder.Remaining.ToLower(CultureInfo.InvariantCulture), StringComparison.Ordinal))
                 return builder.Suggest(Literal).BuildFuture();
             return Suggestions.Empty();
         }
@@ -81,7 +82,7 @@ namespace NBrigadier.Tree
 
             var that = (ILiteralCommandNode) o;
 
-            if (!Literal.Equals(that.Literal)) return false;
+            if (!Literal.Equals(that.Literal, StringComparison.Ordinal)) return false;
             return base.Equals(o);
         }
 

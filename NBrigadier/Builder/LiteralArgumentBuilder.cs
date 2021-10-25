@@ -21,7 +21,7 @@ namespace NBrigadier.Builder
             return new(name);
         }
 
-#if NETSTANDARD
+#if NETSTANDARD || NETFRAMEWORK
         public override CommandNode<TS> Build()
 #else
         public override LiteralCommandNode<TS> Build()

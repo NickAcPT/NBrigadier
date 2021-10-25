@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Text;
 using NBrigadier.Exceptions;
 
@@ -98,7 +99,7 @@ namespace NBrigadier
                 throw CommandSyntaxException.builtInExceptions.ReaderExpectedInt().CreateWithContext(this);
             try
             {
-                return int.Parse(number);
+                return int.Parse(number, CultureInfo.InvariantCulture);
             }
             catch (FormatException)
             {
@@ -116,7 +117,7 @@ namespace NBrigadier
                 throw CommandSyntaxException.builtInExceptions.ReaderExpectedLong().CreateWithContext(this);
             try
             {
-                return long.Parse(number);
+                return long.Parse(number, CultureInfo.InvariantCulture);
             }
             catch (FormatException)
             {
@@ -134,7 +135,7 @@ namespace NBrigadier
                 throw CommandSyntaxException.builtInExceptions.ReaderExpectedDouble().CreateWithContext(this);
             try
             {
-                return double.Parse(number);
+                return double.Parse(number, CultureInfo.InvariantCulture);
             }
             catch (FormatException)
             {
@@ -152,7 +153,7 @@ namespace NBrigadier
                 throw CommandSyntaxException.builtInExceptions.ReaderExpectedFloat().CreateWithContext(this);
             try
             {
-                return float.Parse(number);
+                return float.Parse(number, CultureInfo.InvariantCulture);
             }
             catch (FormatException)
             {
@@ -242,9 +243,9 @@ namespace NBrigadier
             if (value.Length == 0)
                 throw CommandSyntaxException.builtInExceptions.ReaderExpectedBool().CreateWithContext(this);
 
-            if (value.Equals("true")) return true;
+            if (value.Equals("true", StringComparison.Ordinal)) return true;
 
-            if (value.Equals("false")) return false;
+            if (value.Equals("false", StringComparison.Ordinal)) return false;
 
             _cursor = start;
             throw CommandSyntaxException.builtInExceptions.ReaderInvalidBool().CreateWithContext(this, value);
